@@ -28,11 +28,11 @@ const timelineData: TimelineItem[] = [
         status: "coming-soon",
     },
     {
-        id: "rebuild-backend-with-hexagonal-architecture",
+        id: "rebuild-backend-hexagonal-architecture",
         title: "Rebuild Backend with Hexagonal Architecture",
         description:
-            "Refactor the backend using Hexagonal Architecture with Domain Driven Design (DDD) principles to decouple the modules \
-            dependencies and improve the scalability and maintainability.",
+            "Rebuild the backend with Hexagonal Architecture to decouple the dependencies and improve the architecture with \
+            maintainability and scalability.",
         status: "completed",
         date: "October 28, 2025",
     },

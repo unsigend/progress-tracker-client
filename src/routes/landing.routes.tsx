@@ -1,36 +1,36 @@
+// import dependencies
 import { Route } from "react-router";
 
-// import constants
+// import routes
 import { ROUTES_CONSTANTS } from "@/constants/routes";
 
 // import layouts
 import LandingLayout from "@/layouts/landing";
 
 // import pages
-import LandingHomePage from "@/pages/landing/home";
-import LandingAboutPage from "@/pages/landing/about";
+import HomePage from "@/pages/landing/home";
+import AboutPage from "@/pages/landing/about";
 
 /**
- * Landing Routes
- * @returns The landing routes
+ * LandingRoutes component
+ * @returns The LandingRoutes component
  */
-export const landingRoutes = (
+const LandingRoutes = (
     <>
-        {/* Landing Main Layout */}
-        <Route
-            path={ROUTES_CONSTANTS.LANDING().HOME()}
-            element={<LandingLayout />}
-        >
-            {/* Landing Home Page */}
+        {/* Landing Layout */}
+        <Route element={<LandingLayout />}>
+            {/* Home Page */}
             <Route
                 path={ROUTES_CONSTANTS.LANDING().HOME()}
-                element={<LandingHomePage />}
+                element={<HomePage />}
             />
-            {/* Landing About Page */}
+            {/* About Page */}
             <Route
                 path={ROUTES_CONSTANTS.LANDING().ABOUT()}
-                element={<LandingAboutPage />}
+                element={<AboutPage />}
             />
         </Route>
     </>
 );
+
+export default LandingRoutes;

@@ -1,4 +1,4 @@
-// import Components
+// import components
 import HeroSection from "@/features/landing/components/HeroSection";
 import FeaturesSection from "@/features/landing/components/FeaturesSection";
 import BuildWithSection from "@/features/landing/components/BuildWithSection";

@@ -5,10 +5,6 @@ import { Outlet } from "react-router";
 import NavBar from "@/features/landing/components/NavBar";
 import Footer from "@/features/landing/components/Footer";
 
-/**
- * Landing Main Layout
- * @returns The landing main layout
- */
 const LandingLayout = () => {
     return (
         <section>

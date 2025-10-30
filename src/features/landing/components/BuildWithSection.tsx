@@ -9,6 +9,10 @@ import LogoLoop from "@/components/third-party/LogoLoop/LogoLoop";
 // import hooks
 import { useTheme } from "@/hooks/use-theme";
 
+/**
+ * BuildWithSection component
+ * @returns The BuildWithSection component
+ */
 const BuildWithSection = () => {
     const { theme } = useTheme();
 

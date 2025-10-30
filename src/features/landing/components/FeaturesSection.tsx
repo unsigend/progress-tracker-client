@@ -4,6 +4,10 @@ import features from "@/features/landing/constants/features";
 // import components
 import FeatureCard from "@/features/landing/components/FeatureCard";
 
+/**
+ * FeaturesSection component
+ * @returns The FeaturesSection component
+ */
 const FeaturesSection = () => {
     return (
         <div>

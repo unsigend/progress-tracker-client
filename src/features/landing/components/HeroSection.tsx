@@ -12,6 +12,10 @@ import { ROUTES_CONSTANTS } from "@/constants/routes";
 import { useTheme } from "@/hooks/use-theme";
 import { useNavigate } from "react-router";
 
+/**
+ * HeroSection component
+ * @returns The HeroSection component
+ */
 const HeroSection = () => {
     const { theme } = useTheme();
     const navigate = useNavigate();
@@ -48,7 +52,7 @@ const HeroSection = () => {
                             Quick Start
                         </Button>
                         <a
-                            href={`${APP_CONSTANTS.GITHUB_URL}`}
+                            href={APP_CONSTANTS.GITHUB_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

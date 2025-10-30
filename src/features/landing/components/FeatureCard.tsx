@@ -1,12 +1,6 @@
 // import Icons
 import type { LucideIcon } from "lucide-react";
 
-interface FeatureCardProps {
-    icon: LucideIcon;
-    title: string;
-    paragraph: string;
-}
-
 /**
  * FeatureCard component
  * @param icon - The icon to display
@@ -14,7 +8,15 @@ interface FeatureCardProps {
  * @param paragraph - The paragraph of the feature
  * @returns FeatureCard component
  */
-const FeatureCard = ({ icon: Icon, title, paragraph }: FeatureCardProps) => {
+const FeatureCard = ({
+    icon: Icon,
+    title,
+    paragraph,
+}: {
+    icon: LucideIcon;
+    title: string;
+    paragraph: string;
+}) => {
     return (
         <div
             className="group bg-card border border-border rounded-2xl p-6 sm:p-8 hover:shadow-lg 

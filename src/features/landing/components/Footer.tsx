@@ -5,9 +5,17 @@ import { APP_CONSTANTS } from "@/constants/app";
 // import icons
 import { Github, Mail } from "lucide-react";
 
+/**
+ * linkStyle - The style for the links
+ * @returns The link style
+ */
 const linkStyle =
     "text-muted-foreground hover:text-foreground transition-colors";
 
+/**
+ * Footer component
+ * @returns The Footer component
+ */
 const Footer = () => {
     return (
         <footer className="bg-background text-foreground w-full">

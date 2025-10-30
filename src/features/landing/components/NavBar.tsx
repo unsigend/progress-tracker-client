@@ -18,6 +18,10 @@ const navBarLinkStyle =
 const navBarButtonStyle =
     "w-full rounded-lg shadow-sm hover:shadow-md transition-all duration-200";
 
+/**
+ * NavBar component
+ * @returns The NavBar component
+ */
 const NavBar = () => {
     // state for navigation bar
     const [isNavBarOpen, setIsNavBarOpen] = useState<boolean>(false);

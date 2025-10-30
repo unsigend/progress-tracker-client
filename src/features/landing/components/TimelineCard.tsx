@@ -39,7 +39,6 @@ const TimelineCard = ({ item }: { item: TimelineItem }) => {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                                {item.icon}
                                 <h3 className="text-xl font-semibold text-foreground">
                                     {item.title}
                                 </h3>
