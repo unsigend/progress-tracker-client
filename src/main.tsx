@@ -1,9 +1,7 @@
+// Main entry point for the application
 import { createRoot } from "react-dom/client";
+import App from "./app/app";
+import "./app/style.css";
 
-// import components
-import App from "@/app/App.tsx";
-
-// import styles
-import "@/app/index.css";
-
-createRoot(document.getElementById("root")!).render(<App />);
+const root = createRoot(document.getElementById("root")!);
+root.render(<App />);

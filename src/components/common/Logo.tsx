@@ -1,33 +1,19 @@
-// import dependencies
+import { Link } from "react-router";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { cn } from "@/lib/utils";
 
-// import components
-import { Link } from "react-router";
-
-// import constants
-import { ROUTES_CONSTANTS } from "@/constants/routes";
-
 /**
- * Logo component
- * @param fontSize - The font size of the logo
- * @param className - The class name of the logo (additionally)
- * @returns Logo component
+ * Logo Component
+ * @className - Class name for the logo
+ * @returns - Logo component
  */
-const Logo = ({
-    fontSize = "text-2xl",
-    className,
-}: {
-    fontSize?: string;
-    className?: string;
-}) => {
+export const Logo = ({ className }: { className?: string }) => {
     return (
-        <Link to={ROUTES_CONSTANTS.LANDING().HOME()}>
-            <div className={cn("font-bold", fontSize, className)}>
+        <Link to={ROUTES_CONSTANTS().LANDING().HOME()}>
+            <div className={cn("font-bold text-2xl", className)}>
                 <span className="text-foreground">Progress</span>
-                <span className="text-muted-foreground">tracker</span>
+                <span className="text-muted-foreground">Tracker</span>
             </div>
         </Link>
     );
 };
-
-export default Logo;

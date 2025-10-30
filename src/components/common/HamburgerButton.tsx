@@ -2,14 +2,12 @@
 import { Menu, X } from "lucide-react";
 
 /**
- * HamburgerButton component
+ * Hamburger Button Component
  * @param isOpen - boolean to check if the button is open
- *  if set to true it will display the X icon
- *  if set to false it will display the Menu icon
  * @param onClick - function to handle the click event
- * @returns HamburgerButton component
+ * @returns Hamburger Button Component
  */
-const HamburgerButton = ({
+export const HamburgerButton = ({
     isOpen,
     onClick,
 }: {
@@ -21,10 +19,8 @@ const HamburgerButton = ({
      * if the isOpen is false, return the Menu icon
      */
     return isOpen ? (
-        <X className="size-6" onClick={onClick} />
+        <X className="size-6 cursor-pointer" onClick={onClick} />
     ) : (
-        <Menu className="size-6" onClick={onClick} />
+        <Menu className="size-6 cursor-pointer" onClick={onClick} />
     );
 };
-
-export default HamburgerButton;

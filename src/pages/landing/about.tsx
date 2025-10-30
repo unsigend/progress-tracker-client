@@ -1,8 +1,6 @@
-// import components
-import DevProgressBar from "@/features/landing/components/DevProgressBar";
-
-const LandingAboutPage = () => {
-    return <DevProgressBar />;
+/**
+ * Landing About Page
+ */
+export const LandingAboutPage = () => {
+    return null;
 };
-
-export default LandingAboutPage;
