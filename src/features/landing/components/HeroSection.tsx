@@ -5,8 +5,8 @@ import { Github, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // import constants
-import GLOBAL_CONSTANTS from "@/lib/constants/global";
-import ROUTES_CONSTANTS from "@/lib/constants/routes";
+import { APP_CONSTANTS } from "@/constants/app";
+import { ROUTES_CONSTANTS } from "@/constants/routes";
 
 // import hooks
 import { useTheme } from "@/hooks/use-theme";
@@ -48,7 +48,7 @@ const HeroSection = () => {
                             Quick Start
                         </Button>
                         <a
-                            href={GLOBAL_CONSTANTS.GITHUB}
+                            href={`${APP_CONSTANTS.GITHUB_URL}`}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

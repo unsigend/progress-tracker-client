@@ -1,12 +1,12 @@
 // import hooks
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "hooks/use-auth";
 
 // import dependencies
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 
 // import constants
-import ROUTES_CONSTANTS from "@/lib/constants/routes";
+import { ROUTES_CONSTANTS } from "@/constants/routes";
 
 const Protector = ({ children }: { children: React.ReactNode }) => {
     const isAuthenticated = useAuth();

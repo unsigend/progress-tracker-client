@@ -1,5 +1,5 @@
 // import data
-import features from "@/features/landing/data/features";
+import features from "@/features/landing/constants/features";
 
 // import components
 import FeatureCard from "@/features/landing/components/FeatureCard";

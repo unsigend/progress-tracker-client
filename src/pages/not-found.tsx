@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 
 // import constants
-import ROUTES_CONSTANTS from "@/lib/constants/routes";
+import { ROUTES_CONSTANTS } from "@/constants/routes";
 
 // import icons
 import { ArrowLeft } from "lucide-react";

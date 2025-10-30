@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router";
 
 // import constants
-import ROUTES_CONSTANTS from "@/lib/constants/routes";
+import { ROUTES_CONSTANTS } from "@/constants/routes";
 
 /**
  * Logo component

@@ -2,7 +2,7 @@
 import { BrowserRouter } from "react-router";
 
 // import components
-import AppRoutes from "@/app/routes";
+import AppRoutes from "@/routes/app.routes";
 
 // import theme provider
 import { ThemeProvider } from "@/hooks/use-theme";

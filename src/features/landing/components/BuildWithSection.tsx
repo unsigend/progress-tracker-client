@@ -1,5 +1,5 @@
 // import data
-import buildWith from "@/features/landing/data/build-with";
+import buildWith from "@/features/landing/constants/build-with";
 
 // import components
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

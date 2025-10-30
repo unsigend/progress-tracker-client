@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Clock } from "lucide-react";
 
 // import data
-import type { TimelineItem } from "@/features/landing/data/dev-progress";
+import type { TimelineItem } from "@/features/landing/constants/dev-progress";
 
 /**
  * TimelineCard component

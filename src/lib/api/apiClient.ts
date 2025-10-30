@@ -6,7 +6,7 @@
 import { Api } from "@/lib/api/api";
 
 // import constants
-import AUTH_CONSTANTS from "@/lib/constants/auth";
+import AUTH_CONSTANTS from "@/constants/auth";
 
 const ApiClient = new Api({
     baseURL: import.meta.env.VITE_BACKEND_API_URL,
