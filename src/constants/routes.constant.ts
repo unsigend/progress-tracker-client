@@ -14,8 +14,10 @@ export const ROUTES_CONSTANTS = {
     },
     AUTH() {
         return {
+            ROOT: (): string => AUTH_ROOT,
             LOGIN: (): string => `${AUTH_ROOT}/login`,
             REGISTER: (): string => `${AUTH_ROOT}/register`,
+            RESET_PASSWORD: (): string => `${AUTH_ROOT}/reset-password`,
         };
     },
     DASHBOARD() {
