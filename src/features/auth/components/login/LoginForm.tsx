@@ -9,20 +9,13 @@ import {
     FieldSeparator,
 } from "@/components/ui/field";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-
-/**
- * LoginFormData - Interface for login form data
- */
-interface LoginFormData {
-    email: string;
-    password: string;
-}
+import type { ILoginForm } from "@/entities/auth/models/model";
 
 /**
  * LoginFormProps - Interface for LoginForm component props
  */
 interface LoginFormProps {
-    formData: LoginFormData;
+    formData: ILoginForm;
     onEmailChange: (email: string) => void;
     onPasswordChange: (password: string) => void;
     onSubmit: (e: React.FormEvent) => void;
@@ -160,4 +153,3 @@ export const LoginForm = ({
         </div>
     );
 };
-

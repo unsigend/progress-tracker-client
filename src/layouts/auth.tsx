@@ -1,7 +1,11 @@
 // import dependencies
 import { Outlet } from "react-router";
 
-export const AuthMainLayout = () => {
+/**
+ * AuthLayout - The main layout for the auth pages
+ * @returns AuthLayout component
+ */
+export const AuthLayout = () => {
     return (
         <section className="container mx-auto min-h-screen flex items-center justify-center p-6">
             {/* Auth Main Layout */}

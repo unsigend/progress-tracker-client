@@ -1,29 +1,39 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { AuthTemplateLayout } from "@/features/auth/components/AuthTemplateLayout";
-import {
-    RegisterForm,
-    type RegisterFormData,
-} from "@/features/auth/components/register/RegisterForm";
+import { RegisterForm } from "@/features/auth/components/register/RegisterForm";
 import { RegisterChart } from "@/features/auth/components/register/RegisterChart";
+import {
+    RegisterStep,
+    type RegisterStepType,
+} from "@/features/auth/constants/register-step.enum";
+import type { IRegisterForm } from "@/entities/auth/models/model";
+import { useRegister } from "@/entities/auth/hooks/useRegister";
+import { useEmailCheck } from "@/entities/auth/hooks/useEmailCheck";
+import { validateEmail } from "@/entities/auth/validation/email";
+import { validatePassword } from "@/entities/auth/validation/password";
+import { validateUsername } from "@/entities/auth/validation/username";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import { useNavigate } from "react-router";
 
 /**
  * RegisterContainer - Container component for register page with all logic
  * @returns RegisterContainer component
  */
 export const RegisterContainer = () => {
-    const [currentStep, setCurrentStep] = useState<number>(1);
-    const [formData, setFormData] = useState<RegisterFormData>({
+    const [currentStep, setCurrentStep] = useState<RegisterStepType>(
+        RegisterStep.EMAIL
+    );
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState<IRegisterForm>({
         email: "",
         password: "",
         username: "",
-        theme: "light",
     });
 
-    // TODO: Add register hooks when available
-    // const { mutate: emailCheck } = useEmailCheck();
-    // const { mutate: register } = useRegister();
-    // const googleLogin = useGoogleLogin();
-    // const githubLogin = useGithubLogin();
+    const { mutate: emailCheck } = useEmailCheck();
+    const { mutate: register } = useRegister();
 
     const handleEmailChange = (email: string) => {
         setFormData((prev) => ({ ...prev, email }));
@@ -37,57 +47,78 @@ export const RegisterContainer = () => {
         setFormData((prev) => ({ ...prev, username }));
     };
 
-    const handleThemeChange = (theme: "light" | "dark") => {
-        setFormData((prev) => ({ ...prev, theme }));
-    };
-
     const handleNext = () => {
-        // TODO: Add validation and email check logic
-        // if (currentStep === 1) {
-        //     // Validate email and check if exists
-        //     emailCheck(formData.email, {
-        //         onSuccess: (exists: boolean) => {
-        //             if (!exists) {
-        //                 setCurrentStep(currentStep + 1);
-        //             }
-        //         },
-        //     });
-        // } else if (currentStep === 2) {
-        //     // Validate password
-        //     setCurrentStep(currentStep + 1);
-        // }
-        setCurrentStep((prev) => prev + 1);
+        setIsLoading(true);
+
+        // email validation
+        if (currentStep === RegisterStep.EMAIL) {
+            const { isValid, error } = validateEmail(formData.email);
+            if (!isValid) {
+                toast.error(error);
+                setIsLoading(false);
+                return;
+            }
+            emailCheck(formData.email, {
+                onSuccess: (isAvailable: boolean) => {
+                    if (!isAvailable) {
+                        toast.error("Email already in use");
+                        setIsLoading(false);
+                        return;
+                    }
+                    setCurrentStep(RegisterStep.PASSWORD);
+                    setIsLoading(false);
+                },
+            });
+        }
+
+        // password validation
+        else if (currentStep === RegisterStep.PASSWORD) {
+            const { isValid, error } = validatePassword(formData.password);
+            if (!isValid) {
+                toast.error(error);
+                setIsLoading(false);
+                return;
+            }
+            setCurrentStep(RegisterStep.USERNAME);
+            setIsLoading(false);
+        }
+
+        // username validation
+        else if (currentStep === RegisterStep.USERNAME) {
+            const { isValid, error } = validateUsername(formData.username);
+            if (!isValid) {
+                toast.error(error);
+                setIsLoading(false);
+                return;
+            }
+            // submit the form
+            handleSubmit();
+        }
     };
 
     const handleBack = () => {
-        if (currentStep > 1) {
-            setCurrentStep((prev) => prev - 1);
+        if (currentStep === RegisterStep.PASSWORD) {
+            setCurrentStep(RegisterStep.EMAIL);
+        } else if (currentStep === RegisterStep.USERNAME) {
+            setCurrentStep(RegisterStep.PASSWORD);
         }
     };
 
     const handleSubmit = () => {
-        // TODO: Add validation and register logic
-        // if (currentStep === 3) {
-        //     // Validate username and register
-        //     register(formData);
-        // }
-        console.log("Register submitted:", formData);
+        register(formData, {
+            onSuccess: () => {
+                setCurrentStep(RegisterStep.THEME);
+                setIsLoading(false);
+            },
+            onError: () => {
+                setIsLoading(false);
+            },
+        });
     };
 
-    const handleGoogleLogin = () => {
-        // TODO: Implement Google login logic
-        // googleLogin();
-        console.log("Google login clicked");
+    const handleThemeSubmit = () => {
+        navigate(ROUTES_CONSTANTS.DASHBOARD().HOME());
     };
-
-    const handleGithubLogin = () => {
-        // TODO: Implement GitHub login logic
-        // githubLogin();
-        console.log("GitHub login clicked");
-    };
-
-    // TODO: Get actual loading state from hooks
-    const isLoading = false;
 
     return (
         <AuthTemplateLayout
@@ -99,12 +130,11 @@ export const RegisterContainer = () => {
                     onEmailChange={handleEmailChange}
                     onPasswordChange={handlePasswordChange}
                     onUsernameChange={handleUsernameChange}
-                    onThemeChange={handleThemeChange}
                     onNext={handleNext}
                     onBack={handleBack}
-                    onSubmit={handleSubmit}
-                    onGoogleLogin={handleGoogleLogin}
-                    onGithubLogin={handleGithubLogin}
+                    onThemeSubmit={handleThemeSubmit}
+                    onGoogleLogin={() => {}}
+                    onGithubLogin={() => {}}
                     isLoading={isLoading}
                 />
             }

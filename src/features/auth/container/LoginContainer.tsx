@@ -2,47 +2,30 @@ import { useState } from "react";
 import { LoginForm } from "@/features/auth/components/login/LoginForm";
 import { LoginChart } from "@/features/auth/components/login/LoginChart";
 import { AuthTemplateLayout } from "@/features/auth/components/AuthTemplateLayout";
-
-/**
- * LoginFormData - Interface for login form data
- */
-interface LoginFormData {
-    email: string;
-    password: string;
-}
+import type { ILoginForm } from "@/entities/auth/models/model";
+import { useLogin } from "@/entities/auth/hooks/useLogin";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import { useNavigate } from "react-router";
 
 /**
  * LoginContainer - Container component for login page with all logic
  * @returns LoginContainer component
  */
 export const LoginContainer = () => {
-    const [loginForm, setLoginForm] = useState<LoginFormData>({
+    const navigate = useNavigate();
+    const [loginForm, setLoginForm] = useState<ILoginForm>({
         email: "",
         password: "",
     });
-
-    // TODO: Add login hooks when available
-    // const { mutate: login, isPending } = useLogin();
-    // const googleLogin = useGoogleLogin();
-    // const githubLogin = useGithubLogin();
+    const { mutate: login, isPending } = useLogin();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement login logic
-        // login(loginForm);
-        console.log("Login submitted:", loginForm);
-    };
-
-    const handleGoogleLogin = () => {
-        // TODO: Implement Google login logic
-        // googleLogin();
-        console.log("Google login clicked");
-    };
-
-    const handleGithubLogin = () => {
-        // TODO: Implement GitHub login logic
-        // githubLogin();
-        console.log("GitHub login clicked");
+        login(loginForm, {
+            onSuccess: () => {
+                navigate(ROUTES_CONSTANTS.DASHBOARD().HOME());
+            },
+        });
     };
 
     const handleEmailChange = (email: string) => {
@@ -53,9 +36,6 @@ export const LoginContainer = () => {
         setLoginForm((prev) => ({ ...prev, password }));
     };
 
-    // TODO: Get actual loading state from hooks
-    const isLoading = false;
-
     return (
         <AuthTemplateLayout
             left={<LoginChart />}
@@ -65,9 +45,9 @@ export const LoginContainer = () => {
                     onEmailChange={handleEmailChange}
                     onPasswordChange={handlePasswordChange}
                     onSubmit={handleSubmit}
-                    onGoogleLogin={handleGoogleLogin}
-                    onGithubLogin={handleGithubLogin}
-                    isLoading={isLoading}
+                    onGoogleLogin={() => {}}
+                    onGithubLogin={() => {}}
+                    isLoading={isPending}
                 />
             }
         />

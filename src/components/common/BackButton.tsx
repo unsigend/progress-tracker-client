@@ -28,11 +28,8 @@ export const BackButton = ({ to = "", onClick }: BackButtonProps) => {
         );
     }
 
-    // Normalize empty string to "/" for root path
-    const normalizedTo = to || "/";
-
     return (
-        <Link to={normalizedTo} className={buttonClassName}>
+        <Link to={to} className={buttonClassName}>
             <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
     );

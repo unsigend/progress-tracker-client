@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import { NotFoundPage } from "@/pages/not-found";
 import { LandingRoutes } from "./landing.routes";
 import { AuthRoutes } from "./auth.routes";
+import { DashboardRoutes } from "./dashboard.routes";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { AuthResetPasswordPage } from "@/pages/auth/reset-password";
 
@@ -17,6 +18,9 @@ export const AppRoutes = () => {
 
             {/* Auth Routes */}
             {AuthRoutes}
+
+            {/* Dashboard Routes */}
+            {DashboardRoutes}
 
             {/* Reset Password Page */}
             <Route

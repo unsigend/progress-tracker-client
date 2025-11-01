@@ -3,32 +3,26 @@ import { EmailStep } from "@/features/auth/components/register/steps/EmailStep";
 import { PasswordStep } from "@/features/auth/components/register/steps/PasswordStep";
 import { UsernameStep } from "@/features/auth/components/register/steps/UsernameStep";
 import { ThemePreferenceStep } from "@/features/auth/components/register/steps/ThemePreferenceStep";
+import {
+    RegisterStep,
+    type RegisterStepType,
+} from "@/features/auth/constants/register-step.enum";
+import type { IRegisterForm } from "@/entities/auth/models/model";
 
 const TOTAL_STEPS = 4;
-
-/**
- * RegisterFormData - Interface for register form data
- */
-export interface RegisterFormData {
-    email: string;
-    password: string;
-    username: string;
-    theme: "light" | "dark";
-}
 
 /**
  * RegisterFormProps - Interface for RegisterForm component props
  */
 interface RegisterFormProps {
-    currentStep: number;
-    formData: RegisterFormData;
+    currentStep: RegisterStepType;
+    formData: IRegisterForm;
     onEmailChange: (email: string) => void;
     onPasswordChange: (password: string) => void;
     onUsernameChange: (username: string) => void;
-    onThemeChange: (theme: "light" | "dark") => void;
     onNext: () => void;
     onBack: () => void;
-    onSubmit: () => void;
+    onThemeSubmit: () => void;
     onGoogleLogin: () => void;
     onGithubLogin: () => void;
     isLoading?: boolean;
@@ -37,15 +31,14 @@ interface RegisterFormProps {
 /**
  * RegisterForm - Component for displaying the registration form with steps
  * @param props - The props for the RegisterForm component
- * @param props.currentStep - The current step number (1-based)
+ * @param props.currentStep - The current step
  * @param props.formData - The form data object
  * @param props.onEmailChange - Handler for email input change
  * @param props.onPasswordChange - Handler for password input change
  * @param props.onUsernameChange - Handler for username input change
- * @param props.onThemeChange - Handler for theme selection change
  * @param props.onNext - Handler for next button click
  * @param props.onBack - Handler for back button click
- * @param props.onSubmit - Handler for form submission
+ * @param props.onThemeSubmit - Handler for theme submission (when Start button is clicked)
  * @param props.onGoogleLogin - Handler for Google login button click
  * @param props.onGithubLogin - Handler for GitHub login button click
  * @param props.isLoading - Loading state
@@ -57,10 +50,9 @@ export const RegisterForm = ({
     onEmailChange,
     onPasswordChange,
     onUsernameChange,
-    onThemeChange,
     onNext,
     onBack,
-    onSubmit,
+    onThemeSubmit,
     onGoogleLogin,
     onGithubLogin,
     isLoading = false,
@@ -69,28 +61,28 @@ export const RegisterForm = ({
         <>
             <StepIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
 
-            {currentStep === 1 && (
+            {currentStep === RegisterStep.EMAIL && (
                 <EmailStep
                     email={formData.email}
                     onEmailChange={onEmailChange}
-                    onNext={onNext}
+                    onSubmit={onNext}
                     onGoogleLogin={onGoogleLogin}
                     onGithubLogin={onGithubLogin}
                     isLoading={isLoading}
                 />
             )}
 
-            {currentStep === 2 && (
+            {currentStep === RegisterStep.PASSWORD && (
                 <PasswordStep
                     password={formData.password}
                     onPasswordChange={onPasswordChange}
-                    onNext={onNext}
+                    onSubmit={onNext}
                     onBack={onBack}
                     isLoading={isLoading}
                 />
             )}
 
-            {currentStep === 3 && (
+            {currentStep === RegisterStep.USERNAME && (
                 <UsernameStep
                     username={formData.username}
                     onUsernameChange={onUsernameChange}
@@ -100,12 +92,9 @@ export const RegisterForm = ({
                 />
             )}
 
-            {currentStep === 4 && (
+            {currentStep === RegisterStep.THEME && (
                 <ThemePreferenceStep
-                    theme={formData.theme}
-                    onThemeChange={onThemeChange}
-                    onStart={onSubmit}
-                    onBack={onBack}
+                    onThemeSubmit={onThemeSubmit}
                     isLoading={isLoading}
                 />
             )}

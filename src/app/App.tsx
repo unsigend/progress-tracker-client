@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { ThemeProvider } from "@/hooks/use-theme";
+import { APP_CONSTANTS } from "@/constants/app.constant";
 
 export default function App() {
     const queryClient = new QueryClient();
@@ -17,7 +18,7 @@ export default function App() {
         <BrowserRouter>
             <ThemeProvider
                 defaultTheme="system"
-                storageKey="progress-tracker-theme"
+                storageKey={APP_CONSTANTS.APP_THEME_STORAGE_KEY}
             >
                 {/* React Query Client Provider */}
                 <QueryClientProvider client={queryClient}>

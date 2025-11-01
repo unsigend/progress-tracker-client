@@ -1,6 +1,6 @@
 import { Route } from "react-router";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import { AuthMainLayout } from "@/layouts/auth";
+import { AuthLayout } from "@/layouts/auth";
 import { AuthLoginPage } from "@/pages/auth/login";
 import { AuthRegisterPage } from "@/pages/auth/register";
 
@@ -9,7 +9,7 @@ import { AuthRegisterPage } from "@/pages/auth/register";
  * @returns Auth Routes
  */
 export const AuthRoutes = (
-    <Route path={ROUTES_CONSTANTS.AUTH().ROOT()} element={<AuthMainLayout />}>
+    <Route path={ROUTES_CONSTANTS.AUTH().ROOT()} element={<AuthLayout />}>
         {/* Login Page */}
         <Route
             path={ROUTES_CONSTANTS.AUTH().LOGIN()}

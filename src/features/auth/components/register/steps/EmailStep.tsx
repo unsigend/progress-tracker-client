@@ -16,7 +16,7 @@ import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 interface EmailStepProps {
     email: string;
     onEmailChange: (email: string) => void;
-    onNext: () => void;
+    onSubmit: () => void;
     onGoogleLogin: () => void;
     onGithubLogin: () => void;
     isLoading?: boolean;
@@ -27,7 +27,7 @@ interface EmailStepProps {
  * @param props - The props for the EmailStep component
  * @param props.email - The email value
  * @param props.onEmailChange - Handler for email input change
- * @param props.onNext - Handler for next button click
+ * @param props.onSubmit - Handler for form submission
  * @param props.onGoogleLogin - Handler for Google login button click
  * @param props.onGithubLogin - Handler for GitHub login button click
  * @param props.isLoading - Loading state
@@ -36,7 +36,7 @@ interface EmailStepProps {
 export const EmailStep = ({
     email,
     onEmailChange,
-    onNext,
+    onSubmit,
     onGoogleLogin,
     onGithubLogin,
     isLoading = false,
@@ -61,10 +61,11 @@ export const EmailStep = ({
             </div>
 
             <form
+                noValidate
                 className="space-y-6"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    onNext();
+                    onSubmit();
                 }}
             >
                 <FieldGroup>

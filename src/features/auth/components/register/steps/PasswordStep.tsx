@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 interface PasswordStepProps {
     password: string;
     onPasswordChange: (password: string) => void;
-    onNext: () => void;
+    onSubmit: () => void;
     onBack: () => void;
     isLoading?: boolean;
 }
@@ -24,7 +24,7 @@ interface PasswordStepProps {
  * @param props - The props for the PasswordStep component
  * @param props.password - The password value
  * @param props.onPasswordChange - Handler for password input change
- * @param props.onNext - Handler for next button click
+ * @param props.onSubmit - Handler for form submission
  * @param props.onBack - Handler for back button click
  * @param props.isLoading - Loading state
  * @returns PasswordStep component
@@ -32,7 +32,7 @@ interface PasswordStepProps {
 export const PasswordStep = ({
     password,
     onPasswordChange,
-    onNext,
+    onSubmit,
     onBack,
     isLoading = false,
 }: PasswordStepProps) => {
@@ -48,10 +48,11 @@ export const PasswordStep = ({
             </div>
 
             <form
+                noValidate
                 className="space-y-6"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    onNext();
+                    onSubmit();
                 }}
             >
                 <FieldGroup>
@@ -97,4 +98,3 @@ export const PasswordStep = ({
         </div>
     );
 };
-

@@ -1,15 +1,18 @@
 // Routes Constants
 
-const LANDING_ROOT = "";
-const AUTH_ROOT = `${LANDING_ROOT}/auth`;
-const DASHBOARD_ROOT = `${LANDING_ROOT}/dashboard`;
+const LANDING_ROOT = "/";
+const AUTH_ROOT = `${LANDING_ROOT}auth`;
+const DASHBOARD_ROOT = `${LANDING_ROOT}dashboard`;
 
+/**
+ * ROUTES_CONSTANTS - Constants for the routes
+ */
 export const ROUTES_CONSTANTS = {
     LANDING() {
         return {
             HOME: (): string => LANDING_ROOT,
-            ABOUT: (): string => `${LANDING_ROOT}/about`,
-            CONTACT: (): string => `${LANDING_ROOT}/contact`,
+            ABOUT: (): string => `${LANDING_ROOT}about`,
+            CONTACT: (): string => `${LANDING_ROOT}contact`,
         };
     },
     AUTH() {
@@ -24,6 +27,21 @@ export const ROUTES_CONSTANTS = {
         return {
             HOME: (): string => DASHBOARD_ROOT,
             SETTINGS: (): string => `${DASHBOARD_ROOT}/settings`,
+            READING() {
+                return {
+                    HOME: (): string => `${DASHBOARD_ROOT}/reading`,
+                };
+            },
+            COURSES() {
+                return {
+                    HOME: (): string => `${DASHBOARD_ROOT}/courses`,
+                };
+            },
+            PROJECTS() {
+                return {
+                    HOME: (): string => `${DASHBOARD_ROOT}/projects`,
+                };
+            },
         };
     },
 };
