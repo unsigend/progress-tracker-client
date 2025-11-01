@@ -1,23 +1,21 @@
-// import icons
 import { Menu, X } from "lucide-react";
 
 /**
- * Hamburger Button Component
- * @param isOpen - boolean to check if the button is open
- * @param onClick - function to handle the click event
- * @returns Hamburger Button Component
+ * HamburgerButtonProps - Interface for HamburgerButton component props
  */
-export const HamburgerButton = ({
-    isOpen,
-    onClick,
-}: {
+interface HamburgerButtonProps {
     isOpen: boolean;
     onClick: () => void;
-}) => {
-    /**
-     * If the isOpen is true, return the X icon
-     * if the isOpen is false, return the Menu icon
-     */
+}
+
+/**
+ * HamburgerButton - Component for displaying a hamburger menu button
+ * @param props - The props for the HamburgerButton component
+ * @param props.isOpen - Boolean to check if the button is open
+ * @param props.onClick - Function to handle the click event
+ * @returns HamburgerButton component
+ */
+export const HamburgerButton = ({ isOpen, onClick }: HamburgerButtonProps) => {
     return isOpen ? (
         <X className="size-6 cursor-pointer" onClick={onClick} />
     ) : (
