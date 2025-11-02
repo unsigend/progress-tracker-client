@@ -1,0 +1,95 @@
+import type { FormEvent } from "react";
+import { Input } from "@/components/ui/input";
+import { Search, X } from "lucide-react";
+
+/**
+ * SearchBarProps - Interface for SearchBar component props
+ */
+interface SearchBarProps {
+    placeholder: string;
+    searchTerm: string;
+    setSearchTerm: (searchTerm: string) => void;
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    onClear: () => void;
+    size?: "default" | "large";
+}
+
+/**
+ * SearchBar - Component for displaying a search bar with modern design
+ * @param props - The props for the SearchBar component
+ * @param props.placeholder - String to display in the input field
+ * @param props.searchTerm - Current search term value
+ * @param props.setSearchTerm - Handler for search term change
+ * @param props.onSubmit - Handler for form submission
+ * @param props.onClear - Handler for clearing the search term
+ * @param props.size - Size variant: "default" or "large" (default: "default")
+ * @returns SearchBar component
+ */
+export const SearchBar = ({
+    placeholder,
+    searchTerm,
+    setSearchTerm,
+    onSubmit,
+    onClear,
+    size = "default",
+}: SearchBarProps) => {
+    const isLarge = size === "large";
+
+    return (
+        <div className="w-full flex justify-center px-4">
+            <form
+                className={`relative flex items-center w-full ${
+                    isLarge ? "max-w-4xl" : "max-w-md"
+                }`}
+                onSubmit={onSubmit}
+            >
+                {/* Main pill-shaped container */}
+                <div className="relative w-full bg-muted rounded-full shadow-lg overflow-hidden">
+                    {/* Search input */}
+                    <Input
+                        type="text"
+                        placeholder={placeholder}
+                        className={`border-0 shadow-none focus:ring-0 focus:outline-none focus:border-0 bg-transparent rounded-none placeholder:text-muted-foreground text-foreground transition-all duration-200 w-full ${
+                            isLarge
+                                ? "h-14 pl-6 pr-16 text-lg py-4"
+                                : "h-10 pl-4 pr-12 text-sm py-2"
+                        }`}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+
+                    {/* Clear button (when there's text) */}
+                    {searchTerm && onClear && (
+                        <button
+                            type="button"
+                            className={`absolute right-12 top-1/2 transform -translate-y-1/2 hover:bg-muted-foreground/10 rounded-full transition-all duration-200 flex items-center justify-center ${
+                                isLarge ? "w-10 h-10" : "w-8 h-8"
+                            }`}
+                            onClick={onClear}
+                        >
+                            <X
+                                className={`text-muted-foreground mr-2 ${
+                                    isLarge ? "h-5 w-5" : "h-4 w-4"
+                                }`}
+                            />
+                        </button>
+                    )}
+
+                    {/* Circular search button */}
+                    <button
+                        type="submit"
+                        className={`absolute right-1 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/90 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 ${
+                            isLarge ? "h-12 w-12" : "h-8 w-8"
+                        }`}
+                    >
+                        <Search
+                            className={`text-primary-foreground ${
+                                isLarge ? "h-6 w-6" : "h-4 w-4"
+                            }`}
+                        />
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};

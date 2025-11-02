@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { HamburgerButton } from "@/components/common/HamburgerButton";
 import { ThemeToggleButton } from "@/components/ui/theme-toggle-button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Bell, ChevronDown, Settings, LogOut } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IUser } from "@/entities/users/models/model";
@@ -80,72 +87,72 @@ export const Header = ({
                         </div>
                     </div>
                 ) : user ? (
-                    <div className="relative group">
-                        <Button
-                            variant="ghost"
-                            className="flex items-center gap-x-2 px-2 py-1.5 h-auto"
-                        >
-                            <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src={user.avatarUrl || undefined}
-                                    alt={`${user.username} avatar`}
-                                />
-                                <AvatarFallback className="text-xs font-medium">
-                                    {getAvatarFallback()}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="hidden sm:block text-left">
-                                <p className="text-sm font-medium text-foreground">
-                                    {user.username}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                    {user.email}
-                                </p>
-                            </div>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                        </Button>
-
-                        {/* Dropdown Menu */}
-                        <div className="absolute right-0 mt-2 w-56 bg-popover border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                            <div className="p-2">
-                                <div className="flex items-center gap-x-2 p-2">
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage
-                                            src={user.avatarUrl || undefined}
-                                            alt={`${user.username} avatar`}
-                                        />
-                                        <AvatarFallback className="text-xs font-medium">
-                                            {getAvatarFallback()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-foreground truncate">
-                                            {user.username}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground truncate">
-                                            {user.email}
-                                        </p>
-                                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                className="flex items-center gap-x-2 px-2 py-1.5 h-auto"
+                            >
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage
+                                        src={user.avatarUrl || undefined}
+                                        alt={`${user.username} avatar`}
+                                    />
+                                    <AvatarFallback className="text-xs font-medium">
+                                        {getAvatarFallback()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="hidden sm:block text-left">
+                                    <p className="text-sm font-medium text-foreground">
+                                        {user.username}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                        {user.email}
+                                    </p>
                                 </div>
-                                <div className="h-px bg-border my-1" />
+                                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56">
+                            <div className="flex items-center gap-x-2 p-2">
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage
+                                        src={user.avatarUrl || undefined}
+                                        alt={`${user.username} avatar`}
+                                    />
+                                    <AvatarFallback className="text-xs font-medium">
+                                        {getAvatarFallback()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-foreground truncate">
+                                        {user.username}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground truncate">
+                                        {user.email}
+                                    </p>
+                                </div>
+                            </div>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem asChild>
                                 <Link
                                     to={ROUTES_CONSTANTS.DASHBOARD().SETTINGS()}
-                                    className="flex items-center gap-x-2 px-2 py-1.5 rounded-sm hover:bg-accent cursor-pointer text-sm"
+                                    className="flex items-center gap-x-2 cursor-pointer"
                                 >
                                     <Settings className="h-4 w-4" />
                                     Settings
                                 </Link>
-                                <div className="h-px bg-border my-1" />
-                                <button
-                                    onClick={onLogout}
-                                    className="w-full flex items-center gap-x-2 px-2 py-1.5 rounded-sm hover:bg-destructive/10 text-destructive cursor-pointer text-sm text-left"
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                    Sign out
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={onLogout}
+                                className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                            >
+                                <LogOut className="h-4 w-4 mr-2" />
+                                Sign out
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 ) : null}
             </div>
         </header>

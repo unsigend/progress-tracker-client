@@ -30,6 +30,22 @@ export const ROUTES_CONSTANTS = {
             READING() {
                 return {
                     HOME: (): string => `${DASHBOARD_ROOT}/reading`,
+                    BOOKS: () => {
+                        return {
+                            LIST: (): string =>
+                                `${DASHBOARD_ROOT}/reading/books`,
+                            NEW: (): string =>
+                                `${DASHBOARD_ROOT}/reading/books/new`,
+                            EDIT: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/reading/books/${
+                                    id ?? ":id"
+                                }/edit`,
+                            DETAIL: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/reading/books/${
+                                    id ?? ":id"
+                                }`,
+                        };
+                    },
                 };
             },
             COURSES() {

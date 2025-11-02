@@ -7,6 +7,7 @@ import type { IErrorResponse } from "@/entities/common/models/error";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 import { mapToUser } from "../models/mapper";
+import { ContentType } from "@/lib/api/api";
 
 /**
  * useUpdateUser - Hook for updating a user
@@ -32,7 +33,10 @@ export const useUpdateUser = (id: string) => {
             }
             const response = await ApiClient.api.userControllerUpdate(
                 id,
-                formData as UserUpdateRequestDto
+                formData as UserUpdateRequestDto,
+                {
+                    type: ContentType.FormData,
+                }
             );
             const user: UserResponseDto = response.data;
             return mapToUser(user);
