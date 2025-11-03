@@ -22,7 +22,7 @@ export const SettingsContainer = () => {
     const { mutate: logout, isPending: isLogoutPending } = useLogout();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<Pick<IUserUpdate, "username" | "email">>({
         username: "",
         email: "",
     });

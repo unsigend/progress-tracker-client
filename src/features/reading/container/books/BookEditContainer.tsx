@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { BookActionForm } from "@/features/reading/components/books/BookActionForm";
 import { useBook } from "@/entities/reading/books/hooks/useBook";
 import { useUpdateBook } from "@/entities/reading/books/hooks/useUpdateBook";
@@ -14,7 +14,6 @@ import type { IBookUpdate } from "@/entities/reading/books/models/model";
  */
 export const BookEditContainer = () => {
     const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
     const { data: book, isLoading: isLoadingBook } = useBook(id || "");
     const { mutate: updateBook, isPending: isUpdating } = useUpdateBook(
         id || ""
@@ -88,14 +87,13 @@ export const BookEditContainer = () => {
                     title="Edit Book"
                     description="Fill in the details to change the book"
                     formData={formData}
-                    onFormDataChange={(data) =>
-                        setFormData(data as IBookUpdate)
-                    }
+                    onFormDataChange={(data) => {
+                        setFormData(data as IBookUpdate);
+                    }}
                     onSubmit={handleSubmit}
                     action="edit"
                     onFileUpload={handleFileUpload}
                     isLoading={isLoadingBook || isUpdating}
-                    onBack={() => navigate(-1)}
                 />
             </div>
         </div>

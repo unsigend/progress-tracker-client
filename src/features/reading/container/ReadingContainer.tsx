@@ -6,6 +6,9 @@ import { InProgressSection } from "@/features/reading/components/user-books/InPr
 import { FeatureBooksSection } from "@/features/reading/components/FeatureBooksSection";
 import { QuickActionsCard } from "@/features/reading/components/QuickActionsCard";
 import { useUserBooks } from "@/entities/reading/user-books/hooks/useUserBooks";
+import { useToday } from "@/entities/statistics/reading/hooks/useToday";
+import { useMonth } from "@/entities/statistics/reading/hooks/useMonth";
+import { DatesUtils } from "@/lib/utils/dates";
 
 /**
  * ReadingContainer - Container component for the reading page
@@ -38,58 +41,59 @@ export const ReadingContainer = () => {
             limit: 10,
         });
 
-    // TODO: Implement useRecordingsStatistics hook for today's recordings
-    // const { data: todayRecordings, isLoading: isLoadingTodayRecordings } = useRecordingsStatistics({
-    //     startDate: new Date().toISOString().split("T")[0],
-    //     dateLimit: 1,
-    // });
+    // Get today's reading statistics
+    const { data: todayRecordings, isLoading: isLoadingTodayRecordings } =
+        useToday();
 
-    // TODO: Implement useRecordingsStatistics hook for weekly recordings
-    // const { data: weeklyRecordings, isLoading: isLoadingWeeklyRecordings } = useRecordingsStatistics({
-    //     startDate: getWeekStartDate(currentWeekOffset),
-    //     dateLimit: 7,
-    // });
+    // Get recordings data for needed months based on weekOffset
+    const { data: monthlyRecordings, isLoading: isLoadingWeeklyRecordings } =
+        useMonth(currentWeekOffset);
 
-    // Calculate totals for completed books
-    const completedBooksTotalCount = completedBooks?.totalCount || 0;
-    const completedBooksTotalPages =
-        completedBooks?.userBooks
-            .filter((userBook) => userBook.book !== null)
-            .reduce((sum, userBook) => sum + (userBook.book?.pages || 0), 0) ||
-        0;
-
-    const todayRecordings: {
-        recordings?: Array<{
-            date: string;
-            pages: number;
-            minutes: number;
-        }>;
-    } | null = null;
-    const isLoadingTodayRecordings = false;
-
-    const weeklyRecordings: {
-        recordings?: Array<{
-            date: string;
-            pages: number;
-        }>;
-    } | null = null;
-    const isLoadingWeeklyRecordings = false;
-
-    // TODO: Implement date utility functions
-    // Calculate weekly analysis data
+    // Calculate weekly analysis data from cached recordings
     const weeklyAnalysisData = useMemo(() => {
-        // Placeholder implementation
-        const weekData: Array<{ key: string; value: number; date: string }> =
-            [];
-        const stats = { totalPages: 0, dailyAvg: 0, bestDay: "N/A" };
-        const weekRange = ""; // TODO: Format week range
+        // Filter recordings for the current week based on offset
+        // Compare only date part (YYYY-MM-DD), not full ISO string
+        const weekStart =
+            DatesUtils.getWeekStartDate(currentWeekOffset).split("T")[0];
+        const weekEnd =
+            DatesUtils.getWeekEndDate(currentWeekOffset).split("T")[0];
+        const weekRecordings = (monthlyRecordings?.recordings || []).filter(
+            (rec) => {
+                const recDate = rec.date.split("T")[0];
+                return recDate >= weekStart && recDate <= weekEnd;
+            }
+        );
+
+        // Transform to week data format
+        const weekDataArray = DatesUtils.createWeekData(
+            weekRecordings.map((rec) => ({
+                date: rec.date,
+                pages: rec.pages,
+            })),
+            currentWeekOffset
+        );
+
+        // Calculate stats
+        const values = weekDataArray.map((day) => day.value);
+        const totalPages = values.reduce((sum, value) => sum + value, 0);
+        const nonZeroValues = values.filter((value) => value > 0);
+        const dailyAvg =
+            nonZeroValues.length > 0
+                ? Math.round(totalPages / nonZeroValues.length)
+                : 0;
+
+        // Find best day
+        const bestDayData = weekDataArray.reduce((best, current) =>
+            current.value > best.value ? current : best
+        );
+        const bestDay = bestDayData.value > 0 ? bestDayData.key : "N/A";
 
         return {
-            weekData,
-            stats,
-            weekRange,
+            weekData: weekDataArray,
+            stats: { totalPages, dailyAvg, bestDay },
+            weekRange: DatesUtils.formatWeekRange(currentWeekOffset),
         };
-    }, [weeklyRecordings, currentWeekOffset]);
+    }, [monthlyRecordings, currentWeekOffset]);
 
     /**
      * handlePreviousWeek - Handler for previous week navigation
@@ -106,20 +110,6 @@ export const ReadingContainer = () => {
         if (currentWeekOffset < 0) {
             setCurrentWeekOffset(currentWeekOffset + 1);
         }
-    };
-
-    /**
-     * handleAddBookClick - Handler for add book button click
-     */
-    const handleAddBookClick = () => {
-        // TODO: Navigate to book list or add book page
-    };
-
-    /**
-     * handleAddRecordingClick - Handler for add recording button click
-     */
-    const handleAddRecordingClick = () => {
-        // TODO: Navigate to new recording page
     };
 
     // Sample book cover URLs for the Featured Reads section
@@ -144,9 +134,8 @@ export const ReadingContainer = () => {
                 <div className="col-span-12 lg:col-span-4 xl:col-span-4 flex items-start justify-center lg:justify-start">
                     <div className="w-full h-[350px]">
                         <DailyCard
-                            readingStatistics={todayRecordings}
+                            readingStatistics={todayRecordings ?? null}
                             isLoading={isLoadingTodayRecordings}
-                            onAddRecordingClick={handleAddRecordingClick}
                         />
                     </div>
                 </div>
@@ -181,7 +170,6 @@ export const ReadingContainer = () => {
                     <InProgressSection
                         inProgressBooks={inProgressBooks?.userBooks || []}
                         isLoading={isLoadingInProgressBooks}
-                        onAddBookClick={handleAddBookClick}
                     />
                 </div>
 
@@ -189,8 +177,6 @@ export const ReadingContainer = () => {
                 <div className="col-span-12">
                     <CompletedSection
                         completedBooks={completedBooks?.userBooks || []}
-                        totalCount={completedBooksTotalCount}
-                        totalPages={completedBooksTotalPages}
                         isLoading={isLoadingCompletedBooks}
                     />
                 </div>

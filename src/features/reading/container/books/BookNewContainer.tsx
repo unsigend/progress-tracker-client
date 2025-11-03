@@ -68,7 +68,17 @@ export const BookNewContainer = () => {
     };
 
     const handleFormDataChange = (data: IBookCreate | IBookUpdate) => {
-        setFormData(data as IBookCreate);
+        // For create, only use fields from IBookCreate
+        const createData: IBookCreate = {
+            title: data.title || "",
+            pages: data.pages || 0,
+        };
+        if (data.author) createData.author = data.author;
+        if (data.description) createData.description = data.description;
+        if (data.ISBN10) createData.ISBN10 = data.ISBN10;
+        if (data.ISBN13) createData.ISBN13 = data.ISBN13;
+        if (data.coverImage) createData.coverImage = data.coverImage;
+        setFormData(createData);
     };
 
     return (

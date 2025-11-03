@@ -7,22 +7,13 @@ import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BookGrid } from "./BookGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-
-/**
- * BookLibraryBook - Interface for book data in library
- */
-interface BookLibraryBook {
-    cover_url: string;
-    id: string;
-    title: string;
-    author: string;
-}
+import type { IBook } from "@/entities/reading/books/models/model";
 
 /**
  * BookLibraryProps - Interface for BookLibrary component props
  */
 interface BookLibraryProps {
-    books: BookLibraryBook[];
+    books: IBook[];
     isLoading: boolean;
     currentPage: number;
     totalPages: number;
@@ -115,7 +106,14 @@ export const BookLibrary = ({
                             <Loader2 className="size-6 animate-spin" />
                         </div>
                     ) : (
-                        <BookGrid books={books} />
+                        <BookGrid
+                            books={books.map((book) => ({
+                                id: book.id,
+                                coverUrl: book.coverUrl,
+                                title: book.title,
+                                author: book.author,
+                            }))}
+                        />
                     )}
                 </CardContent>
 

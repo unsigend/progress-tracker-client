@@ -15,16 +15,7 @@ export const BookListContainer = () => {
 
     return (
         <BookLibrary
-            books={
-                booksData?.books
-                    ? booksData.books.map((book) => ({
-                          id: book.id,
-                          title: book.title,
-                          author: book.author || "",
-                          cover_url: book.coverUrl || "",
-                      }))
-                    : []
-            }
+            books={booksData?.books || []}
             isLoading={isLoading}
             currentPage={query.page}
             totalPages={totalPages}

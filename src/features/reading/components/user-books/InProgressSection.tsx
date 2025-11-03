@@ -6,6 +6,7 @@ import { BookCover } from "@/components/common/BookCover";
 import { Plus } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
+import { useNavigate } from "react-router";
 
 /**
  * InProgressSectionProps - Interface for InProgressSection component props
@@ -13,7 +14,6 @@ import type { IUserBookWithBook } from "@/entities/reading/user-books/model/mode
 interface InProgressSectionProps {
     inProgressBooks: IUserBookWithBook[];
     isLoading?: boolean;
-    onAddBookClick?: () => void;
 }
 
 /**
@@ -21,16 +21,14 @@ interface InProgressSectionProps {
  * @param props - The props for the InProgressReadingSection component
  * @param props.inProgressBooks - Array of in-progress books
  * @param props.isLoading - Whether the data is loading
- * @param props.onAddBookClick - Handler for add book button click
  * @returns InProgressSection component
  */
 export const InProgressSection = ({
     inProgressBooks,
     isLoading = false,
-    onAddBookClick,
 }: InProgressSectionProps) => {
     const [showAllBooks, setShowAllBooks] = useState(false);
-
+    const navigate = useNavigate();
     // Filter out user books without book data
     const validBooks = inProgressBooks.filter((ub) => ub.book !== null);
     const maxDisplayBooks = 3;
@@ -66,16 +64,21 @@ export const InProgressSection = ({
             <CardHeader>
                 <CardTitle className="text-xl font-semibold text-foreground flex items-center justify-between">
                     In Progress Reading
-                    {onAddBookClick && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={onAddBookClick}
-                        >
-                            <Plus className="h-4 w-4" />
-                        </Button>
-                    )}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() =>
+                            navigate(
+                                ROUTES_CONSTANTS.DASHBOARD()
+                                    .READING()
+                                    .BOOKS()
+                                    .LIST()
+                            )
+                        }
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
                 </CardTitle>
             </CardHeader>
             <CardContent className="min-h-[150px]">

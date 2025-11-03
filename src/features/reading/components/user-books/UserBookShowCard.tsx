@@ -10,6 +10,8 @@ import { BookCover } from "@/components/common/BookCover";
 import { Calendar, Clock, BookOpen, CalendarDays } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
+import { useNavigate } from "react-router";
+import { DatesUtils } from "@/lib/utils/dates";
 
 /**
  * UserBookShowCardProps - Interface for UserBookShowCard component props
@@ -18,22 +20,7 @@ interface UserBookShowCardProps {
     userBook: IUserBookWithBook | null;
     isLoading?: boolean;
     onDelete?: () => void;
-    onBack?: () => void;
 }
-
-/**
- * formatDate - Format date string
- * @param dateString - The date string to format
- * @returns Formatted date string
- */
-const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    });
-};
 
 /**
  * UserBookShowCard - Pure UI component for displaying user book details
@@ -41,17 +28,15 @@ const formatDate = (dateString: string): string => {
  * @param props.userBook - The user book with book data
  * @param props.isLoading - Whether the data is loading
  * @param props.onDelete - Handler for delete action
- * @param props.onBack - Handler for back button click
  * @returns UserBookShowCard component
  */
 export const UserBookShowCard = ({
     userBook,
     isLoading = false,
     onDelete,
-    onBack,
 }: UserBookShowCardProps) => {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
+    const navigate = useNavigate();
     /**
      * handleDelete - Handler for delete confirmation
      */
@@ -66,7 +51,16 @@ export const UserBookShowCard = ({
         return (
             <Card>
                 <CardHeader>
-                    <BackButton onClick={onBack} />
+                    <BackButton
+                        onClick={() =>
+                            navigate(
+                                ROUTES_CONSTANTS.DASHBOARD()
+                                    .READING()
+                                    .BOOKS()
+                                    .LIST()
+                            )
+                        }
+                    />
                 </CardHeader>
                 <CardContent className="p-8">
                     <div className="flex justify-center py-12">
@@ -82,7 +76,7 @@ export const UserBookShowCard = ({
     return (
         <Card>
             <CardHeader className="flex flex-row justify-between">
-                <BackButton onClick={onBack} />
+                <BackButton onClick={() => navigate(-1)} />
                 {onDelete && (
                     <Button
                         size="sm"
@@ -175,7 +169,7 @@ export const UserBookShowCard = ({
                                                         Started Reading
                                                     </p>
                                                     <p className="font-semibold text-foreground">
-                                                        {formatDate(
+                                                        {DatesUtils.formatDate(
                                                             userBook.startDate
                                                         )}
                                                     </p>
@@ -186,27 +180,27 @@ export const UserBookShowCard = ({
                                 )}
 
                                 {/* Complete Date */}
-                                {userBook.completedDate && (
-                                    <Card className="border-border/50">
-                                        <CardContent className="p-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="p-2 bg-green-500/10 rounded-lg">
-                                                    <CalendarDays className="h-5 w-5 text-green-500" />
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Completed
-                                                    </p>
-                                                    <p className="font-semibold text-foreground">
-                                                        {formatDate(
-                                                            userBook.completedDate
-                                                        )}
-                                                    </p>
-                                                </div>
+                                <Card className="border-border/50">
+                                    <CardContent className="p-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-green-500/10 rounded-lg">
+                                                <CalendarDays className="h-5 w-5 text-green-500" />
                                             </div>
-                                        </CardContent>
-                                    </Card>
-                                )}
+                                            <div>
+                                                <p className="text-sm text-muted-foreground">
+                                                    Completed
+                                                </p>
+                                                <p className="font-semibold text-foreground">
+                                                    {userBook.completedDate
+                                                        ? DatesUtils.formatDate(
+                                                              userBook.completedDate
+                                                          )
+                                                        : "N/A"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </div>
 
@@ -247,13 +241,18 @@ export const UserBookShowCard = ({
                                             </div>
                                             <div>
                                                 <p className="text-2xl font-bold text-foreground">
-                                                    {(
-                                                        userBook.totalMinutes /
-                                                        60
-                                                    ).toFixed(1)}
+                                                    {
+                                                        DatesUtils.formatDuration(
+                                                            userBook.totalMinutes
+                                                        ).value
+                                                    }
                                                 </p>
                                                 <p className="text-sm text-muted-foreground">
-                                                    Total Hours
+                                                    {
+                                                        DatesUtils.formatDuration(
+                                                            userBook.totalMinutes
+                                                        ).unit
+                                                    }
                                                 </p>
                                             </div>
                                         </div>

@@ -6,22 +6,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Github, Mail, User, Edit3, Loader2 } from "lucide-react";
 import { FileUpload } from "@/components/common/FileUpload";
-import type { IUser } from "@/entities/users/models/model";
-
-/**
- * ProfileFormData - Interface for profile form data
- */
-interface ProfileFormData {
-    username: string;
-    email: string;
-}
+import type { IUser, IUserUpdate } from "@/entities/users/models/model";
 
 /**
  * ProfileSectionProps - Interface for ProfileSection component props
  */
 interface ProfileSectionProps {
     user: IUser | null;
-    formData: ProfileFormData;
+    formData: Pick<IUserUpdate, "username" | "email">;
     isLoading?: boolean;
     onUsernameChange: (username: string) => void;
     onEmailChange: (email: string) => void;

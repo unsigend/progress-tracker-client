@@ -13,14 +13,15 @@ import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { Calendar, BookOpen, GitMerge } from "lucide-react";
 import type { IRecording } from "@/entities/reading/recordings/model/model";
+import { DatesUtils } from "@/lib/utils/dates";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
     recordings: IRecording[];
-    isLoading?: boolean;
-    onDelete?: () => void;
+    isLoading: boolean;
+    onDelete: () => void;
 }
 
 /**
@@ -33,20 +34,10 @@ interface RecordingListProps {
  */
 export const RecordingList = ({
     recordings,
-    isLoading = false,
+    isLoading,
     onDelete,
 }: RecordingListProps) => {
     const [showAutoMergeDialog, setShowAutoMergeDialog] = useState(false);
-
-    /**
-     * formatTime - Format minutes into hours or minutes
-     * @param minutes - The number of minutes
-     * @returns Formatted time string
-     */
-    const formatTime = (minutes: number): string => {
-        const hours = minutes / 60;
-        return hours >= 1 ? `${hours.toFixed(1)}h` : `${minutes}m`;
-    };
 
     /**
      * handleAutoMerge - Handler for auto merge confirmation
@@ -58,20 +49,6 @@ export const RecordingList = ({
         setShowAutoMergeDialog(false);
     };
 
-    /**
-     * formatDate - Format date string
-     * @param dateString - The date string to format
-     * @returns Formatted date string
-     */
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        });
-    };
-
     return (
         <Card className="min-h-[300px] mb-8">
             <CardHeader className="flex flex-row items-center justify-between">
@@ -79,17 +56,15 @@ export const RecordingList = ({
                     <Calendar className="h-5 w-5" />
                     Reading Recordings
                 </CardTitle>
-                {onDelete && (
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        onClick={() => setShowAutoMergeDialog(true)}
-                    >
-                        <GitMerge className="h-4 w-4" />
-                        Auto Merge
-                    </Button>
-                )}
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => setShowAutoMergeDialog(true)}
+                >
+                    <GitMerge className="h-4 w-4" />
+                    Auto Merge
+                </Button>
             </CardHeader>
 
             {isLoading ? (
@@ -129,13 +104,22 @@ export const RecordingList = ({
                                         className="hover:bg-muted/50"
                                     >
                                         <TableCell className="font-medium">
-                                            {formatDate(recording.date)}
+                                            {recording.date.split("T")[0]}
                                         </TableCell>
                                         <TableCell>{recording.pages}</TableCell>
                                         <TableCell>
-                                            {formatTime(recording.minutes) !==
-                                            "0m"
-                                                ? formatTime(recording.minutes)
+                                            {recording.minutes
+                                                ? `${
+                                                      DatesUtils.formatDuration(
+                                                          recording.minutes
+                                                      ).value
+                                                  }${
+                                                      DatesUtils.formatDuration(
+                                                          recording.minutes
+                                                      ).unit === "minutes"
+                                                          ? "m"
+                                                          : "h"
+                                                  }`
                                                 : "N/A"}
                                         </TableCell>
                                         <TableCell className="text-muted-foreground">
@@ -156,15 +140,15 @@ export const RecordingList = ({
                 </CardContent>
             )}
 
-            {onDelete && (
-                <DeleteDialog
-                    open={showAutoMergeDialog}
-                    onOpenChange={setShowAutoMergeDialog}
-                    title="Auto Merge"
-                    description="Are you sure you want to perform an auto merge? This action will automatically merge the current recordings with the latest data."
-                    onConfirm={handleAutoMerge}
-                />
-            )}
+            <DeleteDialog
+                open={showAutoMergeDialog}
+                onOpenChange={setShowAutoMergeDialog}
+                title="Auto Merge"
+                description="Are you sure you want to perform an auto merge? 
+                This action will automatically merge the current recordings
+                with the latest data."
+                onConfirm={handleAutoMerge}
+            />
         </Card>
     );
 };

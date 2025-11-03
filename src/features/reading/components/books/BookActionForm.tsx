@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,6 @@ interface BookActionFormProps {
     action: "add" | "edit";
     onFileUpload?: (file: File) => Promise<void>;
     isLoading?: boolean;
-    onBack?: () => void;
 }
 
 /**
@@ -50,16 +49,16 @@ export const BookActionForm = ({
     action,
     onFileUpload,
     isLoading = false,
-    onBack,
 }: BookActionFormProps) => {
-    const handleInputChange = (
-        field: keyof (IBookCreate | IBookUpdate),
+    const navigate = useNavigate();
+    const handleInputChange = <K extends keyof (IBookCreate & IBookUpdate)>(
+        field: K,
         value: string | number | undefined | File
     ) => {
         onFormDataChange({
             ...formData,
             [field]: value,
-        });
+        } as IBookCreate | IBookUpdate);
     };
 
     return (
@@ -67,7 +66,7 @@ export const BookActionForm = ({
             <CardHeader className="text-center">
                 {/* Back Button - Top Left */}
                 <div className="flex items-center justify-start mb-2">
-                    <BackButton onClick={onBack} />
+                    <BackButton onClick={() => navigate(-1)} />
                 </div>
 
                 <div className="flex justify-center mb-4">

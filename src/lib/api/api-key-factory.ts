@@ -7,6 +7,7 @@ const RESOURCES_KEYS = {
     BOOKS: "books",
     USER_BOOKS: "user-books",
     RECORDINGS: "recordings",
+    STATISTICS: "statistics",
 };
 
 /**
@@ -44,6 +45,22 @@ export const API_KEY_FACTORY = () => {
         RECORDINGS: {
             LIST: (userBookId: string) => {
                 return [RESOURCES_KEYS.RECORDINGS, userBookId];
+            },
+        },
+        STATISTICS: {
+            READING: {
+                TODAY: () => {
+                    return [RESOURCES_KEYS.STATISTICS, "reading", "today"];
+                },
+                RANGE: (startDate: string, endDate: string) => {
+                    return [
+                        RESOURCES_KEYS.STATISTICS,
+                        "reading",
+                        "range",
+                        startDate,
+                        endDate,
+                    ];
+                },
             },
         },
     };
