@@ -54,6 +54,40 @@ export interface EmailCheckResponseDto {
   isAvailable: boolean;
 }
 
+export interface SendCodeRequestDto {
+  /**
+   * The email of the user
+   * @format email
+   */
+  email: string;
+}
+
+export interface SendCodeResponseDto {
+  /** The reset token */
+  resetToken: string;
+}
+
+export interface VerifyCodeRequestDto {
+  /** The code to verify */
+  code: string;
+  /** The reset token */
+  resetToken: string;
+}
+
+export interface VerifyCodeResponseDto {
+  /** Whether the code is valid */
+  isValid: boolean;
+}
+
+export interface ResetPasswordRequestDto {
+  /** The new password */
+  password: string;
+  /** The reset token */
+  resetToken: string;
+  /** The code to verify */
+  code: string;
+}
+
 export interface FileDeleteRequestDto {
   /**
    * The URL of the file to delete
@@ -583,6 +617,128 @@ export class Api<
         path: `/api/v1/auth/email-check/${email}`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerGithub
+     * @summary Github login entry point
+     * @request GET:/api/v1/auth/login/github
+     */
+    authControllerGithub: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/auth/login/github`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerGoogle
+     * @summary Google login entry point
+     * @request GET:/api/v1/auth/login/google
+     */
+    authControllerGoogle: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/auth/login/google`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerGithubCallback
+     * @summary Github callback with access token
+     * @request GET:/api/v1/auth/login/github/callback
+     */
+    authControllerGithubCallback: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/auth/login/github/callback`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerGoogleCallback
+     * @summary Google callback with access token
+     * @request GET:/api/v1/auth/login/google/callback
+     */
+    authControllerGoogleCallback: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/auth/login/google/callback`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerSendCode
+     * @summary Send a verify code to a user's email
+     * @request POST:/api/v1/auth/verify-code/send
+     */
+    authControllerSendCode: (
+      data: SendCodeRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<SendCodeResponseDto, any>({
+        path: `/api/v1/auth/verify-code/send`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerVerifyCode
+     * @summary Verify a code
+     * @request POST:/api/v1/auth/verify-code/verify
+     */
+    authControllerVerifyCode: (
+      data: VerifyCodeRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<VerifyCodeResponseDto, any>({
+        path: `/api/v1/auth/verify-code/verify`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerResetPassword
+     * @summary Reset a user's password
+     * @request POST:/api/v1/auth/reset-password
+     */
+    authControllerResetPassword: (
+      data: ResetPasswordRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/v1/auth/reset-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

@@ -29,3 +29,33 @@ export interface IRegisterForm {
 export interface IAccessToken {
     accessToken: string;
 }
+
+/**
+ * IResetToken - Interface for reset token
+ * @resetToken - The reset token
+ */
+export interface IResetToken {
+    resetToken: string;
+}
+
+/**
+ * IVerifyCode - Interface for verify code
+ * @code - The code
+ * @resetToken - The reset token
+ */
+export interface IVerifyCode {
+    code: string;
+    resetToken: string;
+}
+
+/**
+ * IResetPassword - Interface for reset password
+ * @newPassword - The new password
+ * @code - The code
+ * @resetToken - The reset token
+ */
+export interface IResetPassword {
+    newPassword: string;
+    code: string;
+    resetToken: string;
+}

@@ -1,9 +1,19 @@
+import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
     ResetPasswordForm,
     type ResetPasswordFormData,
     type ResetPasswordStep,
 } from "@/features/auth/components/reset-password/ResetPasswordForm";
+import { useSendCode } from "@/entities/auth/hooks/useSendCode";
+import type { IResetToken } from "@/entities/auth/models/model";
+import { useVerifyCode } from "@/entities/auth/hooks/useVerifyCode";
+import { validatePassword } from "@/entities/auth/validation/password";
+import { useResetPassword } from "@/entities/auth/hooks/useResetPassword";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import type { IErrorResponse } from "@/entities/common/models/error";
+import { AxiosError } from "axios";
 
 /**
  * ResetPasswordContainer - Container component for reset password page with all logic
@@ -17,14 +27,12 @@ export const ResetPasswordContainer = () => {
         code: "",
         newPassword: "",
     });
+    const navigate = useNavigate();
     const [error, setError] = useState<string | undefined>();
     const [isLoading, setIsLoading] = useState(false);
-
-    // TODO: Add reset password hooks when available
-    // const { mutate: emailCheck } = useEmailCheck();
-    // const { mutate: sendVerifyCode } = useSendVerifyCode();
-    // const { mutate: resetPassword } = useResetPassword();
-    // const navigate = useNavigate();
+    const { mutate: sendCode } = useSendCode();
+    const { mutate: verifyCode } = useVerifyCode();
+    const { mutate: resetPassword } = useResetPassword();
 
     const handleEmailChange = (email: string) => {
         setFormData((prev) => ({ ...prev, email }));
@@ -38,94 +46,92 @@ export const ResetPasswordContainer = () => {
         setFormData((prev) => ({ ...prev, newPassword: password }));
     };
 
+    /**
+     * handleEmailSubmit - Handle email submit
+     * @description Send code to user's email
+     */
     const handleEmailSubmit = () => {
-        // TODO: Implement email check and send verification code logic
-        // setIsLoading(true);
-        // setError(undefined);
-        // emailCheck(formData.email, {
-        //     onSuccess: (exists: boolean) => {
-        //         if (!exists) {
-        //             setError("Email does not exist");
-        //             setIsLoading(false);
-        //             return;
-        //         }
-        //         sendVerifyCode(formData.email, {
-        //             onSuccess: (response) => {
-        //                 setFormData((prev) => ({
-        //                     ...prev,
-        //                     resetToken: response.resetToken,
-        //                 }));
-        //                 setCurrentStep("otp");
-        //                 setIsLoading(false);
-        //             },
-        //             onError: (error) => {
-        //                 setError(errorUtils.extractErrorMessage(error));
-        //                 setIsLoading(false);
-        //             },
-        //         });
-        //     },
-        //     onError: (error) => {
-        //         setError(errorUtils.extractErrorMessage(error));
-        //         setIsLoading(false);
-        //     },
-        // });
-        console.log("Email submit:", formData.email);
-        // Temporary: move to next step for testing
-        setCurrentStep("otp");
+        setIsLoading(true);
+        sendCode(formData.email, {
+            onSuccess: (resetToken: IResetToken) => {
+                setFormData((prev) => ({
+                    ...prev,
+                    resetToken: resetToken.resetToken,
+                }));
+                setCurrentStep("otp");
+                setIsLoading(false);
+            },
+            onError: (error: unknown) => {
+                if (error instanceof AxiosError) {
+                    const errorModel: IErrorResponse = error.response
+                        ?.data as IErrorResponse;
+                    setError(errorModel.message);
+                }
+                setIsLoading(false);
+            },
+        });
     };
 
+    /**
+     * handleOtpSubmit - Handle OTP submit
+     * @description Verify the code
+     */
     const handleOtpSubmit = () => {
-        // TODO: Implement OTP verification logic
-        // if (formData.code.length !== 6) {
-        //     setError("Please enter the complete 6-digit code");
-        //     return;
-        // }
-        // setIsLoading(true);
-        // setError(undefined);
-        // resetPassword(formData, {
-        //     onSuccess: (response) => {
-        //         if (!response.valid) {
-        //             setError(response.message);
-        //             setIsLoading(false);
-        //             return;
-        //         }
-        //         setCurrentStep("password");
-        //         setIsLoading(false);
-        //     },
-        //     onError: (error) => {
-        //         setError(errorUtils.extractErrorMessage(error));
-        //         setIsLoading(false);
-        //     },
-        // });
-        console.log("OTP submit:", formData.code);
-        // Temporary: move to next step for testing
-        setCurrentStep("password");
+        setIsLoading(true);
+        verifyCode(
+            {
+                code: formData.code,
+                resetToken: formData.resetToken,
+            },
+            {
+                onSuccess: (isValid: boolean) => {
+                    if (!isValid) {
+                        setError("Verification code is invalid or expired");
+                        setIsLoading(false);
+                        return;
+                    }
+                    setCurrentStep("password");
+                    setIsLoading(false);
+                },
+            }
+        );
     };
 
+    /**
+     * handlePasswordSubmit - Handle password submit
+     * @description Reset the password
+     */
     const handlePasswordSubmit = () => {
-        // TODO: Implement password reset logic
-        // if (!formData.newPassword) {
-        //     setError("Please enter a new password");
-        //     return;
-        // }
-        // setIsLoading(true);
-        // setError(undefined);
-        // resetPassword(formData, {
-        //     onSuccess: (response) => {
-        //         if (response.reset_success && response.valid) {
-        //             toast.success("Password reset successfully");
-        //             navigate(ROUTES_CONSTANTS.AUTH().LOGIN());
-        //         } else {
-        //             setError(response.message);
-        //             setIsLoading(false);
-        //         }
-        //     },
-        //     onError: (error) => {
-        //         setError(errorUtils.extractErrorMessage(error));
-        //         setIsLoading(false);
-        //     },
-        // });
-        console.log("Password reset submit:", formData);
+        // validate the password
+        const { isValid, error } = validatePassword(formData.newPassword);
+        if (!isValid) {
+            setError(error || "Invalid password format");
+            setIsLoading(false);
+            return;
+        }
+        // reset the password
+        setIsLoading(true);
+        resetPassword(
+            {
+                newPassword: formData.newPassword,
+                code: formData.code,
+                resetToken: formData.resetToken,
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Password reset successfully");
+                    navigate(ROUTES_CONSTANTS.AUTH().LOGIN());
+                },
+                onError: (error: unknown) => {
+                    if (error instanceof AxiosError) {
+                        const errorModel: IErrorResponse = error.response
+                            ?.data as IErrorResponse;
+                        setError(errorModel.message);
+                    }
+                    setIsLoading(false);
+                },
+            }
+        );
     };
 
     const handleBack = () => {
