@@ -43,6 +43,15 @@ export const RecordingNewContainer = () => {
             return;
         }
 
+        if (!formData.date) {
+            toast.error("Please select a date");
+            return;
+        }
+        if (!formData.pages) {
+            toast.error("Please select a number of pages");
+            return;
+        }
+
         createRecording(formData, {
             onSuccess: () => {
                 toast.success("Recording created successfully");

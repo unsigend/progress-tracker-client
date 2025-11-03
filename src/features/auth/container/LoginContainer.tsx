@@ -6,6 +6,8 @@ import type { ILoginForm } from "@/entities/auth/models/model";
 import { useLogin } from "@/entities/auth/hooks/useLogin";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useNavigate } from "react-router";
+import { useGoogleLogin } from "@/entities/auth/hooks/useGoogleLogin";
+import { useGithubLogin } from "@/entities/auth/hooks/useGithubLogin";
 
 /**
  * LoginContainer - Container component for login page with all logic
@@ -18,6 +20,8 @@ export const LoginContainer = () => {
         password: "",
     });
     const { mutate: login, isPending } = useLogin();
+    const { mutate: googleLogin } = useGoogleLogin();
+    const { mutate: githubLogin } = useGithubLogin();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,8 +49,8 @@ export const LoginContainer = () => {
                     onEmailChange={handleEmailChange}
                     onPasswordChange={handlePasswordChange}
                     onSubmit={handleSubmit}
-                    onGoogleLogin={() => {}}
-                    onGithubLogin={() => {}}
+                    onGoogleLogin={googleLogin}
+                    onGithubLogin={githubLogin}
                     isLoading={isPending}
                 />
             }

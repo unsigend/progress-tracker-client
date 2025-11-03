@@ -21,6 +21,8 @@ export const ROUTES_CONSTANTS = {
             LOGIN: (): string => `${AUTH_ROOT}/login`,
             REGISTER: (): string => `${AUTH_ROOT}/register`,
             RESET_PASSWORD: (): string => `${AUTH_ROOT}/reset-password`,
+            GITHUB_CALLBACK: (): string => `${AUTH_ROOT}/github/callback`,
+            GOOGLE_CALLBACK: (): string => `${AUTH_ROOT}/google/callback`,
         };
     },
     DASHBOARD() {

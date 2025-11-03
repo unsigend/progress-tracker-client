@@ -68,8 +68,8 @@ export const ResetPasswordForm = ({
     isLoading = false,
 }: ResetPasswordFormProps) => {
     return (
-        <Card className="max-w-2xl w-full">
-            <CardContent className="px-8 pb-8">
+        <Card className="max-w-2xl w-full min-h-[450px]">
+            <CardContent className="px-8 pb-8 flex items-center justify-center min-h-[450px]">
                 {currentStep === "email" && (
                     <ResetPasswordEmailStep
                         email={formData.email}
@@ -108,4 +108,3 @@ export const ResetPasswordForm = ({
         </Card>
     );
 };
-

@@ -3,6 +3,8 @@ import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { AuthLayout } from "@/layouts/auth";
 import { AuthLoginPage } from "@/pages/auth/login";
 import { AuthRegisterPage } from "@/pages/auth/register";
+import { GithubCallbackPage } from "@/pages/auth/github-callback";
+import { GoogleCallbackPage } from "@/pages/auth/google-callback";
 
 /**
  * AuthRoutes - The routes for the auth page
@@ -20,6 +22,18 @@ export const AuthRoutes = (
         <Route
             path={ROUTES_CONSTANTS.AUTH().REGISTER()}
             element={<AuthRegisterPage />}
+        />
+
+        {/* Github Callback Page */}
+        <Route
+            path={ROUTES_CONSTANTS.AUTH().GITHUB_CALLBACK()}
+            element={<GithubCallbackPage />}
+        />
+
+        {/* Google Callback Page */}
+        <Route
+            path={ROUTES_CONSTANTS.AUTH().GOOGLE_CALLBACK()}
+            element={<GoogleCallbackPage />}
         />
     </Route>
 );

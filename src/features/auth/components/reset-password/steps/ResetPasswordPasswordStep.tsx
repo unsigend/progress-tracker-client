@@ -48,7 +48,7 @@ export const ResetPasswordPasswordStep = ({
                 <h1 className="text-3xl font-bold text-foreground">
                     New Password
                 </h1>
-                <p className="text-sm text-muted-foreground text-left">
+                <p className="text-sm text-muted-foreground text-center">
                     Enter your new password to complete the reset process.
                 </p>
             </div>

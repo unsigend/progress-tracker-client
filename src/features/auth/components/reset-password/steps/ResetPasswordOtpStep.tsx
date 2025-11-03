@@ -49,7 +49,7 @@ export const ResetPasswordOtpStep = ({
                 <h1 className="text-3xl font-bold text-foreground">
                     Verify Code
                 </h1>
-                <p className="text-sm text-muted-foreground text-left">
+                <p className="text-sm text-muted-foreground text-center">
                     Enter the 6-digit verification code sent to your email
                     address.
                 </p>
@@ -81,14 +81,10 @@ export const ResetPasswordOtpStep = ({
                                         value={code[index] || ""}
                                         onChange={(e) => {
                                             const value = e.target.value;
-                                            if (
-                                                value &&
-                                                !/^\d$/.test(value)
-                                            ) {
+                                            if (value && !/^\d$/.test(value)) {
                                                 return;
                                             }
-                                            const newCode =
-                                                code.split("");
+                                            const newCode = code.split("");
                                             newCode[index] = value;
                                             const updatedCode = newCode
                                                 .join("")
@@ -96,16 +92,13 @@ export const ResetPasswordOtpStep = ({
                                             onCodeChange(updatedCode);
                                             if (error) onClearError();
 
-                                            if (
-                                                value &&
-                                                index < 5
-                                            ) {
-                                                const nextInput =
-                                                    e.target.parentElement?.children[
-                                                        index + 1
-                                                    ] as
-                                                        | HTMLInputElement
-                                                        | undefined;
+                                            if (value && index < 5) {
+                                                const nextInput = e.target
+                                                    .parentElement?.children[
+                                                    index + 1
+                                                ] as
+                                                    | HTMLInputElement
+                                                    | undefined;
                                                 nextInput?.focus();
                                             }
                                         }}
@@ -115,12 +108,12 @@ export const ResetPasswordOtpStep = ({
                                                 !code[index] &&
                                                 index > 0
                                             ) {
-                                                const prevInput =
-                                                    e.target.parentElement?.children[
-                                                        index - 1
-                                                    ] as
-                                                        | HTMLInputElement
-                                                        | undefined;
+                                                const prevInput = e.target
+                                                    .parentElement?.children[
+                                                    index - 1
+                                                ] as
+                                                    | HTMLInputElement
+                                                    | undefined;
                                                 prevInput?.focus();
                                             }
                                         }}
@@ -166,4 +159,3 @@ export const ResetPasswordOtpStep = ({
         </div>
     );
 };
-

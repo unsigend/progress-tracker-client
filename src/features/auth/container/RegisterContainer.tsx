@@ -15,6 +15,8 @@ import { validatePassword } from "@/entities/auth/validation/password";
 import { validateUsername } from "@/entities/auth/validation/username";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useNavigate } from "react-router";
+import { useGoogleLogin } from "@/entities/auth/hooks/useGoogleLogin";
+import { useGithubLogin } from "@/entities/auth/hooks/useGithubLogin";
 
 /**
  * RegisterContainer - Container component for register page with all logic
@@ -34,6 +36,8 @@ export const RegisterContainer = () => {
 
     const { mutate: emailCheck } = useEmailCheck();
     const { mutate: register } = useRegister();
+    const { mutate: googleLogin } = useGoogleLogin();
+    const { mutate: githubLogin } = useGithubLogin();
 
     const handleEmailChange = (email: string) => {
         setFormData((prev) => ({ ...prev, email }));
@@ -133,8 +137,8 @@ export const RegisterContainer = () => {
                     onNext={handleNext}
                     onBack={handleBack}
                     onThemeSubmit={handleThemeSubmit}
-                    onGoogleLogin={() => {}}
-                    onGithubLogin={() => {}}
+                    onGoogleLogin={googleLogin}
+                    onGithubLogin={githubLogin}
                     isLoading={isLoading}
                 />
             }
