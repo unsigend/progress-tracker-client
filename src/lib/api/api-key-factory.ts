@@ -1,9 +1,12 @@
 // Api Key Factory
-import type { IBookQuery } from "@/entities/books/models/model";
+import type { IBookQuery } from "@/entities/reading/books/models/model";
+import type { IUserBookQuery } from "@/entities/reading/user-books/model/model";
 
 const RESOURCES_KEYS = {
     USERS: "users",
     BOOKS: "books",
+    USER_BOOKS: "user-books",
+    RECORDINGS: "recordings",
 };
 
 /**
@@ -28,6 +31,19 @@ export const API_KEY_FACTORY = () => {
             },
             DETAIL: (id: string) => {
                 return [RESOURCES_KEYS.BOOKS, id];
+            },
+        },
+        USER_BOOKS: {
+            LIST: (query: IUserBookQuery) => {
+                return [RESOURCES_KEYS.USER_BOOKS, "all", query];
+            },
+            DETAIL: (id: string) => {
+                return [RESOURCES_KEYS.USER_BOOKS, id];
+            },
+        },
+        RECORDINGS: {
+            LIST: (userBookId: string) => {
+                return [RESOURCES_KEYS.RECORDINGS, userBookId];
             },
         },
     };

@@ -1,6 +1,6 @@
 import { BookLibrary } from "@/features/reading/components/books/BookLibrary";
-import { useBooks } from "@/entities/books/hooks/useBooks";
-import { useBookQuery } from "@/entities/books/hooks/useBookQuery";
+import { useBooks } from "@/entities/reading/books/hooks/useBooks";
+import { useBookQuery } from "@/entities/reading/books/hooks/useBookQuery";
 
 /**
  * BookListContainer - Container component for the book list page

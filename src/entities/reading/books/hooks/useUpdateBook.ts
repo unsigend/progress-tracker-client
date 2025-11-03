@@ -52,7 +52,6 @@ export const useUpdateBook = (id: string) => {
             return mapToBook(bookResponse);
         },
         onSuccess: () => {
-            // TODO: Invalidate the book
             queryClient.invalidateQueries({
                 queryKey: API_KEY_FACTORY().BOOKS.DETAIL(id),
             });

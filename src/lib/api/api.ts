@@ -224,6 +224,8 @@ export interface UserBookResponseDto {
    * @format date-time
    */
   updatedAt: string;
+  /** The book of the user book */
+  book: BookResponseDto | null;
 }
 
 export interface UserBooksResponseDto {
@@ -236,20 +238,6 @@ export interface UserBooksResponseDto {
 export interface UserBookCreateRequestDto {
   /** The book id of the user book */
   bookId: string;
-}
-
-export interface RecordingCreateRequestDto {
-  /**
-   * The date of the recording
-   * @format date-time
-   */
-  date: string;
-  /** The pages of the recording */
-  pages: number;
-  /** The minutes of the recording */
-  minutes: number;
-  /** The notes of the recording */
-  notes?: string;
 }
 
 export interface RecordingResponseDto {
@@ -268,6 +256,27 @@ export interface RecordingResponseDto {
   minutes: number;
   /** The notes of the recording */
   notes: string | null;
+}
+
+export interface RecordingsResponseDto {
+  /** The recordings of the recordings */
+  recordings: RecordingResponseDto[];
+  /** The total count of the recordings */
+  totalCount: number;
+}
+
+export interface RecordingCreateRequestDto {
+  /**
+   * The date of the recording
+   * @format date-time
+   */
+  date: string;
+  /** The pages of the recording */
+  pages: number;
+  /** The minutes of the recording */
+  minutes: number;
+  /** The notes of the recording */
+  notes?: string;
 }
 
 export interface ReadingRecordingRequestDto {
@@ -946,19 +955,24 @@ export class Api<
      * @request GET:/api/v1/user-book
      */
     userBookControllerFindAll: (
-      query?: {
+      query: {
         /** The field to query */
         field?: string;
         /** The value to query */
         value?: string;
         /** The sort to query */
-        sort?: string;
+        sort?: "createdAt" | "updatedAt" | "completedDate" | "startDate";
         /** The order to query */
         order?: "asc" | "desc";
         /** The limit to query */
         limit?: number;
         /** The page to query */
         page?: number;
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
       },
       params: RequestParams = {},
     ) =>
@@ -999,10 +1013,21 @@ export class Api<
      * @summary Find a user book by id
      * @request GET:/api/v1/user-book/{id}
      */
-    userBookControllerFindById: (id: string, params: RequestParams = {}) =>
+    userBookControllerFindById: (
+      id: string,
+      query: {
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<UserBookResponseDto, any>({
         path: `/api/v1/user-book/${id}`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
@@ -1044,10 +1069,11 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<RecordingsResponseDto, void>({
         path: `/api/v1/user-book/${id}/recordings`,
         method: "GET",
         query: query,
+        format: "json",
         ...params,
       }),
 

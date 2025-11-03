@@ -51,9 +51,6 @@ export const useCreateBook = () => {
             const bookResponse: BookResponseDto = response.data;
             return mapToBook(bookResponse);
         },
-        onSuccess: () => {
-            // TODO: Invalidate the first page of the list
-        },
         onError: (error: AxiosError<IErrorResponse>) => {
             // Show error toast
             const errorModel: IErrorResponse = error.response

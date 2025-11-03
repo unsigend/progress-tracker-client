@@ -7,7 +7,10 @@ import { BookOpen, User, FileText, Hash, Image, Loader2 } from "lucide-react";
 import { BackButton } from "@/components/common/BackButton";
 import { FileUpload } from "@/components/common/FileUpload";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBookCreate, IBookUpdate } from "@/entities/books/models/model";
+import type {
+    IBookCreate,
+    IBookUpdate,
+} from "@/entities/reading/books/models/model";
 
 /**
  * BookActionFormProps - Interface for BookActionForm component props

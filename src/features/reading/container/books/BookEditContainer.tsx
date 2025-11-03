@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { BookActionForm } from "@/features/reading/components/books/BookActionForm";
-import { useBook } from "@/entities/books/hooks/useBook";
-import { useUpdateBook } from "@/entities/books/hooks/useUpdateBook";
+import { useBook } from "@/entities/reading/books/hooks/useBook";
+import { useUpdateBook } from "@/entities/reading/books/hooks/useUpdateBook";
 import { toast } from "sonner";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBookUpdate } from "@/entities/books/models/model";
+import type { IBookUpdate } from "@/entities/reading/books/models/model";
 
 /**
  * BookEditContainer - Container component for editing a book

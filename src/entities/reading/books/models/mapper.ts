@@ -27,7 +27,7 @@ export const mapToBook = (book: BookResponseDto): IBook => {
  * @param book - The IBook to map
  * @returns The mapped BookResponseDto
  */
-export const mapToBookResponseDto = (book: IBook): BookResponseDto => {
+export const mapToBookDto = (book: IBook): BookResponseDto => {
     return {
         id: book.id,
         title: book.title,

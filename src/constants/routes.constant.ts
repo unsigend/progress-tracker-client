@@ -46,6 +46,20 @@ export const ROUTES_CONSTANTS = {
                                 }`,
                         };
                     },
+                    RECORDINGS() {
+                        return {
+                            NEW: (): string =>
+                                `${DASHBOARD_ROOT}/reading/recordings/new`,
+                        };
+                    },
+                    USER_BOOKS() {
+                        return {
+                            DETAIL: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/reading/user-books/${
+                                    id ?? ":id"
+                                }`,
+                        };
+                    },
                 };
             },
             COURSES() {

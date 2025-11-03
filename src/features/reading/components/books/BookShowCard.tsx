@@ -11,7 +11,7 @@ import {
 import { BackButton } from "@/components/common/BackButton";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { BookCover } from "@/components/common/BookCover";
-import type { IBook } from "@/entities/books/models/model";
+import type { IBook } from "@/entities/reading/books/models/model";
 
 /**
  * BookShowCardProps - Interface for BookShowCard component props

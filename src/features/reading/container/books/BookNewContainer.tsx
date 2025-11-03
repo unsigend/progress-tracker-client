@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { BookActionForm } from "@/features/reading/components/books/BookActionForm";
-import { useCreateBook } from "@/entities/books/hooks/useCreateBook";
+import { useCreateBook } from "@/entities/reading/books/hooks/useCreateBook";
 import { toast } from "sonner";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBookCreate, IBookUpdate } from "@/entities/books/models/model";
+import type {
+    IBookCreate,
+    IBookUpdate,
+} from "@/entities/reading/books/models/model";
 
 /**
  * BookNewContainer - Container component for creating a new book

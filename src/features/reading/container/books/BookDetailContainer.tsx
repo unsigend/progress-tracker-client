@@ -1,9 +1,11 @@
+import { toast } from "sonner";
 import { useParams, useNavigate } from "react-router";
 import { BookShowCard } from "@/features/reading/components/books/BookShowCard";
-import { useBook } from "@/entities/books/hooks/useBook";
-import { toast } from "sonner";
+import { useBook } from "@/entities/reading/books/hooks/useBook";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import { useDeleteBook } from "@/entities/books/hooks/useDeleteBook";
+import { useDeleteBook } from "@/entities/reading/books/hooks/useDeleteBook";
+import { useCreateUserBook } from "@/entities/reading/user-books/hooks/useCreateUserBook";
+import type { IUserBookCreate } from "@/entities/reading/user-books/model/model";
 
 /**
  * BookDetailContainer - Container component for displaying book details
@@ -14,12 +16,23 @@ export const BookDetailContainer = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { data: book, isLoading } = useBook(id || "");
+    const { mutate: createUserBook } = useCreateUserBook();
 
-    // TODO: Implement useCreateUserBook hook
+    /**
+     * handleAddClick - Handle add book to reading list functionality
+     * @description Add book to reading list functionality
+     */
     const handleAddClick = () => {
-        // TODO: Implement add book to reading list
-        // createUserBook({ id: id ?? "" }, { onSuccess: ... });
-        toast.info("Add to reading list functionality coming soon");
+        if (!book) return;
+        const userBook: IUserBookCreate = {
+            bookId: book.id,
+        };
+        createUserBook(userBook, {
+            onSuccess: () => {
+                toast.success("Book added to reading list successfully");
+                navigate(ROUTES_CONSTANTS.DASHBOARD().READING().HOME());
+            },
+        });
     };
 
     /**

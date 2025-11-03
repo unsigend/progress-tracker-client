@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BOOKS_CONSTANTS } from "@/constants/books.constant";
+import { READING_CONSTANTS } from "@/constants/reading.constant";
 import type { IBookQuery } from "../models/model";
 import { useSearchParams } from "react-router";
 
@@ -13,18 +13,18 @@ export const useBookQuery = () => {
     const query: IBookQuery = useMemo<IBookQuery>(() => {
         const page = searchParams.get("page")
             ? Number(searchParams.get("page"))
-            : BOOKS_CONSTANTS.DEFAULT_PAGE;
+            : READING_CONSTANTS.BOOKS.DEFAULT_PAGE;
         const limit = searchParams.get("limit")
             ? Number(searchParams.get("limit"))
-            : BOOKS_CONSTANTS.DEFAULT_LIMIT;
+            : READING_CONSTANTS.BOOKS.DEFAULT_LIMIT;
         const sort = searchParams.get("sort")
             ? (searchParams.get("sort") as IBookQuery["sort"])
-            : BOOKS_CONSTANTS.DEFAULT_SORT;
+            : READING_CONSTANTS.BOOKS.DEFAULT_SORT;
         const order = searchParams.get("order")
             ? (searchParams.get("order") as IBookQuery["order"])
-            : BOOKS_CONSTANTS.DEFAULT_ORDER;
+            : READING_CONSTANTS.BOOKS.DEFAULT_ORDER;
         const value =
-            searchParams.get("value") || BOOKS_CONSTANTS.DEFAULT_VALUE;
+            searchParams.get("value") || READING_CONSTANTS.BOOKS.DEFAULT_VALUE;
 
         return {
             page,
