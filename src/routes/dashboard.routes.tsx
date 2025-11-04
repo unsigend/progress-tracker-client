@@ -6,6 +6,7 @@ import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { ReadingRoutes } from "./dashboard/reading.routes";
 import { CoursesRoutes } from "./dashboard/courses.routes";
 import { ProjectsRoutes } from "./dashboard/projects.routes";
+import { Protector } from "@/pages/protector";
 
 /**
  * DashboardRoutes - Dashboard routes configuration
@@ -13,7 +14,11 @@ import { ProjectsRoutes } from "./dashboard/projects.routes";
 export const DashboardRoutes = (
     <Route
         path={ROUTES_CONSTANTS.DASHBOARD().HOME()}
-        element={<DashboardMainLayout />}
+        element={
+            <Protector>
+                <DashboardMainLayout />
+            </Protector>
+        }
     >
         {/* Dashboard Home Page */}
         <Route

@@ -19,6 +19,7 @@ import type { IBook } from "@/entities/reading/books/models/model";
 interface BookShowCardProps {
     book: IBook | null;
     isLoading: boolean;
+    hasPermission: boolean;
     onAddClick: () => void;
     onEditClick: () => void;
     onDeleteConfirm: () => void;
@@ -30,6 +31,7 @@ interface BookShowCardProps {
  * @param props - The props for the BookShowCard component
  * @param props.book - The book data to display
  * @param props.isLoading - Whether the book is loading
+ * @param props.hasPermission - Whether the user has permission to edit/delete the book
  * @param props.onAddClick - Handler for add button click
  * @param props.onEditClick - Handler for edit button click
  * @param props.onDeleteConfirm - Handler for delete confirmation
@@ -39,6 +41,7 @@ interface BookShowCardProps {
 export const BookShowCard = ({
     book,
     isLoading,
+    hasPermission,
     onAddClick,
     onEditClick,
     onDeleteConfirm,
@@ -70,10 +73,16 @@ export const BookShowCard = ({
                                 <DropdownMenuItem onClick={onAddClick}>
                                     Add
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={onEditClick}>
+                                <DropdownMenuItem
+                                    onClick={onEditClick}
+                                    disabled={!hasPermission}
+                                >
                                     Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={handleDeleteClick}>
+                                <DropdownMenuItem
+                                    onClick={handleDeleteClick}
+                                    disabled={!hasPermission}
+                                >
                                     Delete
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

@@ -6,6 +6,8 @@ import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useDeleteBook } from "@/entities/reading/books/hooks/useDeleteBook";
 import { useCreateUserBook } from "@/entities/reading/user-books/hooks/useCreateUserBook";
 import type { IUserBookCreate } from "@/entities/reading/user-books/model/model";
+import { useMe } from "@/entities/users/hooks/useMe";
+import { UserRole } from "@/entities/users/models/model";
 
 /**
  * BookDetailContainer - Container component for displaying book details
@@ -16,7 +18,16 @@ export const BookDetailContainer = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { data: book, isLoading } = useBook(id || "");
+    const { data: currentUser } = useMe();
     const { mutate: createUserBook } = useCreateUserBook();
+
+    // Check if user has permission to edit/delete the book
+    // User can edit/delete if they created the book or if they are an admin
+    const hasPermission =
+        !!book &&
+        !!currentUser &&
+        (book.createdBy === currentUser.id ||
+            currentUser.role === UserRole.ADMIN);
 
     /**
      * handleAddClick - Handle add book to reading list functionality
@@ -63,6 +74,7 @@ export const BookDetailContainer = () => {
         <BookShowCard
             book={book || null}
             isLoading={isLoading}
+            hasPermission={hasPermission}
             onAddClick={handleAddClick}
             onEditClick={handleEditClick}
             onDeleteConfirm={handleDeleteConfirm}
