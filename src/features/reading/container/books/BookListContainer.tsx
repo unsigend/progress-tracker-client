@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BookLibrary } from "@/features/reading/components/books/BookLibrary";
 import { useBooks } from "@/entities/reading/books/hooks/useBooks";
 import { useBookQuery } from "@/entities/reading/books/hooks/useBookQuery";
@@ -10,8 +11,14 @@ import { useBookQuery } from "@/entities/reading/books/hooks/useBookQuery";
 export const BookListContainer = () => {
     const { query, setPage, setValue } = useBookQuery();
     const { data: booksData, isLoading } = useBooks(query);
-    const totalCount = booksData?.totalCount || 0;
-    const totalPages = Math.ceil(totalCount / query.limit);
+
+    const [totalPages, setTotalPages] = useState(0);
+    useEffect(() => {
+        const totalCount = booksData?.totalCount;
+        if (totalCount !== undefined) {
+            setTotalPages(Math.ceil(totalCount / query.limit));
+        }
+    }, [booksData?.totalCount, query.limit]);
 
     return (
         <BookLibrary

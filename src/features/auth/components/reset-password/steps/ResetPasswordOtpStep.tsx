@@ -108,7 +108,9 @@ export const ResetPasswordOtpStep = ({
                                                 !code[index] &&
                                                 index > 0
                                             ) {
-                                                const prevInput = e.target
+                                                const target =
+                                                    e.target as HTMLInputElement;
+                                                const prevInput = target
                                                     .parentElement?.children[
                                                     index - 1
                                                 ] as

@@ -80,7 +80,11 @@ export interface VerifyCodeResponseDto {
 }
 
 export interface ResetPasswordRequestDto {
-  /** The new password */
+  /**
+   * The new password
+   * @minLength 8
+   * @maxLength 32
+   */
   password: string;
   /** The reset token */
   resetToken: string;
@@ -1045,6 +1049,29 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Book
+     * @name BookControllerFindRandom
+     * @summary Find random books
+     * @request GET:/api/v1/book/random
+     */
+    bookControllerFindRandom: (
+      query: {
+        /** The count of the books to find */
+        count: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BooksResponseDto, void>({
+        path: `/api/v1/book/random`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

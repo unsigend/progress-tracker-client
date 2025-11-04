@@ -8,6 +8,7 @@ import { QuickActionsCard } from "@/features/reading/components/QuickActionsCard
 import { useUserBooks } from "@/entities/reading/user-books/hooks/useUserBooks";
 import { useToday } from "@/entities/statistics/reading/hooks/useToday";
 import { useMonth } from "@/entities/statistics/reading/hooks/useMonth";
+import { useRandomBooks } from "@/entities/reading/books/hooks/useRandomBooks";
 import { DatesUtils } from "@/lib/utils/dates";
 
 /**
@@ -48,6 +49,9 @@ export const ReadingContainer = () => {
     // Get recordings data for needed months based on weekOffset
     const { data: monthlyRecordings, isLoading: isLoadingWeeklyRecordings } =
         useMonth(currentWeekOffset);
+
+    // Get random books for featured section
+    const { data: randomBooks } = useRandomBooks(8);
 
     // Calculate weekly analysis data from cached recordings
     const weeklyAnalysisData = useMemo(() => {
@@ -112,20 +116,6 @@ export const ReadingContainer = () => {
         }
     };
 
-    // Sample book cover URLs for the Featured Reads section
-    const sampleBookCoverUrls = [
-        "https://m.media-amazon.com/images/I/81xkjj+FAfL._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/71OMPF7vzmL._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/81HqVRRwp3L._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/61Mw06x2XcL._SY522_.jpg",
-        "https://books.google.com/books/content?id=cM8mDwAAQBAJ&printsec=frontcover&img=1&edge=curl&source=gbs_api&fife=w500-h750",
-        "https://m.media-amazon.com/images/I/91hUer84PpL._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/81xkjj+FAfL._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/71OMPF7vzmL._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/81HqVRRwp3L._SY522_.jpg",
-        "https://m.media-amazon.com/images/I/61Mw06x2XcL._SY522_.jpg",
-    ];
-
     return (
         <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8">
             {/* Advanced CSS Grid Layout */}
@@ -165,7 +155,7 @@ export const ReadingContainer = () => {
                     </div>
                 </div>
 
-                {/* Row 3: In Progress Reading */}
+                {/* Row 2: In Progress Reading */}
                 <div className="col-span-12">
                     <InProgressSection
                         inProgressBooks={inProgressBooks?.userBooks || []}
@@ -173,7 +163,7 @@ export const ReadingContainer = () => {
                     />
                 </div>
 
-                {/* Row 4: Completed Books */}
+                {/* Row 3: Completed Books */}
                 <div className="col-span-12">
                     <CompletedSection
                         completedBooks={completedBooks?.userBooks || []}
@@ -181,11 +171,11 @@ export const ReadingContainer = () => {
                     />
                 </div>
 
-                {/* Row 5: Feature Books */}
+                {/* Row 4: Feature Books */}
                 <div className="col-span-12">
                     <FeatureBooksSection
-                        coverImageUrls={sampleBookCoverUrls}
-                        title="Featured Reads"
+                        books={randomBooks || []}
+                        title="Today's Recommendations"
                         subtitle="Curated selection of our top recommendations."
                     />
                 </div>

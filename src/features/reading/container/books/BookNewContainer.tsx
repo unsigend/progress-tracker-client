@@ -93,7 +93,6 @@ export const BookNewContainer = () => {
                     action="add"
                     onFileUpload={handleFileUpload}
                     isLoading={isPending}
-                    onBack={() => navigate(-1)}
                 />
             </div>
         </div>

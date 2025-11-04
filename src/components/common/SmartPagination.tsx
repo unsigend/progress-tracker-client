@@ -125,7 +125,7 @@ export const SmartPagination = ({
                     }
 
                     return (
-                        <PaginationItem key={page}>
+                        <PaginationItem key={page} className="cursor-pointer">
                             <PaginationLink
                                 onClick={() => setCurrentPage(page as number)}
                                 isActive={currentPage === page}
@@ -155,4 +155,3 @@ export const SmartPagination = ({
         </Pagination>
     );
 };
-

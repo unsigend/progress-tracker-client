@@ -1,6 +1,7 @@
 // Api Key Factory
 import type { IBookQuery } from "@/entities/reading/books/models/model";
 import type { IUserBookQuery } from "@/entities/reading/user-books/model/model";
+import { DatesUtils } from "@/lib/utils/dates";
 
 const RESOURCES_KEYS = {
     USERS: "users",
@@ -27,6 +28,14 @@ export const API_KEY_FACTORY = () => {
             },
         },
         BOOKS: {
+            RANDOM: () => {
+                // Cache based on the today's date, will invalidate in the next day
+                return [
+                    RESOURCES_KEYS.BOOKS,
+                    "random",
+                    DatesUtils.getTodayDateString(),
+                ];
+            },
             LIST: (query: IBookQuery) => {
                 return [RESOURCES_KEYS.BOOKS, "all", query];
             },

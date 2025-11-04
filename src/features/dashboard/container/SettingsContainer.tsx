@@ -22,7 +22,9 @@ export const SettingsContainer = () => {
     const { mutate: logout, isPending: isLogoutPending } = useLogout();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState<Pick<IUserUpdate, "username" | "email">>({
+    const [formData, setFormData] = useState<
+        Pick<IUserUpdate, "username" | "email">
+    >({
         username: "",
         email: "",
     });
@@ -63,7 +65,7 @@ export const SettingsContainer = () => {
         const updateData: IUserUpdate = {};
 
         if (hasEmailChange) {
-            const { isValid, error } = validateEmail(formData.email);
+            const { isValid, error } = validateEmail(formData.email || "");
             if (!isValid) {
                 toast.error(error || "Invalid email address");
                 return;
@@ -72,7 +74,9 @@ export const SettingsContainer = () => {
         }
 
         if (hasUsernameChange) {
-            const { isValid, error } = validateUsername(formData.username);
+            const { isValid, error } = validateUsername(
+                formData.username || ""
+            );
             if (!isValid) {
                 toast.error(error || "Invalid username");
                 return;

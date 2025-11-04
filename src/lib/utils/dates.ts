@@ -167,4 +167,16 @@ export const DatesUtils = {
             };
         });
     },
+
+    /**
+     * getTodayDateString - Get today's date as YYYY-MM-DD string
+     * @returns Today's date string (e.g., "2025-10-21")
+     */
+    getTodayDateString: (): string => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    },
 };

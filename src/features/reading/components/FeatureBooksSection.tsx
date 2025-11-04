@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import type { IBook } from "@/entities/reading/books/models/model";
 
 /**
  * FeatureBooksSectionProps - Interface for FeatureBooksSection component props
  */
 interface FeatureBooksSectionProps {
-    coverImageUrls: string[];
+    books: IBook[];
     title?: string;
     subtitle?: string;
     className?: string;
@@ -15,16 +16,16 @@ interface FeatureBooksSectionProps {
 /**
  * FeatureBooksSection - Pure UI component for displaying featured books
  * @param props - The props for the FeatureBooksSection component
- * @param props.coverImageUrls - Array of book cover image URLs
+ * @param props.books - Array of book objects
  * @param props.title - Section title (default: "Books We Love")
  * @param props.subtitle - Section subtitle
  * @param props.className - Additional CSS classes
  * @returns FeatureBooksSection component
  */
 export const FeatureBooksSection = ({
-    coverImageUrls,
+    books,
     title = "Books We Love",
-    subtitle = "Find your next favorite. See picks from the Apple Books team.",
+    subtitle,
     className = "",
 }: FeatureBooksSectionProps) => {
     const xl2DevicePositions = [
@@ -78,12 +79,18 @@ export const FeatureBooksSection = ({
         count: number,
         positions: typeof xl2DevicePositions
     ) => {
-        return coverImageUrls.slice(0, count).map((url, index) => {
+        // Filter books that have coverUrl and slice to requested count
+        const booksWithCovers = books
+            .filter((book) => book.coverUrl !== null)
+            .slice(0, count);
+
+        return booksWithCovers.map((book, index) => {
             const position = positions[index];
+            const coverUrl = book.coverUrl!;
 
             return (
                 <div
-                    key={index}
+                    key={book.id}
                     className="absolute transition-all duration-300 cursor-pointer hover:-translate-y-4 hover:scale-105 hover:z-50"
                     style={{
                         left: position.left,
@@ -91,20 +98,27 @@ export const FeatureBooksSection = ({
                         transform: `rotate(${position.rotation}deg)`,
                     }}
                 >
-                    <img
-                        src={url}
-                        alt={`Book ${index + 1}`}
-                        className="w-auto rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.3),0_16px_32px_rgba(0,0,0,0.4),0_24px_48px_rgba(0,0,0,0.5)]
+                    <Link
+                        to={ROUTES_CONSTANTS.DASHBOARD()
+                            .READING()
+                            .BOOKS()
+                            .DETAIL(book.id)}
+                    >
+                        <img
+                            src={coverUrl}
+                            alt={book.title || `Book ${index + 1}`}
+                            className="w-auto rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.3),0_16px_32px_rgba(0,0,0,0.4),0_24px_48px_rgba(0,0,0,0.5)]
                                    h-[150px] sm:h-[200px] md:h-[220px] lg:h-[260px]"
-                        style={{
-                            boxShadow: `
+                            style={{
+                                boxShadow: `
                                 0 4px 8px rgba(0, 0, 0, 0.2),
                                 0 12px 24px rgba(0, 0, 0, 0.3),
                                 0 20px 40px rgba(0, 0, 0, 0.4),
                                 -8px 0 16px rgba(0, 0, 0, 0.2)
                             `,
-                        }}
-                    />
+                            }}
+                        />
+                    </Link>
                 </div>
             );
         });
@@ -184,4 +198,3 @@ export const FeatureBooksSection = ({
         </div>
     );
 };
-

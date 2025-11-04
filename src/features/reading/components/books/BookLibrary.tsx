@@ -67,7 +67,7 @@ export const BookLibrary = ({
                     </div>
 
                     {/* Search Section - Centered */}
-                    <div className="flex justify-center mb-4">
+                    <div className="flex justify-center">
                         <div className="w-full max-w-2xl">
                             <SearchBar
                                 placeholder="Search by title, author, or ISBN..."
@@ -81,7 +81,7 @@ export const BookLibrary = ({
                     </div>
 
                     {/* Add Book Button - Right Aligned */}
-                    <div className="flex justify-end mb-4">
+                    <div className="flex justify-end">
                         <Link
                             to={ROUTES_CONSTANTS.DASHBOARD()
                                 .READING()
@@ -102,7 +102,7 @@ export const BookLibrary = ({
                 <CardContent className="min-h-[700px]">
                     {/* Loading State */}
                     {isLoading ? (
-                        <div className="flex justify-center items-center py-12">
+                        <div className="flex justify-center items-center py-30">
                             <Loader2 className="size-6 animate-spin" />
                         </div>
                     ) : (

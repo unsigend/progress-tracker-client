@@ -57,7 +57,6 @@ export const UserBookDetailContainer = () => {
                 userBook={userBook || null}
                 isLoading={isLoadingUserBook}
                 onDelete={handleDelete}
-                onBack={() => navigate(-1)}
             />
             <RecordingList
                 recordings={recordings?.recordings ?? []}
