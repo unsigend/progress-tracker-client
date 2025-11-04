@@ -15,8 +15,8 @@ export const HeroSection = () => {
 
     const heroImage =
         theme === "dark"
-            ? "/images/landing/hero-dark.png"
-            : "/images/landing/hero-light.png";
+            ? "/image/landing/hero-dark.png"
+            : "/image/landing/hero-light.png";
 
     return (
         <div className="max-w-6xl mx-auto">

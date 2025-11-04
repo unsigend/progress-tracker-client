@@ -1,4 +1,4 @@
-const BASE_IMAGE_URL = "/images/build-with-logos";
+const BASE_IMAGE_URL = "/image/build-with-logos";
 
 /**
  * BuildWithLogo - Interface for build with logo data
