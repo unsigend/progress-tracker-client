@@ -129,7 +129,7 @@ export const LoginForm = ({
                         onClick={onGoogleLogin}
                     >
                         <img
-                            src="/images/app/google.svg"
+                            src="/image/app/google.svg"
                             alt="Google"
                             className="size-4 mr-2 dark:invert"
                         />
@@ -142,7 +142,7 @@ export const LoginForm = ({
                         onClick={onGithubLogin}
                     >
                         <img
-                            src="/images/app/github.svg"
+                            src="/image/app/github.svg"
                             alt="GitHub"
                             className="size-4 mr-2 dark:invert"
                         />
