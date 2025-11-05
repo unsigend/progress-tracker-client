@@ -7,6 +7,7 @@ import {
     FieldGroup,
 } from "@/components/ui/field";
 import { ArrowLeft, AlertCircle } from "lucide-react";
+import { StepIndicator } from "@/features/auth/components/StepIndicator";
 
 /**
  * ResetPasswordPasswordStepProps - Interface for ResetPasswordPasswordStep component props
@@ -43,12 +44,14 @@ export const ResetPasswordPasswordStep = ({
     isLoading = false,
 }: ResetPasswordPasswordStepProps) => {
     return (
-        <div className="w-full max-w-md mx-auto space-y-8">
-            <div className="text-center space-y-3">
-                <h1 className="text-3xl font-bold text-foreground">
+        <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+            <StepIndicator currentStep={3} totalSteps={3} />
+
+            <div className="space-y-3">
+                <h1 className="text-3xl font-bold text-foreground transition-all duration-300">
                     New Password
                 </h1>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm text-muted-foreground transition-all duration-300">
                     Enter your new password to complete the reset process.
                 </p>
             </div>
@@ -70,7 +73,7 @@ export const ResetPasswordPasswordStep = ({
                                 id="newPassword"
                                 type="password"
                                 placeholder="Enter your new password"
-                                className={`transition-colors ${
+                                className={`transition-all duration-200 ${
                                     error
                                         ? "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
                                         : ""
@@ -96,18 +99,16 @@ export const ResetPasswordPasswordStep = ({
 
                 <Button
                     type="submit"
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer transition-all duration-200"
                     disabled={isLoading || !newPassword}
                 >
-                    {isLoading
-                        ? "Resetting Password..."
-                        : "Reset Password"}
+                    {isLoading ? "Resetting Password..." : "Reset Password"}
                 </Button>
 
                 <Button
                     type="button"
                     variant="outline"
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer transition-all duration-200"
                     onClick={onBack}
                     disabled={isLoading}
                 >
@@ -118,4 +119,3 @@ export const ResetPasswordPasswordStep = ({
         </div>
     );
 };
-

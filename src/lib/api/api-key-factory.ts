@@ -1,4 +1,5 @@
 // Api Key Factory
+import type { ICoursesQuery } from "@/entities/course/courses/models/model";
 import type { IBookQuery } from "@/entities/reading/books/models/model";
 import type { IUserBookQuery } from "@/entities/reading/user-books/model/model";
 import { DatesUtils } from "@/lib/utils/dates";
@@ -9,6 +10,7 @@ const RESOURCES_KEYS = {
     USER_BOOKS: "user-books",
     RECORDINGS: "recordings",
     STATISTICS: "statistics",
+    COURSES: "courses",
 };
 
 /**
@@ -21,7 +23,7 @@ export const API_KEY_FACTORY = () => {
                 return [RESOURCES_KEYS.USERS, "all"];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.USERS, id];
+                return [RESOURCES_KEYS.USERS, "detail", id];
             },
             ME: () => {
                 return [RESOURCES_KEYS.USERS, "me"];
@@ -40,7 +42,7 @@ export const API_KEY_FACTORY = () => {
                 return [RESOURCES_KEYS.BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.BOOKS, id];
+                return [RESOURCES_KEYS.BOOKS, "detail", id];
             },
         },
         USER_BOOKS: {
@@ -48,12 +50,20 @@ export const API_KEY_FACTORY = () => {
                 return [RESOURCES_KEYS.USER_BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.USER_BOOKS, id];
+                return [RESOURCES_KEYS.USER_BOOKS, "detail", id];
             },
         },
         RECORDINGS: {
             LIST: (userBookId: string) => {
                 return [RESOURCES_KEYS.RECORDINGS, userBookId];
+            },
+        },
+        COURSES: {
+            LIST: (query: ICoursesQuery) => {
+                return [RESOURCES_KEYS.COURSES, "all", query];
+            },
+            DETAIL: (id: string) => {
+                return [RESOURCES_KEYS.COURSES, "detail", id];
             },
         },
         STATISTICS: {

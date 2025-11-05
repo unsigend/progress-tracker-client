@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { BackButton } from "@/components/common/BackButton";
-import { BookCover } from "@/components/common/BookCover";
+import { BookCover } from "@/features/reading/components/books/BookCover";
 import { Calendar, Clock, BookOpen, CalendarDays } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/field";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { AlertCircle } from "lucide-react";
+import { StepIndicator } from "@/features/auth/components/StepIndicator";
 
 /**
  * ResetPasswordEmailStepProps - Interface for ResetPasswordEmailStep component props
@@ -42,25 +43,29 @@ export const ResetPasswordEmailStep = ({
     isLoading = false,
 }: ResetPasswordEmailStepProps) => {
     return (
-        <div className="w-full max-w-md mx-auto space-y-8">
-            <div className="text-center space-y-3">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-foreground">
+        <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+            <StepIndicator currentStep={1} totalSteps={3} />
+
+            <div className="space-y-3">
+                <div className="flex items-center justify-left">
+                    <h1 className="text-3xl font-bold text-foreground transition-all duration-300">
                         Reset Password
                     </h1>
+                </div>
+                <p className="text-sm text-muted-foreground transition-all duration-300">
+                    Enter your email address and we'll send you a verification
+                    code to reset your password.
+                </p>
+                <div className="flex justify-end pt-2">
                     <Button
                         variant="link"
-                        className="text-sm cursor-pointer p-0 h-auto"
+                        className="text-sm cursor-pointer p-0 h-auto hover:text-foreground transition-colors"
                     >
                         <Link to={ROUTES_CONSTANTS.AUTH().LOGIN()}>
                             Back to Login
                         </Link>
                     </Button>
                 </div>
-                <p className="text-sm text-muted-foreground text-left">
-                    Enter your email address and we'll send you a verification
-                    code to reset your password.
-                </p>
             </div>
 
             <form
@@ -78,7 +83,7 @@ export const ResetPasswordEmailStep = ({
                                 id="email"
                                 type="email"
                                 placeholder="m@example.com"
-                                className={`transition-colors ${
+                                className={`transition-all duration-200 ${
                                     error
                                         ? "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
                                         : ""
@@ -104,7 +109,7 @@ export const ResetPasswordEmailStep = ({
 
                 <Button
                     type="submit"
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer transition-all duration-200"
                     disabled={isLoading || !email}
                 >
                     {isLoading ? "Sending Code..." : "Send Verification Code"}

@@ -15,10 +15,11 @@ export interface DevProgressData {
 export const devProgressData: DevProgressData[] = [
     {
         id: "role-based-access-control",
-        title: "Role-based Access Control (RBAC)",
+        title: "Role-based Access Control",
         description:
-            "Implement comprehensive RBAC system to protect sensitive endpoints and resources. Includes integrated admin panel for user management, system monitoring, and administrative controls.",
-        status: "coming-soon",
+            "Implement comprehensive RBAC system to protect sensitive endpoints and resources. Integrate Policy-based Access Control System.",
+        status: "completed",
+        date: "November 4, 2025",
     },
     {
         id: "rebuild-backend-hexagonal-architecture",

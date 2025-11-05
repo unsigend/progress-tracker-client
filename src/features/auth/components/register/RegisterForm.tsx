@@ -1,4 +1,4 @@
-import { StepIndicator } from "@/features/auth/components/register/StepIndicator";
+import { StepIndicator } from "@/features/auth/components/StepIndicator";
 import { EmailStep } from "@/features/auth/components/register/steps/EmailStep";
 import { PasswordStep } from "@/features/auth/components/register/steps/PasswordStep";
 import { UsernameStep } from "@/features/auth/components/register/steps/UsernameStep";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { BookCover } from "@/components/common/BookCover";
+import { BookCover } from "@/features/reading/components/books/BookCover";
 import { Plus } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";

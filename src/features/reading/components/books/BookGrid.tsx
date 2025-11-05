@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { BookCover } from "@/components/common/BookCover";
+import { BookCover } from "@/features/reading/components/books/BookCover";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 
 /**

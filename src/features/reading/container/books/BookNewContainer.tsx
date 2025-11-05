@@ -22,7 +22,7 @@ export const BookNewContainer = () => {
         title: "",
         author: "",
         description: "",
-        pages: 0,
+        pages: NaN,
         ISBN10: "",
         ISBN13: "",
     });
@@ -31,7 +31,7 @@ export const BookNewContainer = () => {
         e.preventDefault();
 
         // Simple validation
-        if (formData.title === "") {
+        if (!formData.title || formData.title.trim() === "") {
             toast.error("Title is required");
             return;
         }
@@ -39,20 +39,7 @@ export const BookNewContainer = () => {
             toast.error("Pages is required");
             return;
         }
-
-        // Build book create data using IBookCreate from model
-        const bookData: IBookCreate = {
-            title: formData.title,
-            pages: formData.pages,
-        };
-
-        if (formData.author) bookData.author = formData.author;
-        if (formData.description) bookData.description = formData.description;
-        if (formData.ISBN10) bookData.ISBN10 = formData.ISBN10;
-        if (formData.ISBN13) bookData.ISBN13 = formData.ISBN13;
-        if (formData.coverImage) bookData.coverImage = formData.coverImage;
-
-        createBook(bookData, {
+        createBook(formData, {
             onSuccess: () => {
                 toast.success("Book created successfully");
                 navigate(ROUTES_CONSTANTS.DASHBOARD().READING().BOOKS().LIST());

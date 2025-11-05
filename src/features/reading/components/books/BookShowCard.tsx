@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { BackButton } from "@/components/common/BackButton";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
-import { BookCover } from "@/components/common/BookCover";
+import { BookCover } from "@/features/reading/components/books/BookCover";
 import type { IBook } from "@/entities/reading/books/models/model";
 
 /**
