@@ -70,6 +70,8 @@ export const ROUTES_CONSTANTS = {
                     NEW: (): string => `${DASHBOARD_ROOT}/courses/new`,
                     EDIT: (id?: string): string =>
                         `${DASHBOARD_ROOT}/courses/${id ?? ":id"}/edit`,
+                    DETAIL: (id?: string): string =>
+                        `${DASHBOARD_ROOT}/courses/${id ?? ":id"}`,
                 };
             },
             PROJECTS() {

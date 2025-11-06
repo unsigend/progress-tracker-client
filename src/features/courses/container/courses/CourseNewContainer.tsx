@@ -24,7 +24,6 @@ export const CourseNewContainer = () => {
         source: "",
         officialWebsite: "",
         isPublic: false,
-        courseImage: undefined,
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,13 +42,6 @@ export const CourseNewContainer = () => {
         });
     };
 
-    const handleFileUpload = async (file: File) => {
-        setFormData((prev) => ({
-            ...prev,
-            courseImage: file,
-        }));
-    };
-
     const handleFormDataChange = (data: ICourseCreate | ICourseUpdate) => {
         setFormData(data as ICourseCreate);
     };
@@ -64,7 +56,6 @@ export const CourseNewContainer = () => {
                     onFormDataChange={handleFormDataChange}
                     onSubmit={handleSubmit}
                     action="add"
-                    onFileUpload={handleFileUpload}
                     isPending={isPending}
                 />
             </div>

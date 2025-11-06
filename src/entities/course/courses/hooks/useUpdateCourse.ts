@@ -1,25 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { ICourse, ICourseCreate } from "../models/model";
+import type { ICourse, ICourseUpdate } from "../models/model";
 import { mapToCourse } from "../models/mapper";
-import type { CourseCreateRequestDto, CourseResponseDto } from "@/lib/api/api";
+import type { CourseResponseDto, CourseUpdateRequestDto } from "@/lib/api/api";
 import type { AxiosError } from "axios";
 import type { IErrorResponse } from "@/entities/common/models/error";
-import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { toast } from "sonner";
 
 /**
- * useCreateCourse - Hook for creating a course
- * @param course - The course to create
- * @returns useMutation hook for creating a course
- * @returns The created course
+ * useUpdateCourse - Hook for updating a course
+ * @param id - The id of the course to update
+ * @returns useMutation hook for updating a course
  */
-export const useCreateCourse = () => {
+export const useUpdateCourse = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (course: ICourseCreate): Promise<ICourse> => {
-            const courseCreateRequestDto: CourseCreateRequestDto = {
+        mutationFn: async (course: ICourseUpdate): Promise<ICourse> => {
+            const courseUpdateRequestDto: CourseUpdateRequestDto = {
                 name: course.name,
                 description: course.description,
                 source: course.source,
@@ -27,25 +25,20 @@ export const useCreateCourse = () => {
                 isPublic: course.isPublic,
                 categories: course.categories,
             };
-            const response = await ApiClient.api.courseControllerCreate(
-                courseCreateRequestDto
+            const response = await ApiClient.api.courseControllerUpdate(
+                id,
+                courseUpdateRequestDto
             );
             const courseResponse: CourseResponseDto = response.data;
             return mapToCourse(courseResponse);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: API_KEY_FACTORY().COURSES.LIST({
-                    page: COURSE_CONSTANTS.DEFAULT_PAGE,
-                    limit: COURSE_CONSTANTS.DEFAULT_LIMIT,
-                    sort: COURSE_CONSTANTS.DEFAULT_SORT,
-                    order: COURSE_CONSTANTS.DEFAULT_ORDER,
-                    value: COURSE_CONSTANTS.DEFAULT_VALUE,
-                }),
+                queryKey: API_KEY_FACTORY().COURSES.DETAIL(id),
             });
         },
         onError: (error: AxiosError<IErrorResponse>) => {
-            // Show error toast
+            toast.error(error.message);
             const errorModel: IErrorResponse = error.response
                 ?.data as IErrorResponse;
             toast.error(errorModel.message);

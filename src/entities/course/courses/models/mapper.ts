@@ -12,11 +12,12 @@ export const mapToCourse = (course: CourseResponseDto): ICourse => {
         name: course.name,
         description: course.description,
         source: course.source,
-        officialWebsite: course.officialWebsiteUrl,
-        courseImageUrl: course.courseImageUrl,
+        officialWebsiteUrl: course.officialWebsiteUrl,
         createdById: course.createdById,
         createdAt: course.createdAt,
         updatedAt: course.updatedAt,
+        isPublic: course.isPublic,
+        categories: course.categories,
     };
 };
 
@@ -31,10 +32,11 @@ export const mapToCourseResponseDto = (course: ICourse): CourseResponseDto => {
         name: course.name,
         description: course.description,
         source: course.source,
-        officialWebsiteUrl: course.officialWebsite,
-        courseImageUrl: course.courseImageUrl,
+        officialWebsiteUrl: course.officialWebsiteUrl,
         createdById: course.createdById,
         createdAt: course.createdAt,
         updatedAt: course.updatedAt,
+        isPublic: course.isPublic,
+        categories: course.categories || [],
     };
 };

@@ -9,7 +9,7 @@ import { useBookQuery } from "@/entities/reading/books/hooks/useBookQuery";
  * @returns BookListContainer component
  */
 export const BookListContainer = () => {
-    const { query, setPage, setValue } = useBookQuery();
+    const { query, setPage, setValue, setSort, setOrder } = useBookQuery();
     const { data: booksData, isLoading } = useBooks(query);
 
     const [totalPages, setTotalPages] = useState(0);
@@ -28,6 +28,10 @@ export const BookListContainer = () => {
             totalPages={totalPages}
             setCurrentPage={setPage}
             onSearchSubmit={setValue}
+            sort={query.sort}
+            order={query.order}
+            onSortChange={setSort}
+            onOrderChange={setOrder}
         />
     );
 };

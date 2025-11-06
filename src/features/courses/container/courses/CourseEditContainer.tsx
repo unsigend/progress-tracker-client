@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CourseActionForm } from "@/features/courses/components/courses/CourseActionForm";
-import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type {
     ICourseCreate,
     ICourseUpdate,
 } from "@/entities/course/courses/models/model";
+import { useCourse } from "@/entities/course/courses/hooks/useCourse";
+import { useUpdateCourse } from "@/entities/course/courses/hooks/useUpdateCourse";
+import { useEffect } from "react";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import { toast } from "sonner";
 
 /**
  * CourseEditContainer - Container component for editing a course
@@ -15,64 +19,50 @@ import type {
 export const CourseEditContainer = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    // TODO: Implement useCourse and useUpdateCourse hooks
-    // const { data: course, isLoading: isLoadingCourse } = useCourse(id || "");
-    // const { mutate: updateCourse, isPending } = useUpdateCourse();
+
+    const { data: course, isLoading } = useCourse(id || "");
+    const { mutate: updateCourse, isPending } = useUpdateCourse(id || "");
 
     const [formData, setFormData] = useState<ICourseUpdate>({
         name: "",
         description: "",
         source: "",
         officialWebsite: "",
-        courseImage: undefined,
     });
 
-    // TODO: Load course data when component mounts
-    // useEffect(() => {
-    //     if (course) {
-    //         setFormData({
-    //             name: course.name,
-    //             description: course.description || "",
-    //             source: course.source || "",
-    //             officialWebsite: course.officialWebsite || "",
-    //         });
-    //     }
-    // }, [course]);
+    useEffect(() => {
+        if (course) {
+            setFormData({
+                name: course.name,
+                description: course.description || "",
+                source: course.source || "",
+                officialWebsite: course.officialWebsite || "",
+                isPublic: course.isPublic,
+                categories: course.categories || [],
+            });
+        }
+    }, [course]);
 
+    /**
+     * handleSubmit - Handles the form submission
+     * @description Updates the course with the form data
+     */
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // TODO: Implement validation and submission logic
-        // Simple validation
-        // if (formData.name === "") {
-        //     toast.error("Course name is required");
-        //     return;
-        // }
-
-        // Build course update data using ICourseUpdate from model
-        // const courseData: ICourseUpdate = {};
-
-        // if (formData.name) courseData.name = formData.name;
-        // if (formData.description !== undefined) courseData.description = formData.description;
-        // if (formData.source !== undefined) courseData.source = formData.source;
-        // if (formData.officialWebsite !== undefined) courseData.officialWebsite = formData.officialWebsite;
-        // if (formData.courseImage) courseData.courseImage = formData.courseImage;
-
-        // updateCourse({ id: id || "", data: courseData }, {
-        //     onSuccess: () => {
-        //         toast.success("Course updated successfully");
-        //         navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME());
-        //     },
-        // });
+        updateCourse(formData, {
+            onSuccess: () => {
+                toast.success("Course updated successfully");
+                navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME());
+            },
+        });
     };
 
-    const handleFileUpload = async (file: File) => {
-        setFormData((prev) => ({
-            ...prev,
-            courseImage: file,
-        }));
-    };
-
+    /**
+     * handleFormDataChange - Handles the form data change
+     * @description Sets the form data
+     * @param data - The form data
+     */
     const handleFormDataChange = (data: ICourseCreate | ICourseUpdate) => {
         setFormData(data as ICourseUpdate);
     };
@@ -87,9 +77,8 @@ export const CourseEditContainer = () => {
                     onFormDataChange={handleFormDataChange}
                     onSubmit={handleSubmit}
                     action="edit"
-                    onFileUpload={handleFileUpload}
-                    isPending={false}
-                    isLoading={false}
+                    isPending={isPending}
+                    isLoading={isLoading}
                 />
             </div>
         </div>

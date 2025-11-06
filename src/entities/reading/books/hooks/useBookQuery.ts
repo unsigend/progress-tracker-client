@@ -60,9 +60,39 @@ export const useBookQuery = () => {
         setSearchParams(newParams);
     };
 
+    /**
+     * setSort - Handler for setting the sort
+     * @param sort - The sort to set
+     */
+    const setSort = (sort: IBookQuery["sort"]) => {
+        const newParams = new URLSearchParams(searchParams);
+        if (sort) {
+            newParams.set("sort", sort);
+        } else {
+            newParams.delete("sort");
+        }
+        setSearchParams(newParams);
+    };
+
+    /**
+     * setOrder - Handler for setting the order
+     * @param order - The order to set
+     */
+    const setOrder = (order: IBookQuery["order"]) => {
+        const newParams = new URLSearchParams(searchParams);
+        if (order) {
+            newParams.set("order", order);
+        } else {
+            newParams.delete("order");
+        }
+        setSearchParams(newParams);
+    };
+
     return {
         query,
         setPage,
         setValue,
+        setSort,
+        setOrder,
     };
 };

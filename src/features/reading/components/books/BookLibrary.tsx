@@ -3,11 +3,19 @@ import { useState } from "react";
 import { SearchBar } from "@/components/common/SearchBar";
 import { SmartPagination } from "@/components/common/SmartPagination";
 import { Button } from "@/components/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BookGrid } from "./BookGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type { IBook } from "@/entities/reading/books/models/model";
+import type { IBookQuery } from "@/entities/reading/books/models/model";
 
 /**
  * BookLibraryProps - Interface for BookLibrary component props
@@ -19,6 +27,10 @@ interface BookLibraryProps {
     totalPages: number;
     setCurrentPage: (page: number) => void;
     onSearchSubmit: (term: string) => void;
+    sort: IBookQuery["sort"];
+    order: IBookQuery["order"];
+    onSortChange: (sort: IBookQuery["sort"]) => void;
+    onOrderChange: (order: IBookQuery["order"]) => void;
 }
 
 /**
@@ -30,6 +42,10 @@ interface BookLibraryProps {
  * @param props.totalPages - Total number of pages
  * @param props.setCurrentPage - Handler for setting the current page
  * @param props.onSearchSubmit - Handler for search form submission
+ * @param props.sort - Current sort field
+ * @param props.order - Current sort order
+ * @param props.onSortChange - Handler for sort field change
+ * @param props.onOrderChange - Handler for sort order change
  * @returns BookLibrary component
  */
 export const BookLibrary = ({
@@ -39,6 +55,10 @@ export const BookLibrary = ({
     totalPages,
     setCurrentPage,
     onSearchSubmit,
+    sort,
+    order,
+    onSortChange,
+    onOrderChange,
 }: BookLibraryProps) => {
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -62,7 +82,7 @@ export const BookLibrary = ({
                             className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900
                     dark:from-gray-50 dark:via-gray-200 dark:to-gray-50 bg-clip-text text-transparent"
                         >
-                            The Library
+                            The Book Library
                         </h1>
                     </div>
 
@@ -80,8 +100,34 @@ export const BookLibrary = ({
                         </div>
                     </div>
 
-                    {/* Add Book Button - Right Aligned */}
-                    <div className="flex justify-end">
+                    {/* Sort and Order Controls + Add Book Button Row */}
+                    <div className="flex items-center justify-between gap-4 mt-4">
+                        {/* Sort and Order Controls */}
+                        <div className="flex items-center gap-3">
+                            <Select value={sort} onValueChange={onSortChange}>
+                                <SelectTrigger size="sm" className="w-[120px]">
+                                    <SelectValue placeholder="Sort by" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="createdAt">
+                                        Created At
+                                    </SelectItem>
+                                    <SelectItem value="title">Title</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Select value={order} onValueChange={onOrderChange}>
+                                <SelectTrigger size="sm" className="w-[90px]">
+                                    <SelectValue placeholder="Order" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="asc">ASC</SelectItem>
+                                    <SelectItem value="desc">DESC</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Add Book Button */}
                         <Link
                             to={ROUTES_CONSTANTS.DASHBOARD()
                                 .READING()

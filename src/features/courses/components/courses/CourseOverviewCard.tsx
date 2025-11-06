@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { GraduationCap } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 /**
@@ -7,10 +7,9 @@ import { cn } from "@/lib/utils";
  */
 interface CourseOverviewCardProps {
     id: string;
-    image?: string | null;
     title: string;
     source?: string | null;
-    category?: string | null;
+    categories?: string[];
     onNavigate: (id: string) => void;
     className?: string;
 }
@@ -19,95 +18,61 @@ interface CourseOverviewCardProps {
  * CourseOverviewCard - Component for displaying a course overview card
  * @param props - The props for the CourseOverviewCard component
  * @param props.id - The course ID
- * @param props.image - The course image URL
  * @param props.title - The course title
  * @param props.source - The course source (e.g., "Stanford University")
- * @param props.category - The course category (reserved for future use)
+ * @param props.categories - Array of course categories
  * @param props.onNavigate - Function to handle navigation when card is clicked
  * @param props.className - Optional additional className
  * @returns CourseOverviewCard component
  */
 export const CourseOverviewCard = ({
     id,
-    image,
     title,
     source,
-    category,
+    categories,
     onNavigate,
     className,
 }: CourseOverviewCardProps) => {
     return (
         <Card
             className={cn(
-                "group cursor-pointer overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1",
+                "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-1.5 h-full flex flex-col border-border/50 hover:border-border/80 bg-card/50 backdrop-blur-sm",
                 className
             )}
             onClick={() => onNavigate(id)}
         >
-            {/* Image Section - Top Half */}
-            <div className="relative h-48 w-full overflow-hidden bg-muted">
-                {image && image.trim() !== "" ? (
-                    <img
-                        src={image}
-                        alt={title}
-                        className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-                        loading="lazy"
-                        onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                            e.currentTarget.nextElementSibling?.classList.remove(
-                                "hidden"
-                            );
-                        }}
-                    />
-                ) : null}
-
-                {/* Placeholder */}
-                <div
-                    className={cn(
-                        "absolute inset-0 flex items-center justify-center bg-gradient-to-br from-muted to-muted/80",
-                        image && image.trim() !== "" ? "hidden" : ""
-                    )}
-                >
-                    <GraduationCap className="size-12 text-muted-foreground" />
-                </div>
-
-                {/* Subtle overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
-            </div>
-
-            {/* Content Section - Bottom Half */}
-            <div className="p-4 space-y-2">
+            <div className="p-8 sm:p-10 lg:p-12 flex-1 flex flex-col min-h-[220px] sm:min-h-[240px] lg:min-h-[260px]">
                 {/* Title */}
-                <h3 className="text-sm font-semibold text-foreground line-clamp-2 leading-snug">
+                <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-[1.2] tracking-[-0.02em] mb-4">
                     {title}
                 </h3>
 
-                {/* Source and Category Row */}
-                <div className="flex items-center justify-between gap-2">
-                    {/* Source */}
-                    <div className="flex-1 min-w-0">
-                        {source && source.trim() !== "" ? (
-                            <p className="text-xs text-muted-foreground truncate">
-                                {source}
-                            </p>
-                        ) : (
-                            <p className="text-xs text-muted-foreground">
-                                No source
-                            </p>
-                        )}
+                {/* Source */}
+                {source && source.trim() !== "" && (
+                    <div className="mb-6">
+                        <p className="text-sm sm:text-base text-muted-foreground/80 truncate font-medium">
+                            {source}
+                        </p>
                     </div>
+                )}
 
-                    {/* Category - Reserved space for future feature */}
-                    {category && category.trim() !== "" ? (
-                        <div className="flex-shrink-0">
-                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">
-                                {category}
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="w-0 h-0" aria-hidden="true" />
-                    )}
-                </div>
+                {/* Categories */}
+                {categories && categories.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-2.5 mt-auto pt-4 border-t border-border/30">
+                        {categories
+                            .filter((cat) => cat && cat.trim() !== "")
+                            .map((category, index) => (
+                                <Badge
+                                    key={index}
+                                    variant="secondary"
+                                    className="text-xs sm:text-sm font-normal px-3.5 py-1.5 bg-muted/50 hover:bg-muted/70 text-muted-foreground border-0 transition-all duration-200 group-hover:bg-muted/60"
+                                >
+                                    {category.charAt(0).toUpperCase() +
+                                        category.slice(1)}
+                                </Badge>
+                            ))}
+                    </div>
+                )}
             </div>
         </Card>
     );

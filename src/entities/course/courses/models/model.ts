@@ -7,11 +7,11 @@ export interface ICourse {
     description: string | null;
     source: string | null;
     isPublic: boolean;
-    officialWebsite: string | null;
-    courseImageUrl: string | null;
+    officialWebsiteUrl: string | null;
     createdById: string;
     createdAt: string;
     updatedAt: string;
+    categories?: string[];
 }
 
 /**
@@ -22,8 +22,8 @@ export interface ICourseCreate {
     description?: string;
     source?: string;
     isPublic?: boolean;
-    officialWebsite?: string;
-    courseImage?: File;
+    officialWebsiteUrl?: string;
+    categories?: string[];
 }
 
 /**
@@ -34,8 +34,8 @@ export interface ICourseUpdate {
     description?: string;
     source?: string;
     isPublic?: boolean;
-    officialWebsite?: string;
-    courseImage?: File;
+    officialWebsiteUrl?: string;
+    categories?: string[];
 }
 
 /**

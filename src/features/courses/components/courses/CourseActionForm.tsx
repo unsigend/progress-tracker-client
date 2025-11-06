@@ -8,14 +8,13 @@ import {
     GraduationCap,
     FileText,
     Link as LinkIcon,
-    Image,
     Loader2,
     BookOpen,
     Globe,
     Lock,
 } from "lucide-react";
 import { BackButton } from "@/components/common/BackButton";
-import { FileUpload } from "@/components/common/FileUpload";
+import { CategorySelector } from "./CategorySelector";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type {
     ICourseCreate,
@@ -32,7 +31,6 @@ interface CourseActionFormProps {
     onFormDataChange: (data: ICourseCreate | ICourseUpdate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     action: "add" | "edit";
-    onFileUpload?: (file: File) => Promise<void>;
     isLoading?: boolean;
     isPending?: boolean;
 }
@@ -46,7 +44,6 @@ interface CourseActionFormProps {
  * @param props.onFormDataChange - Handler for form data changes
  * @param props.onSubmit - Handler for form submission
  * @param props.action - Action type: "add" or "edit"
- * @param props.onFileUpload - Handler for file upload
  * @param props.isLoading - Whether data is loading (shows spinner overlay)
  * @param props.isPending - Whether form submission is pending (shows button text)
  * @returns CourseActionForm component
@@ -58,14 +55,13 @@ export const CourseActionForm = ({
     onFormDataChange,
     onSubmit,
     action,
-    onFileUpload,
     isLoading = false,
     isPending = false,
 }: CourseActionFormProps) => {
     const navigate = useNavigate();
     const handleInputChange = <K extends keyof (ICourseCreate & ICourseUpdate)>(
         field: K,
-        value: string | undefined | File | boolean
+        value: string | undefined | File | boolean | string[]
     ) => {
         onFormDataChange({
             ...formData,
@@ -184,6 +180,20 @@ export const CourseActionForm = ({
                             </div>
                         </div>
 
+                        {/* Categories Section */}
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                <BookOpen className="w-4 h-4" />
+                                Categories
+                            </Label>
+                            <CategorySelector
+                                selectedCategories={formData.categories || []}
+                                onCategoriesChange={(categories) =>
+                                    handleInputChange("categories", categories)
+                                }
+                            />
+                        </div>
+
                         {/* Course Source and Site URL Row */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Course Source Field */}
@@ -220,67 +230,19 @@ export const CourseActionForm = ({
                                     Course Website
                                 </Label>
                                 <Input
-                                    id="officialWebsite"
+                                    id="officialWebsiteUrl"
                                     type="url"
                                     placeholder="https://example.com"
-                                    value={formData.officialWebsite || ""}
+                                    value={formData.officialWebsiteUrl || ""}
                                     onChange={(e) =>
                                         handleInputChange(
-                                            "officialWebsite",
+                                            "officialWebsiteUrl",
                                             e.target.value
                                         )
                                     }
                                     className="w-full transition-all duration-200"
                                 />
                             </div>
-                        </div>
-
-                        {/* Course Image Section */}
-                        <div className="space-y-4">
-                            <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                                <Image className="w-4 h-4" />
-                                Course Image
-                            </Label>
-
-                            {onFileUpload && (
-                                <div className="space-y-2">
-                                    <FileUpload
-                                        handleUpload={onFileUpload}
-                                        text="Choose Course Image"
-                                        icon={<Image className="w-4 h-4" />}
-                                        acceptedFileTypes="image/*"
-                                        maxFileSizeMB={1}
-                                        className="w-full"
-                                    />
-
-                                    {/* Show selected file name */}
-                                    {formData.courseImage &&
-                                        formData.courseImage instanceof
-                                            File && (
-                                            <div className="flex items-center gap-2 p-3 bg-muted rounded-md border border-border">
-                                                <Image className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                                                <span className="text-sm text-foreground flex-1 truncate">
-                                                    {formData.courseImage.name}
-                                                </span>
-                                                <span className="text-xs text-muted-foreground flex-shrink-0">
-                                                    (
-                                                    {(
-                                                        formData.courseImage
-                                                            .size /
-                                                        1024 /
-                                                        1024
-                                                    ).toFixed(2)}{" "}
-                                                    MB)
-                                                </span>
-                                            </div>
-                                        )}
-
-                                    <p className="text-xs text-muted-foreground">
-                                        Upload an image file (PNG, JPG, GIF up
-                                        to 1MB)
-                                    </p>
-                                </div>
-                            )}
                         </div>
 
                         {/* Submit Button */}

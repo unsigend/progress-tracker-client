@@ -18,5 +18,6 @@ export const useCourse = (id: string) => {
             const course: CourseResponseDto = response.data;
             return mapToCourse(course);
         },
+        enabled: !!id,
     });
 };

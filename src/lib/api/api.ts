@@ -320,6 +320,8 @@ export interface RecordingCreateRequestDto {
 export interface CourseCreateRequestDto {
   /** The name of the course */
   name: string;
+  /** The categories of the course maximum 3 categories */
+  categories?: string[];
   /** The is public of the course */
   isPublic?: boolean;
   /** The description of the course */
@@ -331,8 +333,6 @@ export interface CourseCreateRequestDto {
    * @format uri
    */
   officialWebsiteUrl?: string;
-  /** The course image file of the course */
-  courseImage?: object;
 }
 
 export interface CourseResponseDto {
@@ -342,14 +342,14 @@ export interface CourseResponseDto {
   name: string;
   /** The is public of the course */
   isPublic: boolean;
+  /** The categories of the course */
+  categories: string[];
   /** The description of the course */
   description: string | null;
   /** The source of the course */
   source: string | null;
   /** The official website url of the course */
   officialWebsiteUrl: string | null;
-  /** The course image url of the course */
-  courseImageUrl: string | null;
   /**
    * The created at of the course
    * @format date-time
@@ -374,6 +374,8 @@ export interface CoursesResponseDto {
 export interface CourseUpdateRequestDto {
   /** The name of the course */
   name?: string;
+  /** The categories of the course maximum 3 categories */
+  categories?: string[];
   /** The is public of the course */
   isPublic?: boolean;
   /** The description of the course */
@@ -385,8 +387,6 @@ export interface CourseUpdateRequestDto {
    * @format uri
    */
   officialWebsiteUrl?: string;
-  /** The course image file of the course */
-  courseImage?: object;
 }
 
 export interface ReadingRecordingRequestDto {
@@ -1403,7 +1403,7 @@ export class Api<
      */
     courseControllerFindAll: (
       query?: {
-        /** The field to query */
+        /** The field to query default: name|categories */
         field?: string;
         /** The value to query */
         value?: string;
