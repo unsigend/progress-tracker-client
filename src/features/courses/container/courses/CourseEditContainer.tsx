@@ -27,7 +27,7 @@ export const CourseEditContainer = () => {
         name: "",
         description: "",
         source: "",
-        officialWebsiteUrl: "",
+        officialWebsiteUrl: undefined,
     });
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export const CourseEditContainer = () => {
                 name: course.name,
                 description: course.description || "",
                 source: course.source || "",
-                officialWebsiteUrl: course.officialWebsiteUrl || "",
+                officialWebsiteUrl: course.officialWebsiteUrl ?? undefined,
                 isPublic: course.isPublic,
                 categories: course.categories || [],
             });

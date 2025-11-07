@@ -1477,6 +1477,39 @@ export class Api<
      * No description
      *
      * @tags Course
+     * @name CourseControllerMyCourses
+     * @summary Find my courses
+     * @request GET:/api/v1/courses/my-courses
+     */
+    courseControllerMyCourses: (
+      query?: {
+        /** The field to query default: name|categories */
+        field?: string;
+        /** The value to query */
+        value?: string;
+        /** The sort to query */
+        sort?: string;
+        /** The order to query */
+        order?: "asc" | "desc";
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CoursesResponseDto, any>({
+        path: `/api/v1/courses/my-courses`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
      * @name CourseControllerFindById
      * @summary Find a course by id
      * @request GET:/api/v1/courses/{id}

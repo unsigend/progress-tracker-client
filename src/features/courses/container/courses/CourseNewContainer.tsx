@@ -22,7 +22,7 @@ export const CourseNewContainer = () => {
         name: "",
         description: "",
         source: "",
-        officialWebsite: "",
+        officialWebsiteUrl: undefined,
         isPublic: false,
     });
 

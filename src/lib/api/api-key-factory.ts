@@ -61,6 +61,9 @@ export const API_KEY_FACTORY = () => {
             },
         },
         COURSES: {
+            MY_COURSES: (isPrivate: boolean) => {
+                return [RESOURCES_KEYS.COURSES, "my-courses", isPrivate];
+            },
             LIST: (query: ICoursesQuery) => {
                 return [RESOURCES_KEYS.COURSES, "all", query];
             },

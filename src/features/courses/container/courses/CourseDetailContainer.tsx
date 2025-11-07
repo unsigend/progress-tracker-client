@@ -41,7 +41,7 @@ export const CourseDetailContainer = () => {
      */
     const handleEditClick = () => {
         if (!id) return;
-        navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().EDIT(id));
+        navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().EDIT(id));
     };
 
     /**

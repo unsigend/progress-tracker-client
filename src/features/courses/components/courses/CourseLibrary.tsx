@@ -164,7 +164,12 @@ export const CourseLibrary = ({
 
                     {/* Create Course Button - Right Aligned */}
                     <div className="flex justify-end mt-4">
-                        <Link to={ROUTES_CONSTANTS.DASHBOARD().COURSES().NEW()}>
+                        <Link
+                            to={ROUTES_CONSTANTS.DASHBOARD()
+                                .COURSES()
+                                .LIST()
+                                .NEW()}
+                        >
                             <Button
                                 variant="outline"
                                 size="sm"
@@ -186,7 +191,6 @@ export const CourseLibrary = ({
                         <CourseGrid
                             courses={courses.map((course) => ({
                                 id: course.id,
-                                image: course.courseImageUrl,
                                 title: course.name,
                                 source: course.source,
                                 categories: course.categories,

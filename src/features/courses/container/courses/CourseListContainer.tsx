@@ -37,7 +37,7 @@ export const CourseListContainer = () => {
     };
 
     const handleNavigate = (id: string) => {
-        navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().DETAIL(id));
+        navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().DETAIL(id));
     };
 
     // Derive selectedCategory from query.value if it matches a predefined category
