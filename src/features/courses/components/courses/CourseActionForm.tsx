@@ -223,7 +223,7 @@ export const CourseActionForm = ({
                             {/* Site URL Field */}
                             <div className="space-y-2">
                                 <Label
-                                    htmlFor="officialWebsite"
+                                    htmlFor="officialWebsiteUrl"
                                     className="flex items-center gap-2 text-sm font-medium text-foreground"
                                 >
                                     <LinkIcon className="w-4 h-4" />

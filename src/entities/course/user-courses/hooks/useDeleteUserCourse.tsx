@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IErrorResponse } from "@/entities/common/models/error";
-import type { AxiosError } from "axios";
-import { toast } from "sonner";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
+import type { IErrorResponse } from "@/entities/common/models/error";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 /**
- * useDeleteRecordings - Hook for deleting recordings
- * @param userBookId - The ID of the user book to delete recordings for
- * @returns The delete recordings mutation
+ * useDeleteUserCourse - Hook for deleting a user course
+ * @param id - The id of the user course to delete
+ * @returns useMutation hook for deleting a user course
  */
-export const useDeleteRecordings = (userBookId: string) => {
+export const useDeleteUserCourse = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: () => {
-            return ApiClient.api.userBookControllerDeleteRecordings(userBookId);
+        mutationFn: async (): Promise<void> => {
+            await ApiClient.api.userCourseControllerDelete(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: API_KEY_FACTORY().READING_RECORDINGS.LIST(userBookId),
+                queryKey: API_KEY_FACTORY().USER_COURSES.DETAIL(id),
             });
         },
         onError: (error: AxiosError<IErrorResponse>) => {

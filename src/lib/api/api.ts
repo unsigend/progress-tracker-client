@@ -389,6 +389,53 @@ export interface CourseUpdateRequestDto {
   officialWebsiteUrl?: string;
 }
 
+export interface UserCourseResponseDto {
+  /** The id of the user course */
+  id: string;
+  /** The course id of the user course */
+  courseId: string;
+  /** The status of the user course */
+  status: "IN_PROGRESS" | "COMPLETED";
+  /**
+   * The start date of the user course
+   * @format date-time
+   */
+  startDate: string | null;
+  /**
+   * The completed date of the user course
+   * @format date-time
+   */
+  completedDate: string | null;
+  /** The total minutes of the user course */
+  totalMinutes: number;
+  /** The total days of the user course */
+  totalDays: number;
+  /**
+   * The created at of the user course
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * The updated at of the user course
+   * @format date-time
+   */
+  updatedAt: string;
+  /** The course of the user course */
+  course: CourseResponseDto | null;
+}
+
+export interface UserCoursesResponseDto {
+  /** The user courses */
+  userCourses: UserCourseResponseDto[];
+  /** The total count of the user courses */
+  totalCount: number;
+}
+
+export interface UserCourseCreateRequestDto {
+  /** The course id of the user course */
+  courseId: string;
+}
+
 export interface ReadingRecordingRequestDto {
   /**
    * The start date of the reading recording
@@ -1476,6 +1523,107 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerFindAll
+     * @summary Find all user courses
+     * @request GET:/api/v1/user-course
+     */
+    userCourseControllerFindAll: (
+      query: {
+        /** The field to query */
+        field?: string;
+        /** The value to query */
+        value?: string;
+        /** The sort to query */
+        sort?: "createdAt" | "updatedAt" | "completedDate" | "startDate";
+        /** The order to query */
+        order?: "asc" | "desc";
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCoursesResponseDto, void>({
+        path: `/api/v1/user-course`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerCreate
+     * @summary Create a user course
+     * @request POST:/api/v1/user-course
+     */
+    userCourseControllerCreate: (
+      data: UserCourseCreateRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCourseResponseDto, void>({
+        path: `/api/v1/user-course`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerFindById
+     * @summary Find a user course by id
+     * @request GET:/api/v1/user-course/{id}
+     */
+    userCourseControllerFindById: (
+      id: string,
+      query: {
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCourseResponseDto, void>({
+        path: `/api/v1/user-course/${id}`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerDelete
+     * @summary Delete a user course
+     * @request DELETE:/api/v1/user-course/{id}
+     */
+    userCourseControllerDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/user-course/${id}`,
+        method: "DELETE",
         ...params,
       }),
 

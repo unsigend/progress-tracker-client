@@ -10,7 +10,7 @@ import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
  */
 export const useRecordings = (userBookId: string) => {
     return useQuery({
-        queryKey: API_KEY_FACTORY().RECORDINGS.LIST(userBookId),
+        queryKey: API_KEY_FACTORY().READING_RECORDINGS.LIST(userBookId),
         queryFn: async (): Promise<IRecordings> => {
             const response =
                 await ApiClient.api.userBookControllerFindRecordings(
