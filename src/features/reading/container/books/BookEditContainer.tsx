@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BookActionForm } from "@/features/reading/components/books/BookActionForm";
 import { useBook } from "@/entities/reading/books/hooks/useBook";
 import { useUpdateBook } from "@/entities/reading/books/hooks/useUpdateBook";
@@ -18,7 +18,7 @@ export const BookEditContainer = () => {
     const { mutate: updateBook, isPending: isUpdating } = useUpdateBook(
         id || ""
     );
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<IBookUpdate>({
         title: "",
         author: "",
@@ -32,11 +32,11 @@ export const BookEditContainer = () => {
         if (book) {
             setFormData({
                 title: book.title,
-                author: book.author || "",
-                description: book.description || "",
+                author: book.author || undefined,
+                description: book.description || undefined,
                 pages: book.pages,
-                ISBN10: book.ISBN10 || "",
-                ISBN13: book.ISBN13 || "",
+                ISBN10: book.ISBN10 || undefined,
+                ISBN13: book.ISBN13 || undefined,
             });
         }
     }, [book]);
@@ -49,26 +49,13 @@ export const BookEditContainer = () => {
             return;
         }
 
-        // Build book update data using IBookUpdate from model
-        const bookData: IBookUpdate = {};
-
-        if (formData.title !== book?.title) bookData.title = formData.title;
-        if (formData.author !== book?.author) bookData.author = formData.author;
-        if (formData.description !== book?.description)
-            bookData.description = formData.description;
-        if (formData.pages !== book?.pages) bookData.pages = formData.pages;
-        if (formData.ISBN10 !== book?.ISBN10) bookData.ISBN10 = formData.ISBN10;
-        if (formData.ISBN13 !== book?.ISBN13) bookData.ISBN13 = formData.ISBN13;
-        if (formData.coverImage) bookData.coverImage = formData.coverImage;
-
-        updateBook(bookData, {
+        updateBook(formData, {
             onSuccess: () => {
                 toast.success("Book updated successfully");
                 // Force a full page reload to clear browser image cache
-                window.location.href = ROUTES_CONSTANTS.DASHBOARD()
-                    .READING()
-                    .BOOKS()
-                    .LIST();
+                navigate(
+                    ROUTES_CONSTANTS.DASHBOARD().READING().BOOKS().DETAIL(id)
+                );
             },
         });
     };

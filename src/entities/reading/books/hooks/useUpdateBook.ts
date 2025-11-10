@@ -41,6 +41,9 @@ export const useUpdateBook = (id: string) => {
             if (book.coverImage) {
                 formData.append("coverImage", book.coverImage);
             }
+            if (book.pages) {
+                formData.append("pages", book.pages.toString());
+            }
             const response = await ApiClient.api.bookControllerUpdate(
                 id,
                 formData as BookUpdateRequestDto,

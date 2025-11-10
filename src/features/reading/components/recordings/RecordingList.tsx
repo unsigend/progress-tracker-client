@@ -122,7 +122,7 @@ export const RecordingList = ({
                                                   }`
                                                 : "N/A"}
                                         </TableCell>
-                                        <TableCell className="text-muted-foreground">
+                                        <TableCell>
                                             {recording.notes &&
                                             recording.notes.length > 0 ? (
                                                 recording.notes
