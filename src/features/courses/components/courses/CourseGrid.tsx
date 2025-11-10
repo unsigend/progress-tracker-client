@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router";
 import { cn } from "@/lib/utils";
 import { CourseOverviewCard } from "./CourseOverviewCard";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 
 /**
  * CourseGridItem - Interface for a course item in the grid
@@ -17,7 +19,8 @@ interface CourseGridItem {
 interface CourseGridProps {
     courses: CourseGridItem[];
     className?: string;
-    onNavigate: (id: string) => void;
+    onNavigate?: (id: string) => void;
+    to?: (id: string) => string;
 }
 
 /**
@@ -25,14 +28,18 @@ interface CourseGridProps {
  * @param props - The props for the CourseGrid component
  * @param props.courses - Array of course items to display
  * @param props.className - Additional CSS classes
- * @param props.onNavigate - Function to handle navigation when a course card is clicked
+ * @param props.onNavigate - Optional function to handle navigation when a course card is clicked (for backwards compatibility)
+ * @param props.to - Optional function to generate link URL (preferred over onNavigate)
  * @returns CourseGrid component
  */
 export const CourseGrid = ({
     courses,
     className,
     onNavigate,
+    to,
 }: CourseGridProps) => {
+    const navigate = useNavigate();
+
     if (!courses || courses.length === 0) {
         return (
             <div
@@ -55,8 +62,7 @@ export const CourseGrid = ({
                 "grid-cols-1",
                 "sm:grid-cols-2",
                 "md:grid-cols-3",
-                "lg:grid-cols-4",
-                "xl:grid-cols-5",
+                "3xl:grid-cols-5",
                 className
             )}
         >
@@ -67,7 +73,18 @@ export const CourseGrid = ({
                     title={course.title}
                     source={course.source}
                     categories={course.categories}
-                    onNavigate={onNavigate}
+                    onNavigate={
+                        to
+                            ? () => navigate(to(course.id))
+                            : onNavigate ||
+                              ((id: string) =>
+                                  navigate(
+                                      ROUTES_CONSTANTS.DASHBOARD()
+                                          .COURSES()
+                                          .LIST()
+                                          .DETAIL(id)
+                                  ))
+                    }
                 />
             ))}
         </div>

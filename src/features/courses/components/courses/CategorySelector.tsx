@@ -36,13 +36,13 @@ export const CategorySelector = ({
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
-    const maxCategories = COURSE_CONSTANTS.CATEGORIES_MAX_LENGTH;
+    const maxCategories = COURSE_CONSTANTS.COURSE.CATEGORIES_MAX_LENGTH;
     const canAddMore = selectedCategories.length < maxCategories;
 
     // Filter predefined categories based on search query
     const query = searchQuery.toLowerCase().trim();
     const filteredCategories = query
-        ? COURSE_CONSTANTS.PREDEFINED_CATEGORIES.filter((cat) =>
+        ? COURSE_CONSTANTS.COURSE.PREDEFINED_CATEGORIES.filter((cat) =>
               cat.toLowerCase().includes(query)
           )
         : [];
@@ -51,7 +51,7 @@ export const CategorySelector = ({
     const trimmedQuery = searchQuery.trim();
     const isCustomCategory =
         trimmedQuery &&
-        !COURSE_CONSTANTS.PREDEFINED_CATEGORIES.some(
+        !COURSE_CONSTANTS.COURSE.PREDEFINED_CATEGORIES.some(
             (cat) => cat.toLowerCase() === trimmedQuery.toLowerCase()
         );
 

@@ -81,6 +81,14 @@ export const ROUTES_CONSTANTS = {
                                 `${DASHBOARD_ROOT}/courses/list/${id ?? ":id"}`,
                         };
                     },
+                    USER_COURSES() {
+                        return {
+                            DETAIL: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/courses/user-courses/${
+                                    id ?? ":id"
+                                }`,
+                        };
+                    },
                 };
             },
             PROJECTS() {

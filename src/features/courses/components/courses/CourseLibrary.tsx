@@ -93,7 +93,7 @@ export const CourseLibrary = ({
     const displayCategories =
         allCategories.length > 0
             ? allCategories
-            : COURSE_CONSTANTS.PREDEFINED_CATEGORIES.slice(0, 12);
+            : COURSE_CONSTANTS.COURSE.PREDEFINED_CATEGORIES.slice(0, 12);
 
     return (
         <div className="w-full">

@@ -55,19 +55,30 @@ const PrivateCourseCardItem = ({
     return (
         <Card
             className={cn(
-                "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-1.5 h-full flex flex-col border-border/50 hover:border-border/80 bg-card/50 backdrop-blur-sm"
+                "group cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-1.5 h-full flex flex-col border-border/50 hover:border-border/80 bg-card/50 backdrop-blur-sm relative overflow-hidden"
             )}
             onClick={() => onNavigate(course.id)}
         >
-            <div className="p-8 sm:p-10 lg:p-12 flex-1 flex flex-col min-h-[220px] sm:min-h-[240px] lg:min-h-[260px]">
+            <div className="p-8 sm:p-10 lg:p-12 flex-1 flex flex-col min-h-[220px] sm:min-h-[240px] lg:min-h-[260px] relative">
+                {/* Mark as Public Button - Top Right */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleMarkAsPublic}
+                    className="absolute top-4 right-4 sm:top-6 sm:right-6 h-8 w-8 opacity-60 hover:opacity-100 transition-opacity duration-200 hover:bg-accent hover:text-accent-foreground z-10"
+                    title="Mark as Public"
+                >
+                    <Globe className="h-4 w-4" />
+                </Button>
+
                 {/* Title */}
-                <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-[1.2] tracking-[-0.02em] mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-[1.2] tracking-[-0.02em] mb-4 pr-12">
                     {course.name}
                 </h3>
 
                 {/* Source */}
                 {course.source && course.source.trim() !== "" && (
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <p className="text-sm sm:text-base text-muted-foreground/80 truncate font-medium">
                             {course.source}
                         </p>
@@ -76,7 +87,7 @@ const PrivateCourseCardItem = ({
 
                 {/* Categories */}
                 {course.categories && course.categories.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2.5 mb-4">
+                    <div className="flex flex-wrap items-center gap-2.5 mt-auto">
                         {course.categories
                             .filter((cat) => cat && cat.trim() !== "")
                             .map((category, index) => (
@@ -91,19 +102,6 @@ const PrivateCourseCardItem = ({
                             ))}
                     </div>
                 )}
-
-                {/* Mark as Public Button */}
-                <div className="mt-auto pt-4 border-t border-border/30">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleMarkAsPublic}
-                        className="w-full flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground"
-                    >
-                        <Globe className="w-4 h-4" />
-                        Mark as Public
-                    </Button>
-                </div>
             </div>
         </Card>
     );
@@ -130,7 +128,7 @@ export const PrivateCoursesCard = ({
         <Card className={cn("min-h-[200px]", className)}>
             <CardHeader>
                 <CardTitle className="text-xl font-semibold text-foreground flex items-center justify-between">
-                    Your Private Courses
+                    My Private Courses
                     <Link
                         to={ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().NEW()}
                     >
@@ -165,8 +163,7 @@ export const PrivateCoursesCard = ({
                             "grid-cols-1",
                             "sm:grid-cols-2",
                             "md:grid-cols-3",
-                            "lg:grid-cols-4",
-                            "xl:grid-cols-5"
+                            "3xl:grid-cols-5"
                         )}
                     >
                         {courses.map((course) => (

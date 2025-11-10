@@ -1663,6 +1663,24 @@ export class Api<
     /**
      * No description
      *
+     * @tags UserCourse
+     * @name UserCourseControllerMarkComplete
+     * @summary Mark a user course as complete
+     * @request POST:/api/v1/user-course/{id}/mark-complete
+     */
+    userCourseControllerMarkComplete: (
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/v1/user-course/${id}/mark-complete`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Statistics
      * @name StatisticsControllerGetReadingRecording
      * @summary Get the reading recording statistics

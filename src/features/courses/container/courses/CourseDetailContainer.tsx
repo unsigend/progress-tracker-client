@@ -6,6 +6,7 @@ import { useDeleteCourse } from "@/entities/course/courses/hooks/useDeleteCourse
 import { useMe } from "@/entities/users/hooks/useMe";
 import { UserRole } from "@/entities/users/models/model";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import { useCreateUserCourse } from "@/entities/course/user-courses/hooks/useCreateUserCourse";
 
 /**
  * CourseDetailContainer - Container component for displaying course details
@@ -16,6 +17,7 @@ export const CourseDetailContainer = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { data: course, isLoading } = useCourse(id || "");
+    const { mutate: createUserCourse } = useCreateUserCourse();
     const { data: currentUser } = useMe();
 
     // Check if user has permission to edit/delete the course
@@ -31,8 +33,17 @@ export const CourseDetailContainer = () => {
      * @description Add course functionality (placeholder - to be implemented)
      */
     const handleAddClick = () => {
-        // TODO: Implement add course functionality
-        toast.info("Add course functionality coming soon");
+        createUserCourse(
+            { courseId: id || "" },
+            {
+                onSuccess: () => {
+                    toast.success("Course added successfully");
+                    navigate(
+                        ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().HOME()
+                    );
+                },
+            }
+        );
     };
 
     /**
@@ -54,7 +65,7 @@ export const CourseDetailContainer = () => {
         deleteCourse(undefined, {
             onSuccess: () => {
                 toast.success("Course deleted successfully");
-                navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME());
+                navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().HOME());
             },
         });
     };

@@ -25,7 +25,8 @@ export const CourseListContainer = () => {
         if (totalCount !== undefined) {
             setTotalPages(
                 Math.ceil(
-                    totalCount / (query.limit || COURSE_CONSTANTS.DEFAULT_LIMIT)
+                    totalCount /
+                        (query.limit || COURSE_CONSTANTS.COURSE.DEFAULT_LIMIT)
                 )
             );
         }
@@ -41,9 +42,9 @@ export const CourseListContainer = () => {
     };
 
     // Derive selectedCategory from query.value if it matches a predefined category
-    const searchValue = query.value || COURSE_CONSTANTS.DEFAULT_VALUE;
+    const searchValue = query.value || COURSE_CONSTANTS.COURSE.DEFAULT_VALUE;
     const selectedCategory = searchValue
-        ? COURSE_CONSTANTS.PREDEFINED_CATEGORIES.find(
+        ? COURSE_CONSTANTS.COURSE.PREDEFINED_CATEGORIES.find(
               (cat) => cat.toLowerCase() === searchValue.toLowerCase()
           ) || null
         : null;
@@ -52,7 +53,7 @@ export const CourseListContainer = () => {
         <CourseLibrary
             courses={coursesData?.courses || []}
             isLoading={isLoading}
-            currentPage={query.page || COURSE_CONSTANTS.DEFAULT_PAGE}
+            currentPage={query.page || COURSE_CONSTANTS.COURSE.DEFAULT_PAGE}
             totalPages={totalPages}
             setCurrentPage={setPage}
             searchValue={searchValue}

@@ -13,19 +13,19 @@ export const useCourseQuery = () => {
     const query: ICoursesQuery = useMemo<ICoursesQuery>(() => {
         const page = searchParams.get("page")
             ? Number(searchParams.get("page"))
-            : COURSE_CONSTANTS.DEFAULT_PAGE;
+            : COURSE_CONSTANTS.COURSE.DEFAULT_PAGE;
         const limit = searchParams.get("limit")
             ? Number(searchParams.get("limit"))
-            : COURSE_CONSTANTS.DEFAULT_LIMIT;
+            : COURSE_CONSTANTS.COURSE.DEFAULT_LIMIT;
         const value =
-            searchParams.get("value") || COURSE_CONSTANTS.DEFAULT_VALUE;
+            searchParams.get("value") || COURSE_CONSTANTS.COURSE.DEFAULT_VALUE;
 
         return {
             page,
             limit,
             value,
-            order: COURSE_CONSTANTS.DEFAULT_ORDER,
-            sort: COURSE_CONSTANTS.DEFAULT_SORT,
+            order: COURSE_CONSTANTS.COURSE.DEFAULT_ORDER,
+            sort: COURSE_CONSTANTS.COURSE.DEFAULT_SORT,
         };
     }, [searchParams]);
 
@@ -51,7 +51,7 @@ export const useCourseQuery = () => {
             newParams.delete("value");
         }
         // Reset to first page when search/category changes
-        newParams.set("page", COURSE_CONSTANTS.DEFAULT_PAGE.toString());
+        newParams.set("page", COURSE_CONSTANTS.COURSE.DEFAULT_PAGE.toString());
         setSearchParams(newParams);
     };
 

@@ -53,7 +53,7 @@ export const CourseEditContainer = () => {
         updateCourse(formData, {
             onSuccess: () => {
                 toast.success("Course updated successfully");
-                navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME());
+                navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().HOME());
             },
         });
     };

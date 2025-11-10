@@ -115,7 +115,9 @@ export const UserBookShowCard = ({
                                 }
                                 className="text-sm px-4 py-2"
                             >
-                                {userBook.status}
+                                {userBook.status === "COMPLETED"
+                                    ? "Completed"
+                                    : "In Progress"}
                             </Badge>
                         </div>
                     </div>
