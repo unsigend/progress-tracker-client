@@ -12,14 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { Calendar, BookOpen, GitMerge } from "lucide-react";
-import type { IRecording } from "@/entities/reading/recordings/model/model";
+import type { IReadingRecording } from "@/entities/reading/recordings/model/model";
 import { DatesUtils } from "@/lib/utils/dates";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
-    recordings: IRecording[];
+    recordings: IReadingRecording[];
     isLoading: boolean;
     onDelete: () => void;
 }

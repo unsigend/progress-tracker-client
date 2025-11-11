@@ -89,6 +89,12 @@ export const ROUTES_CONSTANTS = {
                                 }`,
                         };
                     },
+                    RECORDINGS() {
+                        return {
+                            NEW: (): string =>
+                                `${DASHBOARD_ROOT}/courses/recordings/new`,
+                        };
+                    },
                 };
             },
             PROJECTS() {

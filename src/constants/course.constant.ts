@@ -39,4 +39,17 @@ export const COURSE_CONSTANTS = {
         DEFAULT_ORDER: "desc" as const,
         MAXIMUM_TRACKED_COURSES: 3 as const,
     },
+    RECORDING: {
+        PREDEFINED_RECORD_TYPES: [
+            "LECTURE",
+            "DISCUSSION",
+            "RECITATION",
+            "QUIZ",
+            "ASSIGNMENT",
+            "HOMEWORK",
+            "LAB",
+            "PROJECT",
+            "OTHER",
+        ],
+    },
 };

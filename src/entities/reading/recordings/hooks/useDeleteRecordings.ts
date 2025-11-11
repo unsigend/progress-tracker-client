@@ -6,11 +6,11 @@ import { toast } from "sonner";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 
 /**
- * useDeleteRecordings - Hook for deleting recordings
+ * useDeleteReadingRecordings - Hook for deleting recordings
  * @param userBookId - The ID of the user book to delete recordings for
- * @returns The delete recordings mutation
+ * @returns The delete reading recordings mutation
  */
-export const useDeleteRecordings = (userBookId: string) => {
+export const useDeleteReadingRecordings = (userBookId: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: () => {

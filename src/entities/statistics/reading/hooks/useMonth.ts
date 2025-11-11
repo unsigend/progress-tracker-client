@@ -5,7 +5,7 @@ import { ApiClient } from "@/lib/api/api-client";
 import { DatesUtils } from "@/lib/utils/dates";
 import type { IReadingStatisticsDetail } from "../models/model";
 import type { ReadingRecordingDetailResponseDto } from "@/lib/api/api";
-import type { IRecording } from "@/entities/reading/recordings/model/model";
+import type { IReadingRecording } from "@/entities/reading/recordings/model/model";
 import { mapToRecording } from "@/entities/reading/recordings/model/mapper";
 
 /**
@@ -60,7 +60,7 @@ export const useMonth = (weekOffset: number = 0) => {
                     const data: ReadingRecordingDetailResponseDto =
                         response.data;
 
-                    const recordings: IRecording[] =
+                    const recordings: IReadingRecording[] =
                         data.recordings.map(mapToRecording);
 
                     return {
@@ -74,7 +74,7 @@ export const useMonth = (weekOffset: number = 0) => {
 
     // Merge all recordings from fetched months
     const mergedData = useMemo(() => {
-        const allRecordings: IRecording[] = [];
+        const allRecordings: IReadingRecording[] = [];
         let totalCount = 0;
         let isLoading = false;
 

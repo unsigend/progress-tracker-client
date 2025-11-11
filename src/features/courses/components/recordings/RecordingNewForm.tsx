@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router";
 import { format } from "date-fns";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
@@ -21,43 +20,44 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import {
-    BookOpen,
+    GraduationCap,
     Calendar as CalendarIcon,
     Clock,
     FileText,
-    LibraryBig,
+    BookOpen,
 } from "lucide-react";
 import { BackButton } from "@/components/common/BackButton";
 import { TimePicker } from "@/components/common/TimePicker";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
-import type { IReadingRecordingCreate } from "@/entities/reading/recordings/model/model";
+import { COURSE_CONSTANTS } from "@/constants/course.constant";
+import type { IUserCourseWithCourse } from "@/entities/course/user-courses/model/model";
+import type { ICourseRecordingCreate } from "@/entities/course/recordings/models/model";
 import { calculateUtils } from "@/lib/utils/calculate";
 
 /**
  * RecordingNewFormProps - Interface for RecordingNewForm component props
  */
 interface RecordingNewFormProps {
-    formData: IReadingRecordingCreate;
-    onFormDataChange: (data: IReadingRecordingCreate) => void;
+    formData: ICourseRecordingCreate;
+    onFormDataChange: (data: ICourseRecordingCreate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    userBooks: IUserBookWithBook[];
+    userCourses: IUserCourseWithCourse[];
     isLoading?: boolean;
-    selectedUserBookId: string;
-    onUserBookIdChange: (id: string) => void;
+    selectedUserCourseId: string;
+    onUserCourseIdChange: (id: string) => void;
     isSubmitting?: boolean;
 }
 
 /**
- * RecordingNewForm - Pure UI component for creating a new recording
+ * RecordingNewForm - Pure UI component for creating a new course recording
  * @param props - The props for the RecordingNewForm component
  * @param props.formData - The recording form data
  * @param props.onFormDataChange - Handler for form data changes
  * @param props.onSubmit - Handler for form submission
- * @param props.userBooks - Array of user books to select from
- * @param props.isLoading - Whether user books are loading
- * @param props.selectedUserBookId - Currently selected user book ID
- * @param props.onUserBookIdChange - Handler for user book selection change
+ * @param props.userCourses - Array of user courses to select from
+ * @param props.isLoading - Whether user courses are loading
+ * @param props.selectedUserCourseId - Currently selected user course ID
+ * @param props.onUserCourseIdChange - Handler for user course selection change
  * @param props.isSubmitting - Whether the form is being submitted
  * @returns RecordingNewForm component
  */
@@ -65,18 +65,13 @@ export const RecordingNewForm = ({
     formData,
     onFormDataChange,
     onSubmit,
-    userBooks,
+    userCourses,
     isLoading = false,
-    selectedUserBookId,
-    onUserBookIdChange,
+    selectedUserCourseId,
+    onUserCourseIdChange,
     isSubmitting = false,
 }: RecordingNewFormProps) => {
     // UI-only state for form interactions
-    const [pageRange, setPageRange] = useState({
-        from: "",
-        to: "",
-    });
-
     const [timeRange, setTimeRange] = useState({
         from: "",
         to: "",
@@ -99,25 +94,6 @@ export const RecordingNewForm = ({
     };
 
     /**
-     * handlePageRangeChange - Handler for page range changes
-     * @param field - Field name ("from" or "to")
-     * @param value - Field value
-     */
-    const handlePageRangeChange = (field: "from" | "to", value: string) => {
-        const newPageRange = { ...pageRange, [field]: value };
-        setPageRange(newPageRange);
-
-        const calculatedPages = calculateUtils.calculatePages(
-            newPageRange.from,
-            newPageRange.to
-        );
-        onFormDataChange({
-            ...formData,
-            pages: calculatedPages,
-        });
-    };
-
-    /**
      * handleTimeRangeChange - Handler for time range changes
      * @param field - Field name ("from" or "to")
      * @param value - Field value
@@ -136,12 +112,23 @@ export const RecordingNewForm = ({
         });
     };
 
+    /**
+     * handleRecordTypeChange - Handler for record type selection change
+     * @param value - Selected record type
+     */
+    const handleRecordTypeChange = (value: string) => {
+        onFormDataChange({
+            ...formData,
+            recordType: value,
+        });
+    };
+
     const isFormValid =
-        selectedUserBookId &&
-        selectedUserBookId !== "no-books" &&
-        pageRange.from &&
-        pageRange.to &&
-        formData.pages > 0;
+        selectedUserCourseId &&
+        selectedUserCourseId !== "no-courses" &&
+        formData.date &&
+        formData.minutes > 0 &&
+        formData.recordType;
 
     const navigate = useNavigate();
 
@@ -155,27 +142,27 @@ export const RecordingNewForm = ({
 
                 <div className="flex justify-center mb-4">
                     <div className="p-3 bg-muted rounded-full">
-                        <LibraryBig className="w-8 h-8 text-muted-foreground" />
+                        <GraduationCap className="w-8 h-8 text-muted-foreground" />
                     </div>
                 </div>
                 <CardTitle className="text-2xl font-semibold text-foreground">
-                    New Reading Session
+                    New Course Session
                 </CardTitle>
                 <p className="text-muted-foreground mt-2">
-                    Record your reading progress for today
+                    Record your course progress for today
                 </p>
             </CardHeader>
 
             <CardContent>
                 <form className="space-y-6" onSubmit={onSubmit}>
-                    {/* Book Selection */}
+                    {/* Course Selection */}
                     <div className="space-y-2">
                         <Label
-                            htmlFor="book-select"
+                            htmlFor="course-select"
                             className="flex items-center gap-2 text-sm font-medium text-foreground"
                         >
                             <BookOpen className="w-4 h-4" />
-                            Select Book
+                            Select Course
                         </Label>
                         {isLoading ? (
                             <div className="flex items-center justify-center py-8">
@@ -183,41 +170,36 @@ export const RecordingNewForm = ({
                             </div>
                         ) : (
                             <Select
-                                value={selectedUserBookId || ""}
-                                onValueChange={onUserBookIdChange}
+                                value={selectedUserCourseId || ""}
+                                onValueChange={onUserCourseIdChange}
                             >
                                 <SelectTrigger
-                                    id="book-select"
+                                    id="course-select"
                                     className="w-full"
                                 >
-                                    <SelectValue placeholder="Choose a book to read">
-                                        {selectedUserBookId &&
-                                        userBooks.length > 0
+                                    <SelectValue placeholder="Choose a course">
+                                        {selectedUserCourseId &&
+                                        userCourses.length > 0
                                             ? (() => {
-                                                  const selectedUserBook =
-                                                      userBooks.find(
-                                                          (userBook) =>
-                                                              userBook.id ===
-                                                              selectedUserBookId
+                                                  const selectedUserCourse =
+                                                      userCourses.find(
+                                                          (userCourse) =>
+                                                              userCourse.id ===
+                                                              selectedUserCourseId
                                                       );
-                                                  const selectedBook =
-                                                      selectedUserBook?.book;
-                                                  return selectedBook ? (
+                                                  const selectedCourse =
+                                                      selectedUserCourse?.course;
+                                                  return selectedCourse ? (
                                                       <div className="flex flex-col text-left">
                                                           <span className="font-medium">
-                                                              {selectedBook.title.includes(
-                                                                  ":"
-                                                              )
-                                                                  ? selectedBook.title.split(
-                                                                        ":"
-                                                                    )[0]
-                                                                  : selectedBook.title}
+                                                              {
+                                                                  selectedCourse.name
+                                                              }
                                                           </span>
-                                                          {selectedBook.author && (
+                                                          {selectedCourse.source && (
                                                               <span className="text-xs text-muted-foreground">
-                                                                  by{" "}
                                                                   {
-                                                                      selectedBook.author
+                                                                      selectedCourse.source
                                                                   }
                                                               </span>
                                                           )}
@@ -228,34 +210,28 @@ export const RecordingNewForm = ({
                                     </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {userBooks.length > 0 ? (
-                                        userBooks
+                                    {userCourses.length > 0 ? (
+                                        userCourses
                                             .filter(
-                                                (userBook) =>
-                                                    userBook.book !== null
+                                                (userCourse) =>
+                                                    userCourse.course !== null
                                             )
-                                            .map((userBook) => {
-                                                const book = userBook.book!;
+                                            .map((userCourse) => {
+                                                const course =
+                                                    userCourse.course!;
                                                 return (
                                                     <SelectItem
-                                                        key={userBook.id}
-                                                        value={userBook.id}
+                                                        key={userCourse.id}
+                                                        value={userCourse.id}
                                                     >
                                                         <div className="flex flex-col">
                                                             <span className="font-medium">
-                                                                {book.title.includes(
-                                                                    ":"
-                                                                )
-                                                                    ? book.title.split(
-                                                                          ":"
-                                                                      )[0]
-                                                                    : book.title}
+                                                                {course.name}
                                                             </span>
-                                                            {book.author && (
+                                                            {course.source && (
                                                                 <span className="text-xs text-left text-muted-foreground">
-                                                                    by{" "}
                                                                     {
-                                                                        book.author
+                                                                        course.source
                                                                     }
                                                                 </span>
                                                             )}
@@ -264,8 +240,8 @@ export const RecordingNewForm = ({
                                                 );
                                             })
                                     ) : (
-                                        <SelectItem value="no-books" disabled>
-                                            No books found - add book first
+                                        <SelectItem value="no-courses" disabled>
+                                            No courses found - add course first
                                         </SelectItem>
                                     )}
                                 </SelectContent>
@@ -280,7 +256,7 @@ export const RecordingNewForm = ({
                             className="flex items-center gap-2 text-sm font-medium text-foreground"
                         >
                             <CalendarIcon className="w-4 h-4" />
-                            Reading Date
+                            Session Date
                         </Label>
                         <Popover
                             open={calendarOpen}
@@ -316,73 +292,48 @@ export const RecordingNewForm = ({
                         </Popover>
                     </div>
 
-                    {/* Pages Range */}
+                    {/* Record Type Selection */}
                     <div className="space-y-2">
-                        <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                        <Label
+                            htmlFor="record-type-select"
+                            className="flex items-center gap-2 text-sm font-medium text-foreground"
+                        >
                             <FileText className="w-4 h-4" />
-                            Pages Read
+                            Record Type
                         </Label>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="space-y-1">
-                                <Label
-                                    htmlFor="page-from"
-                                    className="text-xs text-muted-foreground"
-                                >
-                                    From Page
-                                </Label>
-                                <Input
-                                    id="page-from"
-                                    type="number"
-                                    placeholder="10"
-                                    min="1"
-                                    value={pageRange.from}
-                                    onChange={(e) =>
-                                        handlePageRangeChange(
-                                            "from",
-                                            e.target.value
-                                        )
-                                    }
-                                    className="w-full"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <Label
-                                    htmlFor="page-to"
-                                    className="text-xs text-muted-foreground"
-                                >
-                                    To Page
-                                </Label>
-                                <Input
-                                    id="page-to"
-                                    type="number"
-                                    placeholder="15"
-                                    min="1"
-                                    value={pageRange.to}
-                                    onChange={(e) =>
-                                        handlePageRangeChange(
-                                            "to",
-                                            e.target.value
-                                        )
-                                    }
-                                    className="w-full"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <Label className="text-xs text-muted-foreground">
-                                    Total Pages
-                                </Label>
-                                <div className="flex items-center h-9 px-3 py-2 border border-input rounded-md bg-muted text-sm text-muted-foreground">
-                                    {formData.pages} pages
-                                </div>
-                            </div>
-                        </div>
+                        <Select
+                            value={formData.recordType || ""}
+                            onValueChange={handleRecordTypeChange}
+                        >
+                            <SelectTrigger
+                                id="record-type-select"
+                                className="w-full"
+                            >
+                                <SelectValue placeholder="Select record type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {COURSE_CONSTANTS.RECORDING.PREDEFINED_RECORD_TYPES.map(
+                                    (recordType) => (
+                                        <SelectItem
+                                            key={recordType}
+                                            value={recordType}
+                                        >
+                                            {recordType.charAt(0) +
+                                                recordType
+                                                    .slice(1)
+                                                    .toLowerCase()}
+                                        </SelectItem>
+                                    )
+                                )}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     {/* Time Range */}
                     <div className="space-y-2">
                         <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
                             <Clock className="w-4 h-4" />
-                            Reading Time (Optional)
+                            Study Time
                         </Label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-1">
@@ -431,7 +382,7 @@ export const RecordingNewForm = ({
                         </Label>
                         <Textarea
                             id="notes"
-                            placeholder="Add any thoughts, quotes, or reflections about your reading..."
+                            placeholder="Add any thoughts, key concepts, or reflections about your study session..."
                             value={formData.notes || ""}
                             onChange={(
                                 e: React.ChangeEvent<HTMLTextAreaElement>
@@ -448,7 +399,7 @@ export const RecordingNewForm = ({
                     {/* Submit Button */}
                     <div className="flex justify-end gap-3 pt-4">
                         <Link
-                            to={ROUTES_CONSTANTS.DASHBOARD().READING().HOME()}
+                            to={ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME()}
                         >
                             <Button
                                 type="button"

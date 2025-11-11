@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { RecordingNewForm } from "@/features/reading/components/recordings/RecordingNewForm";
 import { useUserBooks } from "@/entities/reading/user-books/hooks/useUserBooks";
-import type { IRecordingCreate } from "@/entities/reading/recordings/model/model";
+import type { IReadingRecordingCreate } from "@/entities/reading/recordings/model/model";
 import { toast } from "sonner";
-import { useCreateRecording } from "@/entities/reading/recordings/hooks/useCreateRecording";
+import { useCreateReadingRecording } from "@/entities/reading/recordings/hooks/useCreateRecording";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useNavigate } from "react-router";
 
@@ -14,14 +14,14 @@ import { useNavigate } from "react-router";
  */
 export const RecordingNewContainer = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<IRecordingCreate>({
+    const [formData, setFormData] = useState<IReadingRecordingCreate>({
         date: "",
         pages: 0,
         minutes: 0,
         notes: "",
     });
     const [selectedUserBookId, setSelectedUserBookId] = useState<string>("");
-    const { mutate: createRecording } = useCreateRecording(selectedUserBookId);
+    const { mutate: createRecording } = useCreateReadingRecording(selectedUserBookId);
     const { data: userBooks, isLoading } = useUserBooks({
         field: "status",
         value: "IN_PROGRESS",

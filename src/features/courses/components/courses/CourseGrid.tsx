@@ -62,7 +62,7 @@ export const CourseGrid = ({
                 "grid-cols-1",
                 "sm:grid-cols-2",
                 "md:grid-cols-3",
-                "3xl:grid-cols-5",
+                "2xl:grid-cols-4",
                 className
             )}
         >

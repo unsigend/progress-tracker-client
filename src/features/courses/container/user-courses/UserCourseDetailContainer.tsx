@@ -5,6 +5,8 @@ import { useDeleteUserCourse } from "@/entities/course/user-courses/hooks/useDel
 import { useMarkAsComplete } from "@/entities/course/user-courses/hooks/useMarkAsComplete";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { toast } from "sonner";
+import { RecordingList } from "@/features/courses/components/recordings/RecordingList";
+import { useCourseRecordings } from "@/entities/course/recordings/hooks/useRecordings";
 
 /**
  * UserCourseDetailContainer - Container component for displaying user course details
@@ -17,7 +19,8 @@ export const UserCourseDetailContainer = () => {
     const { data: userCourse, isLoading } = useUserCourse(id || "");
     const { mutate: deleteUserCourse } = useDeleteUserCourse(id || "");
     const { markAsComplete } = useMarkAsComplete();
-
+    const { data: recordings, isLoading: isLoadingRecordings } =
+        useCourseRecordings(id || "");
     /**
      * handleMarkAsComplete - Handler for marking course as complete
      * @description Mark course as complete functionality
@@ -54,6 +57,10 @@ export const UserCourseDetailContainer = () => {
                 canMarkAsComplete={canMarkAsComplete}
                 onMarkAsComplete={handleMarkAsComplete}
                 onDelete={handleDelete}
+            />
+            <RecordingList
+                recordings={recordings?.recordings ?? []}
+                isLoading={isLoadingRecordings}
             />
         </div>
     );

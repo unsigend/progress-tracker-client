@@ -13,6 +13,7 @@ const RESOURCES_KEYS = {
     STATISTICS: "statistics",
     COURSES: "courses",
     USER_COURSES: "user-courses",
+    COURSE_RECORDINGS: "course-recordings",
 };
 
 /**
@@ -58,6 +59,11 @@ export const API_KEY_FACTORY = () => {
         READING_RECORDINGS: {
             LIST: (userBookId: string) => {
                 return [RESOURCES_KEYS.READING_RECORDINGS, userBookId];
+            },
+        },
+        COURSE_RECORDINGS: {
+            LIST: (userCourseId: string) => {
+                return [RESOURCES_KEYS.COURSE_RECORDINGS, userCourseId];
             },
         },
         COURSES: {

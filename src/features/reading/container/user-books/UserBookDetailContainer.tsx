@@ -5,8 +5,8 @@ import { RecordingList } from "@/features/reading/components/recordings/Recordin
 import { useUserBook } from "@/entities/reading/user-books/hooks/useUserBook";
 import { useDeleteUserBook } from "@/entities/reading/user-books/hooks/useDeleteUserBook";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import { useDeleteRecordings } from "@/entities/reading/recordings/hooks/useDeleteRecordings";
-import { useRecordings } from "@/entities/reading/recordings/hooks/useRecordings";
+import { useDeleteReadingRecordings } from "@/entities/reading/recordings/hooks/useDeleteRecordings";
+import { useReadingRecordings } from "@/entities/reading/recordings/hooks/useRecordings";
 
 /**
  * UserBookDetailContainer - Container component for displaying user book and recording details
@@ -21,8 +21,8 @@ export const UserBookDetailContainer = () => {
         id || ""
     );
     const { mutate: deleteUserBook } = useDeleteUserBook(id || "");
-    const { mutate: deleteRecordings } = useDeleteRecordings(id || "");
-    const { data: recordings, isLoading: isLoadingRecordings } = useRecordings(
+    const { mutate: deleteRecordings } = useDeleteReadingRecordings(id || "");
+    const { data: recordings, isLoading: isLoadingRecordings } = useReadingRecordings(
         id || ""
     );
 

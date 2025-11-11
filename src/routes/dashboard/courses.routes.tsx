@@ -6,6 +6,7 @@ import { CourseEditPage } from "@/pages/courses/courses/edit";
 import { CourseDetailPage } from "@/pages/courses/courses/detail";
 import { CourseListPage } from "@/pages/courses/courses/list";
 import { UserCourseDetailPage } from "@/pages/courses/user-courses/detail";
+import { RecordingNewPage } from "@/pages/courses/recordings/new";
 
 /**
  * CoursesRoutes - The routes for the courses page
@@ -45,6 +46,11 @@ export const CoursesRoutes = (
                 .USER_COURSES()
                 .DETAIL()}
             element={<UserCourseDetailPage />}
+        />
+        {/* Recording New Page */}
+        <Route
+            path={ROUTES_CONSTANTS.DASHBOARD().COURSES().RECORDINGS().NEW()}
+            element={<RecordingNewPage />}
         />
     </>
 );
