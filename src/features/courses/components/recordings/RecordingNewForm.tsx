@@ -30,18 +30,18 @@ import { BackButton } from "@/components/common/BackButton";
 import { TimePicker } from "@/components/common/TimePicker";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
-import type { IUserCourseWithCourse } from "@/entities/course/user-courses/model/model";
-import type { ICourseRecordingCreate } from "@/entities/course/recordings/models/model";
+import type { UserCourseWithCourse } from "@/entities/course/user-courses/model/model";
+import type { CourseRecordingCreate } from "@/entities/course/recordings/models/model";
 import { calculateUtils } from "@/lib/utils/calculate";
 
 /**
  * RecordingNewFormProps - Interface for RecordingNewForm component props
  */
 interface RecordingNewFormProps {
-    formData: ICourseRecordingCreate;
-    onFormDataChange: (data: ICourseRecordingCreate) => void;
+    formData: CourseRecordingCreate;
+    onFormDataChange: (data: CourseRecordingCreate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    userCourses: IUserCourseWithCourse[];
+    userCourses: UserCourseWithCourse[];
     isLoading?: boolean;
     selectedUserCourseId: string;
     onUserCourseIdChange: (id: string) => void;

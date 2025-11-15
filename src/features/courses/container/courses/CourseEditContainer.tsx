@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CourseActionForm } from "@/features/courses/components/courses/CourseActionForm";
 import type {
-    ICourseCreate,
-    ICourseUpdate,
+    CourseCreate,
+    CourseUpdate,
 } from "@/entities/course/courses/models/model";
 import { useCourse } from "@/entities/course/courses/hooks/useCourse";
 import { useUpdateCourse } from "@/entities/course/courses/hooks/useUpdateCourse";
@@ -23,7 +23,7 @@ export const CourseEditContainer = () => {
     const { data: course, isLoading } = useCourse(id || "");
     const { mutate: updateCourse, isPending } = useUpdateCourse(id || "");
 
-    const [formData, setFormData] = useState<ICourseUpdate>({
+    const [formData, setFormData] = useState<CourseUpdate>({
         name: "",
         description: "",
         source: "",
@@ -63,8 +63,8 @@ export const CourseEditContainer = () => {
      * @description Sets the form data
      * @param data - The form data
      */
-    const handleFormDataChange = (data: ICourseCreate | ICourseUpdate) => {
-        setFormData(data as ICourseUpdate);
+    const handleFormDataChange = (data: CourseCreate | CourseUpdate) => {
+        setFormData(data as CourseUpdate);
     };
 
     return (

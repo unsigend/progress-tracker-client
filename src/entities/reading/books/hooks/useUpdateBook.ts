@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IBook, IBookUpdate } from "../models/model";
+import type { Book, BookUpdate } from "../models/model";
 import { mapToBook } from "../models/mapper";
 import {
     ContentType,
@@ -20,7 +20,7 @@ import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 export const useUpdateBook = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (book: IBookUpdate): Promise<IBook> => {
+        mutationFn: async (book: BookUpdate): Promise<Book> => {
             const formData = new FormData();
 
             if (book.title) {

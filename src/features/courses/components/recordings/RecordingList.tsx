@@ -9,15 +9,15 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Loader2, Calendar, GraduationCap } from "lucide-react";
-import type { ICourseRecording } from "@/entities/course/recordings/models/model";
+import type { CourseRecording } from "@/entities/course/recordings/models/model";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
-import { DatesUtils } from "@/lib/utils/dates";
+import { TextUtils } from "@/lib/utils/text";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
-    recordings: ICourseRecording[];
+    recordings: CourseRecording[];
     isLoading?: boolean;
 }
 
@@ -96,9 +96,7 @@ export const RecordingList = ({
      * @returns Formatted time string
      */
     const formatMinutes = (minutes: number): string => {
-        if (minutes === 0) return "N/A";
-        const formatted = DatesUtils.formatDuration(minutes);
-        return `${formatted.value}${formatted.unit === "minutes" ? "m" : "h"}`;
+        return minutes === 0 ? "N/A" : TextUtils.formatDurationShort(minutes);
     };
 
     /**

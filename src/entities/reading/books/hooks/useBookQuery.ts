@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { READING_CONSTANTS } from "@/constants/reading.constant";
-import type { IBookQuery } from "../models/model";
+import type { BookQuery } from "../models/model";
 import { useSearchParams } from "react-router";
 
 /**
@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router";
 export const useBookQuery = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const query: IBookQuery = useMemo<IBookQuery>(() => {
+    const query: BookQuery = useMemo<BookQuery>(() => {
         const page = searchParams.get("page")
             ? Number(searchParams.get("page"))
             : READING_CONSTANTS.BOOKS.DEFAULT_PAGE;
@@ -18,10 +18,10 @@ export const useBookQuery = () => {
             ? Number(searchParams.get("limit"))
             : READING_CONSTANTS.BOOKS.DEFAULT_LIMIT;
         const sort = searchParams.get("sort")
-            ? (searchParams.get("sort") as IBookQuery["sort"])
+            ? (searchParams.get("sort") as BookQuery["sort"])
             : READING_CONSTANTS.BOOKS.DEFAULT_SORT;
         const order = searchParams.get("order")
-            ? (searchParams.get("order") as IBookQuery["order"])
+            ? (searchParams.get("order") as BookQuery["order"])
             : READING_CONSTANTS.BOOKS.DEFAULT_ORDER;
         const value =
             searchParams.get("value") || READING_CONSTANTS.BOOKS.DEFAULT_VALUE;
@@ -64,7 +64,7 @@ export const useBookQuery = () => {
      * setSort - Handler for setting the sort
      * @param sort - The sort to set
      */
-    const setSort = (sort: IBookQuery["sort"]) => {
+    const setSort = (sort: BookQuery["sort"]) => {
         const newParams = new URLSearchParams(searchParams);
         if (sort) {
             newParams.set("sort", sort);
@@ -78,7 +78,7 @@ export const useBookQuery = () => {
      * setOrder - Handler for setting the order
      * @param order - The order to set
      */
-    const setOrder = (order: IBookQuery["order"]) => {
+    const setOrder = (order: BookQuery["order"]) => {
         const newParams = new URLSearchParams(searchParams);
         if (order) {
             newParams.set("order", order);

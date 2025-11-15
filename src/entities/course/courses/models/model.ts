@@ -1,7 +1,7 @@
 /**
- * ICourse - Interface for a course
+ * Course - Interface for a course
  */
-export interface ICourse {
+export interface Course {
     id: string;
     name: string;
     description: string | null;
@@ -15,9 +15,9 @@ export interface ICourse {
 }
 
 /**
- * ICourseCreate - Interface for creating a course
+ * CourseCreate - Interface for creating a course
  */
-export interface ICourseCreate {
+export interface CourseCreate {
     name: string;
     description?: string;
     source?: string;
@@ -27,9 +27,9 @@ export interface ICourseCreate {
 }
 
 /**
- * ICourseUpdate - Interface for updating a course
+ * CourseUpdate - Interface for updating a course
  */
-export interface ICourseUpdate {
+export interface CourseUpdate {
     name?: string;
     description?: string;
     source?: string;
@@ -39,17 +39,17 @@ export interface ICourseUpdate {
 }
 
 /**
- * ICourses - Interface for a list of courses
+ * Courses - Interface for a list of courses
  */
-export interface ICourses {
-    courses: ICourse[];
+export interface Courses {
+    courses: Course[];
     totalCount: number;
 }
 
 /**
- * ICoursesQuery - Interface for a query to get a list of courses
+ * CoursesQuery - Interface for a query to get a list of courses
  */
-export interface ICoursesQuery {
+export interface CoursesQuery {
     field?: string;
     value?: string;
     sort?: string;

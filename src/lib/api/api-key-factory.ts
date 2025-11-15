@@ -1,8 +1,8 @@
 // Api Key Factory
-import type { ICoursesQuery } from "@/entities/course/courses/models/model";
-import type { IUserCourseQuery } from "@/entities/course/user-courses/model/model";
-import type { IBookQuery } from "@/entities/reading/books/models/model";
-import type { IUserBookQuery } from "@/entities/reading/user-books/model/model";
+import type { CoursesQuery } from "@/entities/course/courses/models/model";
+import type { UserCourseQuery } from "@/entities/course/user-courses/model/model";
+import type { BookQuery } from "@/entities/reading/books/models/model";
+import type { UserBookQuery } from "@/entities/reading/user-books/model/model";
 import { DatesUtils } from "@/lib/utils/dates";
 
 const RESOURCES_KEYS = {
@@ -41,7 +41,7 @@ export const API_KEY_FACTORY = () => {
                     DatesUtils.getTodayDateString(),
                 ];
             },
-            LIST: (query: IBookQuery) => {
+            LIST: (query: BookQuery) => {
                 return [RESOURCES_KEYS.BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
@@ -49,7 +49,7 @@ export const API_KEY_FACTORY = () => {
             },
         },
         USER_BOOKS: {
-            LIST: (query: IUserBookQuery) => {
+            LIST: (query: UserBookQuery) => {
                 return [RESOURCES_KEYS.USER_BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
@@ -70,7 +70,7 @@ export const API_KEY_FACTORY = () => {
             MY_COURSES: (isPrivate: boolean) => {
                 return [RESOURCES_KEYS.COURSES, "my-courses", isPrivate];
             },
-            LIST: (query: ICoursesQuery) => {
+            LIST: (query: CoursesQuery) => {
                 return [RESOURCES_KEYS.COURSES, "all", query];
             },
             DETAIL: (id: string) => {
@@ -78,7 +78,7 @@ export const API_KEY_FACTORY = () => {
             },
         },
         USER_COURSES: {
-            LIST: (query: IUserCourseQuery) => {
+            LIST: (query: UserCourseQuery) => {
                 return [RESOURCES_KEYS.USER_COURSES, "all", query];
             },
             DETAIL: (id: string) => {

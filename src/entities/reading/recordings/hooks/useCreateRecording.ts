@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import type {
-    IReadingRecording,
-    IReadingRecordingCreate,
+    ReadingRecording,
+    ReadingRecordingCreate,
 } from "../model/model";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import type { AxiosError } from "axios";
@@ -18,8 +18,8 @@ import { mapToRecording } from "../model/mapper";
 export const useCreateReadingRecording = (userBookId: string) => {
     return useMutation({
         mutationFn: async (
-            recording: IReadingRecordingCreate
-        ): Promise<IReadingRecording> => {
+            recording: ReadingRecordingCreate
+        ): Promise<ReadingRecording> => {
             const recordingRequestDto: BookRecordingCreateRequestDto = {
                 date: recording.date,
                 pages: recording.pages,

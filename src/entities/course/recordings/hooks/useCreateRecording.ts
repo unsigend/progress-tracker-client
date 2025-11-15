@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { ICourseRecordingCreate } from "../models/model";
-import type { ICourseRecording } from "../models/model";
+import type { CourseRecordingCreate } from "../models/model";
+import type { CourseRecording } from "../models/model";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
@@ -14,8 +14,8 @@ import { mapToCourseRecording } from "../models/mapper";
 export const useCreateCourseRecording = (userCourseId: string) => {
     return useMutation({
         mutationFn: async (
-            recording: ICourseRecordingCreate
-        ): Promise<ICourseRecording> => {
+            recording: CourseRecordingCreate
+        ): Promise<CourseRecording> => {
             const recordingRequestDto: CourseRecordingCreateRequestDto = {
                 date: recording.date,
                 minutes: recording.minutes,

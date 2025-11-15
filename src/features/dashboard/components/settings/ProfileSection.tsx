@@ -4,16 +4,16 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github, Mail, User, Edit3, Loader2 } from "lucide-react";
+import { Github, Mail, User as UserIcon, Edit3, Loader2 } from "lucide-react";
 import { FileUpload } from "@/components/common/FileUpload";
-import type { IUser, IUserUpdate } from "@/entities/users/models/model";
+import type { User, UserUpdate } from "@/entities/users/models/model";
 
 /**
  * ProfileSectionProps - Interface for ProfileSection component props
  */
 interface ProfileSectionProps {
-    user: IUser | null;
-    formData: Pick<IUserUpdate, "username" | "email">;
+    user: User | null;
+    formData: Pick<UserUpdate, "username" | "email">;
     isLoading?: boolean;
     onUsernameChange: (username: string) => void;
     onEmailChange: (email: string) => void;
@@ -158,7 +158,7 @@ export const ProfileSection = ({
                                             ) : providerItem === "google" ? (
                                                 <Mail className="w-4 h-4" />
                                             ) : (
-                                                <User className="w-4 h-4" />
+                                                <UserIcon className="w-4 h-4" />
                                             )}
                                             <span className="font-medium text-foreground">
                                                 {providerItem

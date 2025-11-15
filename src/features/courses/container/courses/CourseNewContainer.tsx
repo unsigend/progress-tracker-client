@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { CourseActionForm } from "@/features/courses/components/courses/CourseActionForm";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type {
-    ICourseCreate,
-    ICourseUpdate,
+    CourseCreate,
+    CourseUpdate,
 } from "@/entities/course/courses/models/model";
 import { useCreateCourse } from "@/entities/course/courses/hooks/useCreateCourse";
 import { toast } from "sonner";
@@ -18,7 +18,7 @@ export const CourseNewContainer = () => {
     const navigate = useNavigate();
     const { mutate: createCourse, isPending } = useCreateCourse();
 
-    const [formData, setFormData] = useState<ICourseCreate>({
+    const [formData, setFormData] = useState<CourseCreate>({
         name: "",
         description: "",
         source: "",
@@ -42,8 +42,8 @@ export const CourseNewContainer = () => {
         });
     };
 
-    const handleFormDataChange = (data: ICourseCreate | ICourseUpdate) => {
-        setFormData(data as ICourseCreate);
+    const handleFormDataChange = (data: CourseCreate | CourseUpdate) => {
+        setFormData(data as CourseCreate);
     };
 
     return (

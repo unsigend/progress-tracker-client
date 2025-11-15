@@ -1,12 +1,12 @@
-import type { RecordingResponseDto } from "@/lib/api/api";
-import type { IReadingRecording } from "./model";
+import type { BookRecordingResponseDto } from "@/lib/api/api";
+import type { ReadingRecording } from "./model";
 
 /**
- * mapToRecording - Map a RecordingResponseDto to an IReadingRecording
- * @param recording - The RecordingResponseDto to map
- * @returns The mapped IReadingRecording
+ * mapToRecording - Map a BookRecordingResponseDto to a ReadingRecording
+ * @param recording - The BookRecordingResponseDto to map
+ * @returns The mapped ReadingRecording
  */
-export const mapToRecording = (recording: RecordingResponseDto): IReadingRecording => {
+export const mapToRecording = (recording: BookRecordingResponseDto): ReadingRecording => {
     return {
         id: recording.id,
         userBookId: recording.userBookId,

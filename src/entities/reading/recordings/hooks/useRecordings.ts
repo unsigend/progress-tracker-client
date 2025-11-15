@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IReadingRecordings } from "../model/model";
+import type { ReadingRecordings } from "../model/model";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 
 /**
@@ -11,7 +11,7 @@ import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 export const useReadingRecordings = (userBookId: string) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().READING_RECORDINGS.LIST(userBookId),
-        queryFn: async (): Promise<IReadingRecordings> => {
+        queryFn: async (): Promise<ReadingRecordings> => {
             const response =
                 await ApiClient.api.userBookControllerFindRecordings(
                     userBookId

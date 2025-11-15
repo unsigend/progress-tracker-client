@@ -14,23 +14,22 @@ import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BookGrid } from "./BookGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBook } from "@/entities/reading/books/models/model";
-import type { IBookQuery } from "@/entities/reading/books/models/model";
+import type { Book, BookQuery } from "@/entities/reading/books/models/model";
 
 /**
  * BookLibraryProps - Interface for BookLibrary component props
  */
 interface BookLibraryProps {
-    books: IBook[];
+    books: Book[];
     isLoading: boolean;
     currentPage: number;
     totalPages: number;
     setCurrentPage: (page: number) => void;
     onSearchSubmit: (term: string) => void;
-    sort: IBookQuery["sort"];
-    order: IBookQuery["order"];
-    onSortChange: (sort: IBookQuery["sort"]) => void;
-    onOrderChange: (order: IBookQuery["order"]) => void;
+    sort: BookQuery["sort"];
+    order: BookQuery["order"];
+    onSortChange: (sort: BookQuery["sort"]) => void;
+    onOrderChange: (order: BookQuery["order"]) => void;
 }
 
 /**

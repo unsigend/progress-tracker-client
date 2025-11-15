@@ -2,14 +2,14 @@ import type {
     CourseRecordingResponseDto,
     CourseRecordingsResponseDto,
 } from "@/lib/api/api";
-import type { ICourseRecording, ICourseRecordings } from "./model";
+import type { CourseRecording, CourseRecordings } from "./model";
 
 /**
  * mapToCourseRecording - Map a course recording response to a course recording model
  */
 export const mapToCourseRecording = (
     response: CourseRecordingResponseDto
-): ICourseRecording => {
+): CourseRecording => {
     return {
         id: response.id,
         userCourseId: response.userCourseId,
@@ -25,7 +25,7 @@ export const mapToCourseRecording = (
  */
 export const mapToCourseRecordings = (
     response: CourseRecordingsResponseDto
-): ICourseRecordings => {
+): CourseRecordings => {
     return {
         recordings: response.recordings.map(mapToCourseRecording),
         totalCount: response.totalCount,

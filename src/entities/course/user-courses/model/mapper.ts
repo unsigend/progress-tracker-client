@@ -1,15 +1,15 @@
-import type { IUserCoursesWithCourse, IUserCourseWithCourse } from "./model";
+import type { UserCoursesWithCourse, UserCourseWithCourse } from "./model";
 import type { UserCourseResponseDto } from "@/lib/api/api";
 import { mapToCourse } from "../../courses/models/mapper";
 
 /**
- * mapToUserCourse - Map a UserCourseResponseDto to an IUserCourse
+ * mapToUserCourse - Map a UserCourseResponseDto to a UserCourseWithCourse
  * @param userCourse - The UserCourseResponseDto to map
- * @returns The mapped IUserCourse
+ * @returns The mapped UserCourseWithCourse
  */
 export const mapToUserCourse = (
     userCourse: UserCourseResponseDto
-): IUserCourseWithCourse => {
+): UserCourseWithCourse => {
     return {
         id: userCourse.id,
         courseId: userCourse.courseId,
@@ -25,14 +25,14 @@ export const mapToUserCourse = (
 };
 
 /**
- * mapToUserCourses - Map a UserCoursesResponseDto to IUserCoursesWithCourse
+ * mapToUserCourses - Map a UserCoursesResponseDto to UserCoursesWithCourse
  * @param userCoursesResponse - The UserCoursesResponseDto to map
- * @returns The mapped IUserCoursesWithCourse
+ * @returns The mapped UserCoursesWithCourse
  */
 export const mapToUserCourses = (userCoursesResponse: {
     userCourses: UserCourseResponseDto[];
     totalCount: number;
-}): IUserCoursesWithCourse => {
+}): UserCoursesWithCourse => {
     return {
         userCourses: userCoursesResponse.userCourses.map(mapToUserCourse),
         totalCount: userCoursesResponse.totalCount,

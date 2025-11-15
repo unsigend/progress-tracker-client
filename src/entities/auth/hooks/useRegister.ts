@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { IAccessToken, IRegisterForm } from "../models/model";
+import type { AccessToken, RegisterFormData } from "../models/model";
 import { ApiClient } from "@/lib/api/api-client";
 import type { RegisterRequestDto } from "@/lib/api/api";
 import type { IErrorResponse } from "@/entities/common/models/error";
@@ -13,7 +13,7 @@ import { AUTH_CONSTANTS } from "@/constants/auth.constant";
  */
 export const useRegister = () => {
     return useMutation({
-        mutationFn: async (data: IRegisterForm): Promise<IAccessToken> => {
+        mutationFn: async (data: RegisterFormData): Promise<AccessToken> => {
             // Create the register form data
             const registerFormData: RegisterRequestDto = {
                 username: data.username,
@@ -38,7 +38,7 @@ export const useRegister = () => {
                 ?.data as IErrorResponse;
             toast.error(errorModel.message);
         },
-        onSuccess: (token: IAccessToken) => {
+        onSuccess: (token: AccessToken) => {
             // Set the access token in localStorage
             localStorage.setItem(
                 AUTH_CONSTANTS.ACCESS_TOKEN_KEY,

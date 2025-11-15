@@ -8,9 +8,10 @@ import { BackButton } from "@/components/common/BackButton";
 import { FileUpload } from "@/components/common/FileUpload";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type {
-    IBookCreate,
-    IBookUpdate,
+    BookCreate,
+    BookUpdate,
 } from "@/entities/reading/books/models/model";
+import { TextUtils } from "@/lib/utils/text";
 
 /**
  * BookActionFormProps - Interface for BookActionForm component props
@@ -18,8 +19,8 @@ import type {
 interface BookActionFormProps {
     title: string;
     description: string;
-    formData: IBookCreate | IBookUpdate;
-    onFormDataChange: (data: IBookCreate | IBookUpdate) => void;
+    formData: BookCreate | BookUpdate;
+    onFormDataChange: (data: BookCreate | BookUpdate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     action: "add" | "edit";
     onFileUpload?: (file: File) => Promise<void>;
@@ -51,14 +52,14 @@ export const BookActionForm = ({
     isLoading = false,
 }: BookActionFormProps) => {
     const navigate = useNavigate();
-    const handleInputChange = <K extends keyof (IBookCreate & IBookUpdate)>(
+    const handleInputChange = <K extends keyof (BookCreate & BookUpdate)>(
         field: K,
         value: string | number | undefined | File
     ) => {
         onFormDataChange({
             ...formData,
             [field]: value,
-        } as IBookCreate | IBookUpdate);
+        } as BookCreate | BookUpdate);
     };
 
     return (
@@ -258,11 +259,9 @@ export const BookActionForm = ({
                                             </span>
                                             <span className="text-xs text-muted-foreground">
                                                 (
-                                                {(
-                                                    formData.coverImage.size /
-                                                    1024 /
-                                                    1024
-                                                ).toFixed(2)}{" "}
+                                                {TextUtils.formatFileSize(
+                                                    formData.coverImage.size
+                                                )}{" "}
                                                 MB)
                                             </span>
                                         </div>

@@ -2,13 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { BookGrid } from "@/features/reading/components/books/BookGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
+import type { UserBookWithBook } from "@/entities/reading/user-books/model/model";
 
 /**
  * CompletedSectionProps - Interface for CompletedSection component props
  */
 interface CompletedSectionProps {
-    completedBooks: IUserBookWithBook[];
+    completedBooks: UserBookWithBook[];
     isLoading: boolean;
 }
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { ICourses } from "../models/model";
+import type { Courses } from "../models/model";
 import { mapToCourses } from "../models/mapper";
 import type { CoursesResponseDto } from "@/lib/api/api";
 
@@ -13,7 +13,7 @@ import type { CoursesResponseDto } from "@/lib/api/api";
 export const useMyCourses = (isPrivate: boolean = false) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().COURSES.MY_COURSES(isPrivate),
-        queryFn: async (): Promise<ICourses> => {
+        queryFn: async (): Promise<Courses> => {
             const response = await ApiClient.api.courseControllerMyCourses({
                 field: "isPublic",
                 value: isPrivate ? "false" : undefined,

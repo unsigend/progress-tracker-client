@@ -1,4 +1,4 @@
-import type { IBook } from "@/entities/reading/books/models/model";
+import type { Book } from "@/entities/reading/books/models/model";
 
 /**
  * UserBookStatusType - Type for the status of a user book
@@ -6,9 +6,9 @@ import type { IBook } from "@/entities/reading/books/models/model";
 export type UserBookStatusType = "IN_PROGRESS" | "COMPLETED";
 
 /**
- * IUserBook - Interface for a user book
+ * UserBook - Interface for a user book
  */
-export interface IUserBook {
+export interface UserBook {
     id: string;
     bookId: string;
     status: UserBookStatusType;
@@ -22,24 +22,24 @@ export interface IUserBook {
 }
 
 /**
- * IUserBooks - Interface for a list of user books
+ * UserBooks - Interface for a list of user books
  */
-export interface IUserBooks {
-    userBooks: IUserBook[];
+export interface UserBooks {
+    userBooks: UserBook[];
     totalCount: number;
 }
 
 /**
- * IUserBookCreate - Interface for creating a user book
+ * UserBookCreate - Interface for creating a user book
  */
-export interface IUserBookCreate {
+export interface UserBookCreate {
     bookId: string;
 }
 
 /**
- * IUserBookQuery - Interface for querying user books
+ * UserBookQuery - Interface for querying user books
  */
-export interface IUserBookQuery {
+export interface UserBookQuery {
     field: string;
     value: string;
     sort: "completedDate" | "startDate" | "createdAt" | "updatedAt";
@@ -49,16 +49,16 @@ export interface IUserBookQuery {
 }
 
 /**
- * IUserBookWithBook - Interface for a user book with a book
+ * UserBookWithBook - Interface for a user book with a book
  */
-export interface IUserBookWithBook extends IUserBook {
-    book: IBook | null;
+export interface UserBookWithBook extends UserBook {
+    book: Book | null;
 }
 
 /**
- * IUserBooksWithBook - Interface for a list of user books with a book
+ * UserBooksWithBook - Interface for a list of user books with a book
  */
-export interface IUserBooksWithBook {
-    userBooks: IUserBookWithBook[];
+export interface UserBooksWithBook {
+    userBooks: UserBookWithBook[];
     totalCount: number;
 }

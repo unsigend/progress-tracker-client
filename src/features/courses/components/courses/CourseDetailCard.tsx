@@ -17,13 +17,13 @@ import {
 } from "lucide-react";
 import { BackButton } from "@/components/common/BackButton";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
-import type { ICourse } from "@/entities/course/courses/models/model";
+import type { Course } from "@/entities/course/courses/models/model";
 
 /**
  * CourseDetailCardProps - Interface for CourseDetailCard component props
  */
 interface CourseDetailCardProps {
-    course: ICourse | null;
+    course: Course | null;
     isLoading: boolean;
     hasPermission: boolean;
     onAddClick: () => void;

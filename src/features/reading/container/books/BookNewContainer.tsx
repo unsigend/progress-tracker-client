@@ -4,10 +4,7 @@ import { BookActionForm } from "@/features/reading/components/books/BookActionFo
 import { useCreateBook } from "@/entities/reading/books/hooks/useCreateBook";
 import { toast } from "sonner";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type {
-    IBookCreate,
-    IBookUpdate,
-} from "@/entities/reading/books/models/model";
+import type { BookCreate, BookUpdate } from "@/entities/reading/books/models/model";
 
 /**
  * BookNewContainer - Container component for creating a new book
@@ -18,7 +15,7 @@ export const BookNewContainer = () => {
     const navigate = useNavigate();
     const { mutate: createBook, isPending } = useCreateBook();
 
-    const [formData, setFormData] = useState<IBookCreate>({
+    const [formData, setFormData] = useState<BookCreate>({
         title: "",
         author: "",
         description: "",
@@ -54,9 +51,9 @@ export const BookNewContainer = () => {
         }));
     };
 
-    const handleFormDataChange = (data: IBookCreate | IBookUpdate) => {
-        // For create, only use fields from IBookCreate
-        const createData: IBookCreate = {
+    const handleFormDataChange = (data: BookCreate | BookUpdate) => {
+        // For create, only use fields from BookCreate
+        const createData: BookCreate = {
             title: data.title || "",
             pages: data.pages || 0,
         };

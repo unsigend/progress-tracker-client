@@ -1,18 +1,18 @@
-import type { IReadingRecording } from "@/entities/reading/recordings/model/model";
+import type { ReadingRecording } from "@/entities/reading/recordings/model/model";
 
 /**
- * IReadingStatistics - Interface for reading statistics
+ * ReadingStatistics - Interface for reading statistics
  */
-export interface IReadingStatistics {
+export interface ReadingStatistics {
     totalMinutes: number;
     totalPages: number;
     totalRecordings: number;
 }
 
 /**
- * IReadingStatisticsDetail - Interface for reading statistics detail
+ * ReadingStatisticsDetail - Interface for reading statistics detail
  */
-export interface IReadingStatisticsDetail {
-    recordings: IReadingRecording[];
+export interface ReadingStatisticsDetail {
+    recordings: ReadingRecording[];
     totalCount: number;
 }

@@ -1,17 +1,18 @@
-// Mapper for user books
-
+/**
+ * Mapper for user books
+ */
 import { mapToBook } from "@/entities/reading/books/models/mapper";
-import type { IUserBooksWithBook, IUserBookWithBook } from "./model";
+import type { UserBooksWithBook, UserBookWithBook } from "./model";
 import type { UserBookResponseDto } from "@/lib/api/api";
 
 /**
- * mapToUserBook - Map a UserBookResponseDto to an IUserBookWithBook
+ * mapToUserBook - Map a UserBookResponseDto to a UserBookWithBook
  * @param userBook - The UserBookResponseDto to map
- * @returns The mapped IUserBookWithBook
+ * @returns The mapped UserBookWithBook
  */
 export const mapToUserBook = (
     userBook: UserBookResponseDto
-): IUserBookWithBook => {
+): UserBookWithBook => {
     return {
         id: userBook.id,
         bookId: userBook.bookId,
@@ -28,14 +29,14 @@ export const mapToUserBook = (
 };
 
 /**
- * mapToUserBooks - Map a UserBooksResponseDto to IUserBooksWithBook
+ * mapToUserBooks - Map a UserBooksResponseDto to UserBooksWithBook
  * @param userBooksResponse - The UserBooksResponseDto to map
- * @returns The mapped IUserBooksWithBook
+ * @returns The mapped UserBooksWithBook
  */
 export const mapToUserBooks = (userBooksResponse: {
     userBooks: UserBookResponseDto[];
     totalCount: number;
-}): IUserBooksWithBook => {
+}): UserBooksWithBook => {
     return {
         userBooks: userBooksResponse.userBooks.map(mapToUserBook),
         totalCount: userBooksResponse.totalCount,

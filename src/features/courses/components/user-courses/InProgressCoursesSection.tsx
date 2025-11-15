@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Plus, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserCourseWithCourse } from "@/entities/course/user-courses/model/model";
+import type { UserCourseWithCourse } from "@/entities/course/user-courses/model/model";
 import { cn } from "@/lib/utils";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 
@@ -12,7 +12,7 @@ import { COURSE_CONSTANTS } from "@/constants/course.constant";
  * InProgressCoursesSectionProps - Interface for InProgressCoursesSection component props
  */
 interface InProgressCoursesSectionProps {
-    inProgressCourses: IUserCourseWithCourse[];
+    inProgressCourses: UserCourseWithCourse[];
     isLoading: boolean;
     onNavigate: (courseId: string) => void;
     onMarkAsComplete: (userCourseId: string) => void;

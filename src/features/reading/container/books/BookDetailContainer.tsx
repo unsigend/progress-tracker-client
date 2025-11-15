@@ -5,7 +5,7 @@ import { useBook } from "@/entities/reading/books/hooks/useBook";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useDeleteBook } from "@/entities/reading/books/hooks/useDeleteBook";
 import { useCreateUserBook } from "@/entities/reading/user-books/hooks/useCreateUserBook";
-import type { IUserBookCreate } from "@/entities/reading/user-books/model/model";
+import type { UserBookCreate } from "@/entities/reading/user-books/model/model";
 import { useMe } from "@/entities/users/hooks/useMe";
 import { UserRole } from "@/entities/users/models/model";
 
@@ -35,7 +35,7 @@ export const BookDetailContainer = () => {
      */
     const handleAddClick = () => {
         if (!book) return;
-        const userBook: IUserBookCreate = {
+        const userBook: UserBookCreate = {
             bookId: book.id,
         };
         createUserBook(userBook, {

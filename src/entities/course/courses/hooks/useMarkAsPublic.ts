@@ -1,7 +1,7 @@
 import type { CourseResponseDto } from "@/lib/api/api";
 import { ApiClient } from "@/lib/api/api-client";
 import { mapToCourse } from "../models/mapper";
-import type { ICourse } from "../models/model";
+import type { Course } from "../models/model";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import { HttpStatusCode } from "axios";
 import { toast } from "sonner";
@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
  */
 export const useMarkAsPublic = () => {
     const queryClient = useQueryClient();
-    const markAsPublic = async (id: string): Promise<ICourse> => {
+    const markAsPublic = async (id: string): Promise<Course> => {
         const response = await ApiClient.api.courseControllerUpdate(id, {
             isPublic: true,
         });

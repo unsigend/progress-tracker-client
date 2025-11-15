@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { ICourse, ICourseCreate } from "../models/model";
+import type { Course, CourseCreate } from "../models/model";
 import { mapToCourse } from "../models/mapper";
 import type { CourseCreateRequestDto, CourseResponseDto } from "@/lib/api/api";
 import type { AxiosError } from "axios";
@@ -18,7 +18,7 @@ import { toast } from "sonner";
 export const useCreateCourse = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (course: ICourseCreate): Promise<ICourse> => {
+        mutationFn: async (course: CourseCreate): Promise<Course> => {
             const courseCreateRequestDto: CourseCreateRequestDto = {
                 name: course.name,
                 description: course.description,
@@ -36,11 +36,11 @@ export const useCreateCourse = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: API_KEY_FACTORY().COURSES.LIST({
-                    page: COURSE_CONSTANTS.DEFAULT_PAGE,
-                    limit: COURSE_CONSTANTS.DEFAULT_LIMIT,
-                    sort: COURSE_CONSTANTS.DEFAULT_SORT,
-                    order: COURSE_CONSTANTS.DEFAULT_ORDER,
-                    value: COURSE_CONSTANTS.DEFAULT_VALUE,
+                    page: COURSE_CONSTANTS.COURSE.DEFAULT_PAGE,
+                    limit: COURSE_CONSTANTS.COURSE.DEFAULT_LIMIT,
+                    sort: COURSE_CONSTANTS.COURSE.DEFAULT_SORT,
+                    order: COURSE_CONSTANTS.COURSE.DEFAULT_ORDER,
+                    value: COURSE_CONSTANTS.COURSE.DEFAULT_VALUE,
                 }),
             });
         },

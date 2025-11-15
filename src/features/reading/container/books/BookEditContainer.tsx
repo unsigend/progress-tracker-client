@@ -5,7 +5,7 @@ import { useBook } from "@/entities/reading/books/hooks/useBook";
 import { useUpdateBook } from "@/entities/reading/books/hooks/useUpdateBook";
 import { toast } from "sonner";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBookUpdate } from "@/entities/reading/books/models/model";
+import type { BookUpdate } from "@/entities/reading/books/models/model";
 
 /**
  * BookEditContainer - Container component for editing a book
@@ -19,7 +19,7 @@ export const BookEditContainer = () => {
         id || ""
     );
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<IBookUpdate>({
+    const [formData, setFormData] = useState<BookUpdate>({
         title: "",
         author: "",
         description: "",
@@ -75,7 +75,7 @@ export const BookEditContainer = () => {
                     description="Fill in the details to change the book"
                     formData={formData}
                     onFormDataChange={(data) => {
-                        setFormData(data as IBookUpdate);
+                        setFormData(data as BookUpdate);
                     }}
                     onSubmit={handleSubmit}
                     action="edit"

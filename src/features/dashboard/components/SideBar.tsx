@@ -6,7 +6,7 @@ import { Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { NAVIGATION_ITEMS } from "@/features/dashboard/constants/navigation";
-import type { IUser } from "@/entities/users/models/model";
+import type { User } from "@/entities/users/models/model";
 
 /**
  * SideBarProps - Interface for SideBar component props
@@ -14,7 +14,7 @@ import type { IUser } from "@/entities/users/models/model";
 interface SideBarProps {
     isOpen: boolean;
     onLinkClick: () => void;
-    user: IUser | null;
+    user: User | null;
     isLoading: boolean;
 }
 

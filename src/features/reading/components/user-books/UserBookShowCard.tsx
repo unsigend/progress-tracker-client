@@ -9,7 +9,7 @@ import { BackButton } from "@/components/common/BackButton";
 import { BookCover } from "@/features/reading/components/books/BookCover";
 import { Calendar, Clock, BookOpen, CalendarDays } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
+import type { UserBookWithBook } from "@/entities/reading/user-books/model/model";
 import { useNavigate } from "react-router";
 import { DatesUtils } from "@/lib/utils/dates";
 
@@ -17,7 +17,7 @@ import { DatesUtils } from "@/lib/utils/dates";
  * UserBookShowCardProps - Interface for UserBookShowCard component props
  */
 interface UserBookShowCardProps {
-    userBook: IUserBookWithBook | null;
+    userBook: UserBookWithBook | null;
     isLoading?: boolean;
     onDelete?: () => void;
 }

@@ -6,14 +6,14 @@ import { Loader2, X } from "lucide-react";
 import { CourseGrid } from "../courses/CourseGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
-import type { IUserCourseWithCourse } from "@/entities/course/user-courses/model/model";
+import type { UserCourseWithCourse } from "@/entities/course/user-courses/model/model";
 import { cn } from "@/lib/utils";
 
 /**
  * CompletedCoursesSectionProps - Interface for CompletedCoursesSection component props
  */
 interface CompletedCoursesSectionProps {
-    completedCourses: IUserCourseWithCourse[];
+    completedCourses: UserCourseWithCourse[];
     isLoading: boolean;
 }
 

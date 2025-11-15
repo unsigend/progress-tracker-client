@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { ICourses, ICoursesQuery } from "../models/model";
+import type { Courses, CoursesQuery } from "../models/model";
 import { mapToCourse } from "../models/mapper";
 import type { CoursesResponseDto } from "@/lib/api/api";
 
@@ -10,10 +10,10 @@ import type { CoursesResponseDto } from "@/lib/api/api";
  * @param query - The query parameters for getting courses
  * @returns useQuery hook for getting courses with pagination data
  */
-export const useCourses = (query: ICoursesQuery) => {
+export const useCourses = (query: CoursesQuery) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().COURSES.LIST(query),
-        queryFn: async (): Promise<ICourses> => {
+        queryFn: async (): Promise<Courses> => {
             const response = await ApiClient.api.courseControllerFindAll(query);
             const coursesResponse: CoursesResponseDto = response.data;
             return {

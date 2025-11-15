@@ -7,7 +7,7 @@ import {
     type ResetPasswordStep,
 } from "@/features/auth/components/reset-password/ResetPasswordForm";
 import { useSendCode } from "@/entities/auth/hooks/useSendCode";
-import type { IResetToken } from "@/entities/auth/models/model";
+import type { ResetToken } from "@/entities/auth/models/model";
 import { useVerifyCode } from "@/entities/auth/hooks/useVerifyCode";
 import { validatePassword } from "@/entities/auth/validation/password";
 import { useResetPassword } from "@/entities/auth/hooks/useResetPassword";
@@ -53,7 +53,7 @@ export const ResetPasswordContainer = () => {
     const handleEmailSubmit = () => {
         setIsLoading(true);
         sendCode(formData.email, {
-            onSuccess: (resetToken: IResetToken) => {
+            onSuccess: (resetToken: ResetToken) => {
                 setFormData((prev) => ({
                     ...prev,
                     resetToken: resetToken.resetToken,

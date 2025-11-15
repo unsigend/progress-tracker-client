@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IUserUpdate } from "@/entities/users/models/model";
+import type { UserUpdate } from "@/entities/users/models/model";
 import type { UserResponseDto, UserUpdateRequestDto } from "@/lib/api/api";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import { toast } from "sonner";
@@ -17,7 +17,7 @@ import { ContentType } from "@/lib/api/api";
 export const useUpdateUser = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (data: IUserUpdate) => {
+        mutationFn: async (data: UserUpdate) => {
             const formData: FormData = new FormData();
             if (data.username) {
                 formData.append("username", data.username);

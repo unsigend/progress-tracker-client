@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoginForm } from "@/features/auth/components/login/LoginForm";
 import { LoginChart } from "@/features/auth/components/login/LoginChart";
 import { AuthTemplateLayout } from "@/features/auth/components/AuthTemplateLayout";
-import type { ILoginForm } from "@/entities/auth/models/model";
+import type { LoginFormData } from "@/entities/auth/models/model";
 import { useLogin } from "@/entities/auth/hooks/useLogin";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useNavigate } from "react-router";
@@ -15,7 +15,7 @@ import { useGithubLogin } from "@/entities/auth/hooks/useGithubLogin";
  */
 export const LoginContainer = () => {
     const navigate = useNavigate();
-    const [loginForm, setLoginForm] = useState<ILoginForm>({
+    const [loginForm, setLoginForm] = useState<LoginFormData>({
         email: "",
         password: "",
     });

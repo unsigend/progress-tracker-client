@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Plus } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IReadingStatistics } from "@/entities/statistics/reading/models/model";
+import type { ReadingStatistics } from "@/entities/statistics/reading/models/model";
 import { DatesUtils } from "@/lib/utils/dates";
 
 /**
  * DailyCardProps - Interface for DailyCard component props
  */
 interface DailyCardProps {
-    readingStatistics: IReadingStatistics | null;
+    readingStatistics: ReadingStatistics | null;
     isLoading: boolean;
 }
 

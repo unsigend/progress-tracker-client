@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { mapToUserBook } from "../model/mapper";
-import { type IUserBookCreate, type IUserBook } from "../model/model";
+import { type UserBookCreate, type UserBook } from "../model/model";
 import { ApiClient } from "@/lib/api/api-client";
 import type { UserBookCreateRequestDto } from "@/lib/api/api";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ import type { AxiosError } from "axios";
  */
 export const useCreateUserBook = () => {
     return useMutation({
-        mutationFn: async (userBook: IUserBookCreate): Promise<IUserBook> => {
+        mutationFn: async (userBook: UserBookCreate): Promise<UserBook> => {
             const userBookRequestDto: UserBookCreateRequestDto = {
                 bookId: userBook.bookId,
             };

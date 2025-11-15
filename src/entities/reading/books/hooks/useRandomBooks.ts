@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IBook } from "../models/model";
+import type { Book } from "../models/model";
 import { mapToBook } from "../models/mapper";
 import type { BooksResponseDto } from "@/lib/api/api";
 
@@ -13,7 +13,7 @@ import type { BooksResponseDto } from "@/lib/api/api";
 export const useRandomBooks = (count: number) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().BOOKS.RANDOM(),
-        queryFn: async (): Promise<IBook[]> => {
+        queryFn: async (): Promise<Book[]> => {
             const response = await ApiClient.api.bookControllerFindRandom({
                 count,
             });

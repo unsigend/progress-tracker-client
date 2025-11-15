@@ -1,12 +1,12 @@
 import type { CourseResponseDto, CoursesResponseDto } from "@/lib/api/api";
-import type { ICourse, ICourses } from "./model";
+import type { Course, Courses } from "./model";
 
 /**
- * mapToCourse - Map a CourseResponseDto to an ICourse
+ * mapToCourse - Map a CourseResponseDto to a Course
  * @param course - The CourseResponseDto to map
- * @returns The mapped ICourse
+ * @returns The mapped Course
  */
-export const mapToCourse = (course: CourseResponseDto): ICourse => {
+export const mapToCourse = (course: CourseResponseDto): Course => {
     return {
         id: course.id,
         name: course.name,
@@ -22,11 +22,11 @@ export const mapToCourse = (course: CourseResponseDto): ICourse => {
 };
 
 /**
- * mapToCourses - Map a CoursesResponseDto to an ICourses
+ * mapToCourses - Map a CoursesResponseDto to Courses
  * @param coursesResponse - The CoursesResponseDto to map
- * @returns The mapped ICourses
+ * @returns The mapped Courses
  */
-export const mapToCourses = (coursesResponse: CoursesResponseDto): ICourses => {
+export const mapToCourses = (coursesResponse: CoursesResponseDto): Courses => {
     return {
         courses: coursesResponse.courses.map(mapToCourse),
         totalCount: coursesResponse.totalCount,

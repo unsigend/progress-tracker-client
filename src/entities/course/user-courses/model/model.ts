@@ -1,13 +1,14 @@
-import type { ICourse } from "@/entities/course/courses/models/model";
+import type { Course } from "@/entities/course/courses/models/model";
+
 /**
  * UserCourseStatusType - Type for the status of a user course
  */
 export type UserCourseStatusType = "IN_PROGRESS" | "COMPLETED";
 
 /**
- * IUserCourse - Interface for a user course
+ * UserCourse - Interface for a user course
  */
-export interface IUserCourse {
+export interface UserCourse {
     id: string;
     courseId: string;
     status: UserCourseStatusType;
@@ -20,17 +21,17 @@ export interface IUserCourse {
 }
 
 /**
- * IUserCourses - Interface for a list of user courses
+ * UserCourses - Interface for a list of user courses
  */
-export interface IUserCourses {
-    userCourses: IUserCourse[];
+export interface UserCourses {
+    userCourses: UserCourse[];
     totalCount: number;
 }
 
 /**
- * IUserCourseQuery - Interface for querying user courses
+ * UserCourseQuery - Interface for querying user courses
  */
-export interface IUserCourseQuery {
+export interface UserCourseQuery {
     field: string;
     value: string;
     sort: "completedDate" | "startDate" | "createdAt" | "updatedAt";
@@ -40,23 +41,23 @@ export interface IUserCourseQuery {
 }
 
 /**
- * IUserCourseCreate - Interface for creating a user course
+ * UserCourseCreate - Interface for creating a user course
  */
-export interface IUserCourseCreate {
+export interface UserCourseCreate {
     courseId: string;
 }
 
 /**
- * IUserCourseWithCourse - Interface for a user course with a course
+ * UserCourseWithCourse - Interface for a user course with a course
  */
-export interface IUserCourseWithCourse extends IUserCourse {
-    course: ICourse | null;
+export interface UserCourseWithCourse extends UserCourse {
+    course: Course | null;
 }
 
 /**
- * IUserCoursesWithCourse - Interface for a list of user courses with a course
+ * UserCoursesWithCourse - Interface for a list of user courses with a course
  */
-export interface IUserCoursesWithCourse {
-    userCourses: IUserCourseWithCourse[];
+export interface UserCoursesWithCourse {
+    userCourses: UserCourseWithCourse[];
     totalCount: number;
 }

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IReadingStatistics } from "../models/model";
+import type { ReadingStatistics } from "../models/model";
 import { ApiClient } from "@/lib/api/api-client";
 import type { ReadingRecordingResponseDto } from "@/lib/api/api";
 
@@ -10,7 +10,7 @@ import type { ReadingRecordingResponseDto } from "@/lib/api/api";
 export const useToday = () => {
     return useQuery({
         queryKey: API_KEY_FACTORY().STATISTICS.READING.TODAY(),
-        queryFn: async (): Promise<IReadingStatistics> => {
+        queryFn: async (): Promise<ReadingStatistics> => {
             const response =
                 await ApiClient.api.statisticsControllerGetReadingRecordingToday();
             const readingStatistics: ReadingRecordingResponseDto =

@@ -1,7 +1,7 @@
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useCreateCourseRecording } from "@/entities/course/recordings/hooks/useCreateRecording";
-import type { ICourseRecordingCreate } from "@/entities/course/recordings/models/model";
+import type { CourseRecordingCreate } from "@/entities/course/recordings/models/model";
 import { useUserCourses } from "@/entities/course/user-courses/hooks/useUserCourses";
 import { RecordingNewForm } from "@/features/courses/components/recordings/RecordingNewForm";
 import { useState } from "react";
@@ -15,7 +15,7 @@ import { useNavigate } from "react-router";
  */
 export const RecordingNewContainer = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<ICourseRecordingCreate>({
+    const [formData, setFormData] = useState<CourseRecordingCreate>({
         date: "",
         minutes: 0,
         recordType: "",

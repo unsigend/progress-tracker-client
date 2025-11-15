@@ -1,7 +1,7 @@
 /**
- * ICourseRecording - Interface for a course recording
+ * CourseRecording - Interface for a course recording
  */
-export interface ICourseRecording {
+export interface CourseRecording {
     id: string;
     userCourseId: string;
     date: string;
@@ -11,17 +11,17 @@ export interface ICourseRecording {
 }
 
 /**
- * ICourseRecordings - Interface for a list of course recordings
+ * CourseRecordings - Interface for a list of course recordings
  */
-export interface ICourseRecordings {
-    recordings: ICourseRecording[];
+export interface CourseRecordings {
+    recordings: CourseRecording[];
     totalCount: number;
 }
 
 /**
- * ICourseRecordingCreate - Interface for creating a course recording
+ * CourseRecordingCreate - Interface for creating a course recording
  */
-export interface ICourseRecordingCreate {
+export interface CourseRecordingCreate {
     date: string;
     minutes: number;
     recordType: string;

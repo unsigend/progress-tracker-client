@@ -17,8 +17,8 @@ import { BackButton } from "@/components/common/BackButton";
 import { CategorySelector } from "./CategorySelector";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import type {
-    ICourseCreate,
-    ICourseUpdate,
+    CourseCreate,
+    CourseUpdate,
 } from "@/entities/course/courses/models/model";
 
 /**
@@ -27,8 +27,8 @@ import type {
 interface CourseActionFormProps {
     title: string;
     description: string;
-    formData: ICourseCreate | ICourseUpdate;
-    onFormDataChange: (data: ICourseCreate | ICourseUpdate) => void;
+    formData: CourseCreate | CourseUpdate;
+    onFormDataChange: (data: CourseCreate | CourseUpdate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     action: "add" | "edit";
     isLoading?: boolean;
@@ -59,14 +59,14 @@ export const CourseActionForm = ({
     isPending = false,
 }: CourseActionFormProps) => {
     const navigate = useNavigate();
-    const handleInputChange = <K extends keyof (ICourseCreate & ICourseUpdate)>(
+    const handleInputChange = <K extends keyof (CourseCreate & CourseUpdate)>(
         field: K,
         value: string | undefined | File | boolean | string[]
     ) => {
         onFormDataChange({
             ...formData,
             [field]: value,
-        } as ICourseCreate | ICourseUpdate);
+        } as CourseCreate | CourseUpdate);
     };
 
     return (

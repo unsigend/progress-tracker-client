@@ -1,13 +1,13 @@
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IBook } from "@/entities/reading/books/models/model";
+import type { Book } from "@/entities/reading/books/models/model";
 
 /**
  * FeatureBooksSectionProps - Interface for FeatureBooksSection component props
  */
 interface FeatureBooksSectionProps {
-    books: IBook[];
+    books: Book[];
     title?: string;
     subtitle?: string;
     className?: string;

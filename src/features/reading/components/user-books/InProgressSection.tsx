@@ -5,14 +5,16 @@ import { Loader2 } from "lucide-react";
 import { BookCover } from "@/features/reading/components/books/BookCover";
 import { Plus } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
+import type { UserBookWithBook } from "@/entities/reading/user-books/model/model";
 import { useNavigate } from "react-router";
+import { TextUtils } from "@/lib/utils/text";
+import { ProgressUtils } from "@/lib/utils/progress";
 
 /**
  * InProgressSectionProps - Interface for InProgressSection component props
  */
 interface InProgressSectionProps {
-    inProgressBooks: IUserBookWithBook[];
+    inProgressBooks: UserBookWithBook[];
     isLoading?: boolean;
 }
 
@@ -86,8 +88,9 @@ export const InProgressSection = ({
                     <div className="space-y-4">
                         {displayBooks.map((userBook) => {
                             const book = userBook.book!;
-                            const progressPercentage = Math.round(
-                                (userBook.currentPage / book.pages) * 100
+                            const progressPercentage = ProgressUtils.calculatePercentage(
+                                userBook.currentPage,
+                                book.pages
                             );
 
                             return (
@@ -114,11 +117,7 @@ export const InProgressSection = ({
                                             {/* Book Title and Author */}
                                             <div>
                                                 <h3 className="font-semibold text-foreground text-sm leading-tight truncate">
-                                                    {book.title.includes(":")
-                                                        ? book.title.split(
-                                                              ":"
-                                                          )[0]
-                                                        : book.title}
+                                                    {TextUtils.truncateTitle(book.title)}
                                                 </h3>
                                                 <p className="text-xs text-muted-foreground truncate">
                                                     by{" "}

@@ -12,9 +12,9 @@ export const UserRole = {
 export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
 
 /**
- * IUser - Interface for a user
+ * User - Interface for a user
  */
-export interface IUser {
+export interface User {
     id: string;
     username: string;
     email: string;
@@ -26,9 +26,9 @@ export interface IUser {
 }
 
 /**
- * IUserUpdate - Interface for updating a user
+ * UserUpdate - Interface for updating a user
  */
-export interface IUserUpdate {
+export interface UserUpdate {
     username?: string;
     email?: string;
     password?: string;

@@ -10,14 +10,14 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CourseGrid } from "./CourseGrid";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
-import type { ICourse } from "@/entities/course/courses/models/model";
+import type { Course } from "@/entities/course/courses/models/model";
 import { cn } from "@/lib/utils";
 
 /**
  * CourseLibraryProps - Interface for CourseLibrary component props
  */
 interface CourseLibraryProps {
-    courses: ICourse[];
+    courses: Course[];
     isLoading: boolean;
     currentPage: number;
     totalPages: number;

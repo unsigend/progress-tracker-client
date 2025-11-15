@@ -12,13 +12,13 @@ import {
 import { Loader2, Lock, Globe, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { ICourse } from "@/entities/course/courses/models/model";
+import type { Course } from "@/entities/course/courses/models/model";
 
 /**
  * PrivateCoursesCardProps - Interface for PrivateCoursesCard component props
  */
 interface PrivateCoursesCardProps {
-    courses: ICourse[];
+    courses: Course[];
     isLoading: boolean;
     onMarkAsPublic: (id: string) => void;
     onNavigate: (id: string) => void;
@@ -29,7 +29,7 @@ interface PrivateCoursesCardProps {
  * PrivateCourseCardItem - Component for displaying a single private course card
  */
 interface PrivateCourseCardItemProps {
-    course: ICourse;
+    course: Course;
     onMarkAsPublic: (id: string) => void;
     onNavigate: (id: string) => void;
 }

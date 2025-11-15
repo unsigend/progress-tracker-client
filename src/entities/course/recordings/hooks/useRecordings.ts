@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { ICourseRecordings } from "../models/model";
+import type { CourseRecordings } from "../models/model";
 import { mapToCourseRecordings } from "../models/mapper";
 
 /**
@@ -12,13 +12,15 @@ import { mapToCourseRecordings } from "../models/mapper";
 export const useCourseRecordings = (userCourseId: string) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().COURSE_RECORDINGS.LIST(userCourseId),
-        queryFn: async (): Promise<ICourseRecordings> => {
+        queryFn: async (): Promise<CourseRecordings> => {
             const response =
                 await ApiClient.api.userCourseControllerFindRecordings(
                     userCourseId
                 );
+            console.log(response.data);
 
             return mapToCourseRecordings(response.data);
         },
+        enabled: !!userCourseId,
     });
 };

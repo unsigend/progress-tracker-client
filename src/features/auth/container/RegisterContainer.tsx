@@ -7,7 +7,7 @@ import {
     RegisterStep,
     type RegisterStepType,
 } from "@/features/auth/constants/register-step.enum";
-import type { IRegisterForm } from "@/entities/auth/models/model";
+import type { RegisterFormData } from "@/entities/auth/models/model";
 import { useRegister } from "@/entities/auth/hooks/useRegister";
 import { useEmailCheck } from "@/entities/auth/hooks/useEmailCheck";
 import { validateEmail } from "@/entities/auth/validation/email";
@@ -28,7 +28,7 @@ export const RegisterContainer = () => {
     );
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState<IRegisterForm>({
+    const [formData, setFormData] = useState<RegisterFormData>({
         email: "",
         password: "",
         username: "",

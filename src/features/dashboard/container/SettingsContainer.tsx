@@ -8,7 +8,7 @@ import { validateEmail } from "@/entities/auth/validation/email";
 import { validateUsername } from "@/entities/auth/validation/username";
 import { validatePassword } from "@/entities/auth/validation/password";
 import { toast } from "sonner";
-import type { IUserUpdate } from "@/entities/users/models/model";
+import type { UserUpdate } from "@/entities/users/models/model";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useNavigate } from "react-router";
 
@@ -23,7 +23,7 @@ export const SettingsContainer = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<
-        Pick<IUserUpdate, "username" | "email">
+        Pick<UserUpdate, "username" | "email">
     >({
         username: "",
         email: "",
@@ -62,7 +62,7 @@ export const SettingsContainer = () => {
             return;
         }
 
-        const updateData: IUserUpdate = {};
+        const updateData: UserUpdate = {};
 
         if (hasEmailChange) {
             const { isValid, error } = validateEmail(formData.email || "");

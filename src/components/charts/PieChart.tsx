@@ -32,11 +32,9 @@ interface PieChartProps {
 
 /**
  * Generate theme-aware colors for chart segments
+ * Uses gray, black, and white based colors for a clean, minimal look
  */
-const generateThemeColors = (
-    dataLength: number,
-    theme: string | undefined
-) => {
+const generateThemeColors = (dataLength: number, theme: string | undefined) => {
     const isDarkMode =
         document.documentElement.classList.contains("dark") ||
         theme === "dark" ||
@@ -44,31 +42,33 @@ const generateThemeColors = (
             window.matchMedia("(prefers-color-scheme: dark)").matches);
 
     if (isDarkMode) {
+        // Dark mode: lighter grays and whites
         const colors = [
-            "#f8fafc",
-            "#e2e8f0",
-            "#cbd5e1",
-            "#94a3b8",
-            "#64748b",
-            "#475569",
-            "#334155",
-            "#1e293b",
-            "#0f172a",
-            "#1e40af",
+            "#f8fafc", // Very light gray/white
+            "#e2e8f0", // Light gray
+            "#cbd5e1", // Medium light gray
+            "#94a3b8", // Medium gray
+            "#64748b", // Dark gray
+            "#475569", // Darker gray
+            "#334155", // Very dark gray
+            "#1e293b", // Almost black
+            "#0f172a", // Black
+            "#3b82f6", // Blue accent
         ];
         return colors.slice(0, dataLength);
     } else {
+        // Light mode: darker grays and blacks
         const colors = [
-            "#0f172a",
-            "#1e293b",
-            "#334155",
-            "#475569",
-            "#64748b",
-            "#94a3b8",
-            "#cbd5e1",
-            "#e2e8f0",
-            "#f1f5f9",
-            "#3b82f6",
+            "#0f172a", // Black
+            "#1e293b", // Very dark gray
+            "#334155", // Dark gray
+            "#475569", // Medium dark gray
+            "#64748b", // Medium gray
+            "#94a3b8", // Medium light gray
+            "#cbd5e1", // Light gray
+            "#e2e8f0", // Very light gray
+            "#f1f5f9", // Almost white
+            "#3b82f6", // Blue accent
         ];
         return colors.slice(0, dataLength);
     }
@@ -97,24 +97,20 @@ export const PieChart = ({
 
     const processedData = data.map((item, index) => ({
         ...item,
-        fill:
-            item.fill || generateThemeColors(data.length, theme)[index],
+        fill: item.fill || generateThemeColors(data.length, theme)[index],
     }));
 
     const chartConfig: ChartConfig = {
         value: {
             label: "Value",
         },
-        ...processedData.reduce(
-            (config, item) => {
-                config[item.key.toLowerCase().replace(/\s+/g, "")] = {
-                    label: item.key,
-                    color: item.fill,
-                };
-                return config;
-            },
-            {} as Record<string, unknown>
-        ),
+        ...processedData.reduce((config, item) => {
+            config[item.key.toLowerCase().replace(/\s+/g, "")] = {
+                label: item.key,
+                color: item.fill,
+            };
+            return config;
+        }, {} as Record<string, unknown>),
     } satisfies ChartConfig;
 
     return (
@@ -138,7 +134,7 @@ export const PieChart = ({
                 {showLegend && (
                     <ChartLegend
                         content={<ChartLegendContent nameKey="key" />}
-                        className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center text-md"
+                        className="-translate-y-1 flex-wrap gap-3 justify-center text-xs"
                     />
                 )}
             </RechartsPieChart>

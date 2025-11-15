@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Bell, ChevronDown, Settings, LogOut } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUser } from "@/entities/users/models/model";
+import type { User } from "@/entities/users/models/model";
 
 /**
  * HeaderProps - Interface for Header component props
@@ -20,7 +20,7 @@ import type { IUser } from "@/entities/users/models/model";
 interface HeaderProps {
     isSidebarOpen: boolean;
     onToggleSidebar: () => void;
-    user: IUser | null;
+    user: User | null;
     isLoading: boolean;
     onLogout: () => void;
 }

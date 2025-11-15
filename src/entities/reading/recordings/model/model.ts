@@ -1,7 +1,7 @@
 /**
- * IReadingRecording - Interface for a recording
+ * ReadingRecording - Interface for a recording
  */
-export interface IReadingRecording {
+export interface ReadingRecording {
     id: string;
     userBookId: string;
     date: string;
@@ -11,17 +11,17 @@ export interface IReadingRecording {
 }
 
 /**
- * IReadingRecordings - Interface for a list of recordings
+ * ReadingRecordings - Interface for a list of recordings
  */
-export interface IReadingRecordings {
-    recordings: IReadingRecording[];
+export interface ReadingRecordings {
+    recordings: ReadingRecording[];
     totalCount: number;
 }
 
 /**
- * IReadingRecordingCreate - Interface for creating a recording
+ * ReadingRecordingCreate - Interface for creating a recording
  */
-export interface IReadingRecordingCreate {
+export interface ReadingRecordingCreate {
     date: string;
     pages: number;
     minutes: number;

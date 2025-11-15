@@ -18,7 +18,7 @@ import {
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { BackButton } from "@/components/common/BackButton";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserCourseWithCourse } from "@/entities/course/user-courses/model/model";
+import type { UserCourseWithCourse } from "@/entities/course/user-courses/model/model";
 import { useNavigate } from "react-router";
 import { DatesUtils } from "@/lib/utils/dates";
 
@@ -26,7 +26,7 @@ import { DatesUtils } from "@/lib/utils/dates";
  * UserCourseDetailCardProps - Interface for UserCourseDetailCard component props
  */
 interface UserCourseDetailCardProps {
-    userCourse: IUserCourseWithCourse | null;
+    userCourse: UserCourseWithCourse | null;
     isLoading?: boolean;
     canMarkAsComplete?: boolean;
     onMarkAsComplete?: () => void;

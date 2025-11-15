@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IUserCourseCreate } from "../model/model";
+import type { UserCourseCreate } from "../model/model";
 import { mapToUserCourse } from "../model/mapper";
 import type { UserCourseCreateRequestDto } from "@/lib/api/api";
 import type { AxiosError } from "axios";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import { toast } from "sonner";
-import type { IUserCourse } from "../model/model";
+import type { UserCourse } from "../model/model";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 /**
@@ -16,8 +16,8 @@ export const useCreateUserCourse = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (
-            userCourse: IUserCourseCreate
-        ): Promise<IUserCourse> => {
+            userCourse: UserCourseCreate
+        ): Promise<UserCourse> => {
             const userCourseRequestDto: UserCourseCreateRequestDto = {
                 courseId: userCourse.courseId,
             };

@@ -1,7 +1,7 @@
 /**
- * IBook - Interface for a book
+ * Book - Interface for a book
  */
-export interface IBook {
+export interface Book {
     id: string;
     title: string;
     author: string | null;
@@ -16,17 +16,17 @@ export interface IBook {
 }
 
 /**
- * IBooks - Interface for a list of books
+ * Books - Interface for a list of books
  */
-export interface IBooks {
-    books: IBook[];
+export interface Books {
+    books: Book[];
     totalCount: number;
 }
 
 /**
- * IBookCreate - Interface for creating a book
+ * BookCreate - Interface for creating a book
  */
-export interface IBookCreate {
+export interface BookCreate {
     title: string;
     author?: string;
     pages: number;
@@ -37,9 +37,9 @@ export interface IBookCreate {
 }
 
 /**
- * IBookUpdate - Interface for updating a book
+ * BookUpdate - Interface for updating a book
  */
-export interface IBookUpdate {
+export interface BookUpdate {
     title?: string;
     author?: string;
     pages?: number;
@@ -50,9 +50,9 @@ export interface IBookUpdate {
 }
 
 /**
- * IBookQuery - Interface for querying books
+ * BookQuery - Interface for querying books
  */
-export interface IBookQuery {
+export interface BookQuery {
     value: string;
     page: number;
     limit: number;

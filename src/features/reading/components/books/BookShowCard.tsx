@@ -11,13 +11,13 @@ import {
 import { BackButton } from "@/components/common/BackButton";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { BookCover } from "@/features/reading/components/books/BookCover";
-import type { IBook } from "@/entities/reading/books/models/model";
+import type { Book } from "@/entities/reading/books/models/model";
 
 /**
  * BookShowCardProps - Interface for BookShowCard component props
  */
 interface BookShowCardProps {
-    book: IBook | null;
+    book: Book | null;
     isLoading: boolean;
     hasPermission: boolean;
     onAddClick: () => void;

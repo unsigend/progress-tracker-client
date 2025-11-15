@@ -9,13 +9,13 @@ import {
     FieldSeparator,
 } from "@/components/ui/field";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { ILoginForm } from "@/entities/auth/models/model";
+import type { LoginFormData } from "@/entities/auth/models/model";
 
 /**
  * LoginFormProps - Interface for LoginForm component props
  */
 interface LoginFormProps {
-    formData: ILoginForm;
+    formData: LoginFormData;
     onEmailChange: (email: string) => void;
     onPasswordChange: (password: string) => void;
     onSubmit: (e: React.FormEvent) => void;

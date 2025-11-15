@@ -30,18 +30,19 @@ import {
 import { BackButton } from "@/components/common/BackButton";
 import { TimePicker } from "@/components/common/TimePicker";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { IUserBookWithBook } from "@/entities/reading/user-books/model/model";
-import type { IReadingRecordingCreate } from "@/entities/reading/recordings/model/model";
+import type { UserBookWithBook } from "@/entities/reading/user-books/model/model";
+import type { ReadingRecordingCreate } from "@/entities/reading/recordings/model/model";
 import { calculateUtils } from "@/lib/utils/calculate";
+import { TextUtils } from "@/lib/utils/text";
 
 /**
  * RecordingNewFormProps - Interface for RecordingNewForm component props
  */
 interface RecordingNewFormProps {
-    formData: IReadingRecordingCreate;
-    onFormDataChange: (data: IReadingRecordingCreate) => void;
+    formData: ReadingRecordingCreate;
+    onFormDataChange: (data: ReadingRecordingCreate) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    userBooks: IUserBookWithBook[];
+    userBooks: UserBookWithBook[];
     isLoading?: boolean;
     selectedUserBookId: string;
     onUserBookIdChange: (id: string) => void;
@@ -205,13 +206,7 @@ export const RecordingNewForm = ({
                                                   return selectedBook ? (
                                                       <div className="flex flex-col text-left">
                                                           <span className="font-medium">
-                                                              {selectedBook.title.includes(
-                                                                  ":"
-                                                              )
-                                                                  ? selectedBook.title.split(
-                                                                        ":"
-                                                                    )[0]
-                                                                  : selectedBook.title}
+                                                              {TextUtils.truncateTitle(selectedBook.title)}
                                                           </span>
                                                           {selectedBook.author && (
                                                               <span className="text-xs text-muted-foreground">
@@ -243,13 +238,7 @@ export const RecordingNewForm = ({
                                                     >
                                                         <div className="flex flex-col">
                                                             <span className="font-medium">
-                                                                {book.title.includes(
-                                                                    ":"
-                                                                )
-                                                                    ? book.title.split(
-                                                                          ":"
-                                                                      )[0]
-                                                                    : book.title}
+                                                                {TextUtils.truncateTitle(book.title)}
                                                             </span>
                                                             {book.author && (
                                                                 <span className="text-xs text-left text-muted-foreground">

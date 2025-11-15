@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IUserBookWithBook } from "../model/model";
+import type { UserBookWithBook } from "../model/model";
 import { mapToUserBook } from "../model/mapper";
 import type { UserBookResponseDto } from "@/lib/api/api";
 
@@ -13,7 +13,7 @@ import type { UserBookResponseDto } from "@/lib/api/api";
 export const useUserBook = (id: string) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().USER_BOOKS.DETAIL(id),
-        queryFn: async (): Promise<IUserBookWithBook> => {
+        queryFn: async (): Promise<UserBookWithBook> => {
             const response = await ApiClient.api.userBookControllerFindById(
                 id,
                 {

@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IBook, IBookCreate } from "../models/model";
+import type { Book, BookCreate } from "../models/model";
 import { mapToBook } from "../models/mapper";
 import {
     ContentType,
@@ -19,7 +19,7 @@ import type { AxiosError } from "axios";
  */
 export const useCreateBook = () => {
     return useMutation({
-        mutationFn: async (book: IBookCreate): Promise<IBook> => {
+        mutationFn: async (book: BookCreate): Promise<Book> => {
             const formData = new FormData();
 
             // append required fields

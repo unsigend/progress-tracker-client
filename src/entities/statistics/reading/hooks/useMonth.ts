@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
 import { ApiClient } from "@/lib/api/api-client";
 import { DatesUtils } from "@/lib/utils/dates";
-import type { IReadingStatisticsDetail } from "../models/model";
+import type { ReadingStatisticsDetail } from "../models/model";
 import type { ReadingRecordingDetailResponseDto } from "@/lib/api/api";
-import type { IReadingRecording } from "@/entities/reading/recordings/model/model";
+import type { ReadingRecording } from "@/entities/reading/recordings/model/model";
 import { mapToRecording } from "@/entities/reading/recordings/model/mapper";
 
 /**
@@ -49,7 +49,7 @@ export const useMonth = (weekOffset: number = 0) => {
                     monthRange.startDate,
                     monthRange.endDate
                 ),
-                queryFn: async (): Promise<IReadingStatisticsDetail> => {
+                queryFn: async (): Promise<ReadingStatisticsDetail> => {
                     const response =
                         await ApiClient.api.statisticsControllerGetReadingRecordingDetail(
                             {
@@ -60,7 +60,7 @@ export const useMonth = (weekOffset: number = 0) => {
                     const data: ReadingRecordingDetailResponseDto =
                         response.data;
 
-                    const recordings: IReadingRecording[] =
+                    const recordings: ReadingRecording[] =
                         data.recordings.map(mapToRecording);
 
                     return {
@@ -74,7 +74,7 @@ export const useMonth = (weekOffset: number = 0) => {
 
     // Merge all recordings from fetched months
     const mergedData = useMemo(() => {
-        const allRecordings: IReadingRecording[] = [];
+        const allRecordings: ReadingRecording[] = [];
         let totalCount = 0;
         let isLoading = false;
 

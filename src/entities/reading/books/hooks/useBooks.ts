@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IBooks, IBookQuery } from "../models/model";
+import type { Books, BookQuery } from "../models/model";
 import { mapToBook } from "../models/mapper";
 import type { BooksResponseDto } from "@/lib/api/api";
 
@@ -10,10 +10,10 @@ import type { BooksResponseDto } from "@/lib/api/api";
  * @param query - The query parameters for getting books
  * @returns useQuery hook for getting books with pagination data
  */
-export const useBooks = (query: IBookQuery) => {
+export const useBooks = (query: BookQuery) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().BOOKS.LIST(query),
-        queryFn: async (): Promise<IBooks> => {
+        queryFn: async (): Promise<Books> => {
             const queryObject = {
                 value: query.value,
                 sort: query.sort,

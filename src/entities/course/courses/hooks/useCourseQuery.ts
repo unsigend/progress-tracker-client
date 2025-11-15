@@ -1,6 +1,6 @@
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { useSearchParams } from "react-router";
-import type { ICoursesQuery } from "../models/model";
+import type { CoursesQuery } from "../models/model";
 import { useMemo } from "react";
 
 /**
@@ -10,7 +10,7 @@ import { useMemo } from "react";
 export const useCourseQuery = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const query: ICoursesQuery = useMemo<ICoursesQuery>(() => {
+    const query: CoursesQuery = useMemo<CoursesQuery>(() => {
         const page = searchParams.get("page")
             ? Number(searchParams.get("page"))
             : COURSE_CONSTANTS.COURSE.DEFAULT_PAGE;

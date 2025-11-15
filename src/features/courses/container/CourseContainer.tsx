@@ -4,11 +4,10 @@ import { useNavigate } from "react-router";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useMarkAsPublic } from "@/entities/course/courses/hooks/useMarkAsPublic";
 import { toast } from "sonner";
-import { InProgressCoursesSection } from "../components/user-courses/InProgressCoursesSection";
+import { UserCoursesInProgressListContainer } from "./user-courses/UserCoursesInProgressListContainer";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { useUserCourses } from "@/entities/course/user-courses/hooks/useUserCourses";
 import { CompletedCoursesSection } from "../components/user-courses/CompletedCoursesSection";
-import { useMarkAsComplete } from "@/entities/course/user-courses/hooks/useMarkAsComplete";
 
 /**
  * CourseContainer - Container component for the courses page
@@ -19,18 +18,6 @@ export const CourseContainer = () => {
     // get my private courses
     const { data: courses, isLoading } = useMyCourses(true);
     const { markAsPublic } = useMarkAsPublic();
-    const { markAsComplete } = useMarkAsComplete();
-
-    // get in progress courses
-    const { data: inProgressCourses, isLoading: isLoadingInProgressCourses } =
-        useUserCourses({
-            field: "status",
-            value: "IN_PROGRESS",
-            sort: COURSE_CONSTANTS.USER_COURSE.DEFAULT_SORT,
-            order: COURSE_CONSTANTS.USER_COURSE.DEFAULT_ORDER,
-            page: COURSE_CONSTANTS.USER_COURSE.DEFAULT_PAGE,
-            limit: COURSE_CONSTANTS.USER_COURSE.DEFAULT_LIMIT,
-        });
 
     // get completed courses
     const { data: completedCourses, isLoading: isLoadingCompletedCourses } =
@@ -43,16 +30,13 @@ export const CourseContainer = () => {
             limit: COURSE_CONSTANTS.USER_COURSE.DEFAULT_LIMIT,
         });
 
-    // mark as public
+    /**
+     * handleMarkAsPublic - Handler for marking a course as public
+     * @param id - The course ID
+     */
     const handleMarkAsPublic = async (id: string) => {
         await markAsPublic(id);
         toast.success("Course marked as public");
-    };
-
-    // mark as complete
-    const handleMarkAsComplete = async (id: string) => {
-        await markAsComplete(id);
-        toast.success("Course marked as complete");
     };
     return (
         <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8">
@@ -75,21 +59,9 @@ export const CourseContainer = () => {
                     <div className="w-full h-[350px]"></div>
                 </div>
 
-                {/* Row 2: In Progress Reading */}
+                {/* Row 2: In Progress Courses with Pie Charts */}
                 <div className="col-span-12">
-                    <InProgressCoursesSection
-                        inProgressCourses={inProgressCourses?.userCourses || []}
-                        isLoading={isLoadingInProgressCourses}
-                        onNavigate={(id) => {
-                            navigate(
-                                ROUTES_CONSTANTS.DASHBOARD()
-                                    .COURSES()
-                                    .USER_COURSES()
-                                    .DETAIL(id)
-                            );
-                        }}
-                        onMarkAsComplete={handleMarkAsComplete}
-                    />
+                    <UserCoursesInProgressListContainer />
                 </div>
 
                 {/* Row 3: Completed Courses */}

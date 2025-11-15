@@ -12,14 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { Calendar, BookOpen, GitMerge } from "lucide-react";
-import type { IReadingRecording } from "@/entities/reading/recordings/model/model";
-import { DatesUtils } from "@/lib/utils/dates";
+import type { ReadingRecording } from "@/entities/reading/recordings/model/model";
+import { TextUtils } from "@/lib/utils/text";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
-    recordings: IReadingRecording[];
+    recordings: ReadingRecording[];
     isLoading: boolean;
     onDelete: () => void;
 }
@@ -109,17 +109,7 @@ export const RecordingList = ({
                                         <TableCell>{recording.pages}</TableCell>
                                         <TableCell>
                                             {recording.minutes
-                                                ? `${
-                                                      DatesUtils.formatDuration(
-                                                          recording.minutes
-                                                      ).value
-                                                  }${
-                                                      DatesUtils.formatDuration(
-                                                          recording.minutes
-                                                      ).unit === "minutes"
-                                                          ? "m"
-                                                          : "h"
-                                                  }`
+                                                ? TextUtils.formatDurationShort(recording.minutes)
                                                 : "N/A"}
                                         </TableCell>
                                         <TableCell>
