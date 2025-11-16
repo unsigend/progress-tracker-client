@@ -3,7 +3,7 @@ import type { AxiosError } from "axios";
 import { ApiClient } from "@/lib/api/api-client";
 import { useMutation } from "@tanstack/react-query";
 import type { LoginRequestDto } from "@/lib/api/api";
-import type { ILoginForm, IAccessToken } from "../models/model";
+import type { LoginFormData, AccessToken } from "../models/model";
 import type { IErrorResponse } from "@/entities/common/models/error";
 import { AUTH_CONSTANTS } from "@/constants/auth.constant";
 
@@ -13,7 +13,7 @@ import { AUTH_CONSTANTS } from "@/constants/auth.constant";
  */
 export const useLogin = () => {
     return useMutation({
-        mutationFn: async (data: ILoginForm): Promise<IAccessToken> => {
+        mutationFn: async (data: LoginFormData): Promise<AccessToken> => {
             // Create the login form data
             const loginFormData: LoginRequestDto = {
                 email: data.email,
@@ -37,7 +37,7 @@ export const useLogin = () => {
                 ?.data as IErrorResponse;
             toast.error(errorModel.message);
         },
-        onSuccess: (token: IAccessToken) => {
+        onSuccess: (token: AccessToken) => {
             // Set the access token in localStorage
             localStorage.setItem(
                 AUTH_CONSTANTS.ACCESS_TOKEN_KEY,

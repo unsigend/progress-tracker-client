@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { IResetPassword } from "../models/model";
+import type { ResetPassword } from "../models/model";
 import { ApiClient } from "@/lib/api/api-client";
 import type { ResetPasswordRequestDto } from "@/lib/api/api";
 
@@ -9,7 +9,7 @@ import type { ResetPasswordRequestDto } from "@/lib/api/api";
  */
 export const useResetPassword = () => {
     return useMutation({
-        mutationFn: async (data: IResetPassword): Promise<void> => {
+        mutationFn: async (data: ResetPassword): Promise<void> => {
             // Create the reset password request data
             const resetPasswordData: ResetPasswordRequestDto = {
                 password: data.newPassword,

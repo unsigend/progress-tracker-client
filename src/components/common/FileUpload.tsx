@@ -200,8 +200,10 @@ export const FileUpload = ({
                                         )}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium truncate">
-                                            {file.name}
+                                        <p className="text-sm font-medium truncate" title={file.name}>
+                                            {file.name.length > 40
+                                                ? `${file.name.substring(0, 20)}...${file.name.substring(file.name.length - 17)}`
+                                                : file.name}
                                         </p>
                                         <p className="text-xs text-muted-foreground">
                                             {formatFileSize(file.size)}

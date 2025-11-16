@@ -278,7 +278,7 @@ export interface UserBookCreateRequestDto {
   bookId: string;
 }
 
-export interface RecordingResponseDto {
+export interface BookRecordingResponseDto {
   /** The id of the recording */
   id: string;
   /** The user book id of the recording */
@@ -296,14 +296,14 @@ export interface RecordingResponseDto {
   notes: string | null;
 }
 
-export interface RecordingsResponseDto {
-  /** The recordings of the recordings */
-  recordings: RecordingResponseDto[];
+export interface BookRecordingsResponseDto {
+  /** The book recordings of the book recordings */
+  recordings: BookRecordingResponseDto[];
   /** The total count of the recordings */
   totalCount: number;
 }
 
-export interface RecordingCreateRequestDto {
+export interface BookRecordingCreateRequestDto {
   /**
    * The date of the recording
    * @format date-time
@@ -314,6 +314,164 @@ export interface RecordingCreateRequestDto {
   /** The minutes of the recording */
   minutes: number;
   /** The notes of the recording */
+  notes?: string;
+}
+
+export interface CourseCreateRequestDto {
+  /** The name of the course */
+  name: string;
+  /** The categories of the course maximum 3 categories */
+  categories?: string[];
+  /** The is public of the course */
+  isPublic?: boolean;
+  /** The description of the course */
+  description?: string;
+  /** The source of the course */
+  source?: string;
+  /**
+   * The official website url of the course
+   * @format uri
+   */
+  officialWebsiteUrl?: string;
+}
+
+export interface CourseResponseDto {
+  /** The id of the course */
+  id: string;
+  /** The name of the course */
+  name: string;
+  /** The is public of the course */
+  isPublic: boolean;
+  /** The categories of the course */
+  categories: string[];
+  /** The description of the course */
+  description: string | null;
+  /** The source of the course */
+  source: string | null;
+  /** The official website url of the course */
+  officialWebsiteUrl: string | null;
+  /**
+   * The created at of the course
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * The updated at of the course
+   * @format date-time
+   */
+  updatedAt: string;
+  /** The created by of the course */
+  createdById: string;
+}
+
+export interface CoursesResponseDto {
+  /** The courses */
+  courses: CourseResponseDto[];
+  /** The total count of the courses */
+  totalCount: number;
+}
+
+export interface CourseUpdateRequestDto {
+  /** The name of the course */
+  name?: string;
+  /** The categories of the course maximum 3 categories */
+  categories?: string[];
+  /** The is public of the course */
+  isPublic?: boolean;
+  /** The description of the course */
+  description?: string;
+  /** The source of the course */
+  source?: string;
+  /**
+   * The official website url of the course
+   * @format uri
+   */
+  officialWebsiteUrl?: string;
+}
+
+export interface UserCourseResponseDto {
+  /** The id of the user course */
+  id: string;
+  /** The course id of the user course */
+  courseId: string;
+  /** The status of the user course */
+  status: "IN_PROGRESS" | "COMPLETED";
+  /**
+   * The start date of the user course
+   * @format date-time
+   */
+  startDate: string | null;
+  /**
+   * The completed date of the user course
+   * @format date-time
+   */
+  completedDate: string | null;
+  /** The total minutes of the user course */
+  totalMinutes: number;
+  /** The total days of the user course */
+  totalDays: number;
+  /**
+   * The created at of the user course
+   * @format date-time
+   */
+  createdAt: string;
+  /**
+   * The updated at of the user course
+   * @format date-time
+   */
+  updatedAt: string;
+  /** The course of the user course */
+  course: CourseResponseDto | null;
+}
+
+export interface UserCoursesResponseDto {
+  /** The user courses */
+  userCourses: UserCourseResponseDto[];
+  /** The total count of the user courses */
+  totalCount: number;
+}
+
+export interface UserCourseCreateRequestDto {
+  /** The course id of the user course */
+  courseId: string;
+}
+
+export interface CourseRecordingResponseDto {
+  /** The id of the course recording */
+  id: string;
+  /** The user course id of the course recording */
+  userCourseId: string;
+  /**
+   * The date of the course recording
+   * @format date-time
+   */
+  date: string;
+  /** The minutes of the course recording */
+  minutes: number;
+  /** The record type of the course recording */
+  recordType: string;
+  /** The notes of the course recording */
+  notes: string | null;
+}
+
+export interface CourseRecordingsResponseDto {
+  /** The course recordings of the course recordings */
+  recordings: CourseRecordingResponseDto[];
+  /** The total count of the recordings */
+  totalCount: number;
+}
+
+export interface CourseRecordingCreateRequestDto {
+  /**
+   * The date of the course recording
+   * @format date-time
+   */
+  date: string;
+  /** The minutes of the course recording */
+  minutes: number;
+  /** The record type of the course recording */
+  recordType: string;
+  /** The notes of the course recording */
   notes?: string;
 }
 
@@ -362,7 +520,7 @@ export interface ReadingRecordingDetailRequestDto {
 
 export interface ReadingRecordingDetailResponseDto {
   /** The recordings of the reading recording detail */
-  recordings: RecordingResponseDto[];
+  recordings: BookRecordingResponseDto[];
   /** The total count of the recordings */
   totalCount: number;
 }
@@ -1005,11 +1163,11 @@ export class Api<
      * @tags Book
      * @name BookControllerFindAll
      * @summary Find all books
-     * @request GET:/api/v1/book
+     * @request GET:/api/v1/books
      */
     bookControllerFindAll: (
       query?: {
-        /** The field to query */
+        /** The field to query default is: title|author|ISBN10|ISBN13 */
         field?: string;
         /** The value to query */
         value?: string;
@@ -1025,7 +1183,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<BooksResponseDto, void>({
-        path: `/api/v1/book`,
+        path: `/api/v1/books`,
         method: "GET",
         query: query,
         format: "json",
@@ -1038,14 +1196,14 @@ export class Api<
      * @tags Book
      * @name BookControllerCreate
      * @summary Create a book
-     * @request POST:/api/v1/book
+     * @request POST:/api/v1/books
      */
     bookControllerCreate: (
       data: BookCreateRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<BookResponseDto, any>({
-        path: `/api/v1/book`,
+        path: `/api/v1/books`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -1059,7 +1217,7 @@ export class Api<
      * @tags Book
      * @name BookControllerFindRandom
      * @summary Find random books
-     * @request GET:/api/v1/book/random
+     * @request GET:/api/v1/books/random
      */
     bookControllerFindRandom: (
       query: {
@@ -1069,7 +1227,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<BooksResponseDto, void>({
-        path: `/api/v1/book/random`,
+        path: `/api/v1/books/random`,
         method: "GET",
         query: query,
         format: "json",
@@ -1082,11 +1240,11 @@ export class Api<
      * @tags Book
      * @name BookControllerFindById
      * @summary Find book by id
-     * @request GET:/api/v1/book/{id}
+     * @request GET:/api/v1/books/{id}
      */
     bookControllerFindById: (id: string, params: RequestParams = {}) =>
       this.request<BookResponseDto, any>({
-        path: `/api/v1/book/${id}`,
+        path: `/api/v1/books/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -1098,7 +1256,7 @@ export class Api<
      * @tags Book
      * @name BookControllerUpdate
      * @summary Update a book
-     * @request PUT:/api/v1/book/{id}
+     * @request PUT:/api/v1/books/{id}
      */
     bookControllerUpdate: (
       id: string,
@@ -1106,7 +1264,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<BookResponseDto, any>({
-        path: `/api/v1/book/${id}`,
+        path: `/api/v1/books/${id}`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
@@ -1120,11 +1278,11 @@ export class Api<
      * @tags Book
      * @name BookControllerDelete
      * @summary Delete a book
-     * @request DELETE:/api/v1/book/{id}
+     * @request DELETE:/api/v1/books/{id}
      */
     bookControllerDelete: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/v1/book/${id}`,
+        path: `/api/v1/books/${id}`,
         method: "DELETE",
         ...params,
       }),
@@ -1252,7 +1410,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<RecordingsResponseDto, void>({
+      this.request<BookRecordingsResponseDto, void>({
         path: `/api/v1/user-book/${id}/recordings`,
         method: "GET",
         query: query,
@@ -1270,10 +1428,10 @@ export class Api<
      */
     userBookControllerCreateRecording: (
       id: string,
-      data: RecordingCreateRequestDto,
+      data: BookRecordingCreateRequestDto,
       params: RequestParams = {},
     ) =>
-      this.request<RecordingResponseDto, any>({
+      this.request<BookRecordingResponseDto, any>({
         path: `/api/v1/user-book/${id}/recordings`,
         method: "POST",
         body: data,
@@ -1297,6 +1455,335 @@ export class Api<
       this.request<void, any>({
         path: `/api/v1/user-book/${id}/recordings`,
         method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerCreate
+     * @summary Create a course
+     * @request POST:/api/v1/courses
+     */
+    courseControllerCreate: (
+      data: CourseCreateRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<CourseResponseDto, any>({
+        path: `/api/v1/courses`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerFindAll
+     * @summary Find all courses
+     * @request GET:/api/v1/courses
+     */
+    courseControllerFindAll: (
+      query?: {
+        /** The field to query default: name|categories */
+        field?: string;
+        /** The value to query */
+        value?: string;
+        /** The sort to query */
+        sort?: string;
+        /** The order to query */
+        order?: "asc" | "desc";
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CoursesResponseDto, any>({
+        path: `/api/v1/courses`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerMyCourses
+     * @summary Find my courses
+     * @request GET:/api/v1/courses/my-courses
+     */
+    courseControllerMyCourses: (
+      query?: {
+        /** The field to query default: name|categories */
+        field?: string;
+        /** The value to query */
+        value?: string;
+        /** The sort to query */
+        sort?: string;
+        /** The order to query */
+        order?: "asc" | "desc";
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CoursesResponseDto, any>({
+        path: `/api/v1/courses/my-courses`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerFindById
+     * @summary Find a course by id
+     * @request GET:/api/v1/courses/{id}
+     */
+    courseControllerFindById: (id: string, params: RequestParams = {}) =>
+      this.request<CourseResponseDto, any>({
+        path: `/api/v1/courses/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerDelete
+     * @summary Delete a course by id
+     * @request DELETE:/api/v1/courses/{id}
+     */
+    courseControllerDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/courses/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Course
+     * @name CourseControllerUpdate
+     * @summary Update a course by id
+     * @request PUT:/api/v1/courses/{id}
+     */
+    courseControllerUpdate: (
+      id: string,
+      data: CourseUpdateRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<CourseResponseDto, any>({
+        path: `/api/v1/courses/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerFindAll
+     * @summary Find all user courses
+     * @request GET:/api/v1/user-course
+     */
+    userCourseControllerFindAll: (
+      query: {
+        /** The field to query */
+        field?: string;
+        /** The value to query */
+        value?: string;
+        /** The sort to query */
+        sort?: "createdAt" | "updatedAt" | "completedDate" | "startDate";
+        /** The order to query */
+        order?: "asc" | "desc";
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCoursesResponseDto, void>({
+        path: `/api/v1/user-course`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerCreate
+     * @summary Create a user course
+     * @request POST:/api/v1/user-course
+     */
+    userCourseControllerCreate: (
+      data: UserCourseCreateRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCourseResponseDto, void>({
+        path: `/api/v1/user-course`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerFindById
+     * @summary Find a user course by id
+     * @request GET:/api/v1/user-course/{id}
+     */
+    userCourseControllerFindById: (
+      id: string,
+      query: {
+        /**
+         * The expand to query
+         * @default false
+         */
+        expand: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserCourseResponseDto, void>({
+        path: `/api/v1/user-course/${id}`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerDelete
+     * @summary Delete a user course
+     * @request DELETE:/api/v1/user-course/{id}
+     */
+    userCourseControllerDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/v1/user-course/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerMarkComplete
+     * @summary Mark a user course as complete
+     * @request POST:/api/v1/user-course/{id}/mark-complete
+     */
+    userCourseControllerMarkComplete: (
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/v1/user-course/${id}/mark-complete`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerDeleteRecordings
+     * @summary Delete course recordings
+     * @request DELETE:/api/v1/user-course/{id}/recordings
+     */
+    userCourseControllerDeleteRecordings: (
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/v1/user-course/${id}/recordings`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerFindRecordings
+     * @summary Find all course recordings
+     * @request GET:/api/v1/user-course/{id}/recordings
+     */
+    userCourseControllerFindRecordings: (
+      id: string,
+      query?: {
+        /** The limit to query */
+        limit?: number;
+        /** The page to query */
+        page?: number;
+        /** The sort to query */
+        sort?: string;
+        /** The order to query */
+        order?: "asc" | "desc";
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CourseRecordingsResponseDto, void>({
+        path: `/api/v1/user-course/${id}/recordings`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserCourse
+     * @name UserCourseControllerCreateRecording
+     * @summary Create a course recording
+     * @request POST:/api/v1/user-course/{id}/recordings
+     */
+    userCourseControllerCreateRecording: (
+      id: string,
+      data: CourseRecordingCreateRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<CourseRecordingResponseDto, void>({
+        path: `/api/v1/user-course/${id}/recordings`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import type { VerifyCodeRequestDto } from "@/lib/api/api";
 import { ApiClient } from "@/lib/api/api-client";
-import type { IVerifyCode } from "../models/model";
+import type { VerifyCode } from "../models/model";
 
 /**
  * useVerifyCode - Hook for verifying a code
@@ -9,7 +9,7 @@ import type { IVerifyCode } from "../models/model";
  */
 export const useVerifyCode = () => {
     return useMutation({
-        mutationFn: async (data: IVerifyCode): Promise<boolean> => {
+        mutationFn: async (data: VerifyCode): Promise<boolean> => {
             // Create the verify code request data
             const verifyCodeData: VerifyCodeRequestDto = {
                 code: data.code,

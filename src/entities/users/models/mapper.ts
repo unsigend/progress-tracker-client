@@ -1,12 +1,12 @@
 import type { UserResponseDto } from "@/lib/api/api";
-import type { IUser, UserRoleType } from "./model";
+import type { User, UserRoleType } from "./model";
 
 /**
- * mapToUser - Map a UserResponseDto to an IUser
+ * mapToUser - Map a UserResponseDto to an User
  * @param user - The UserResponseDto to map
- * @returns The mapped IUser
+ * @returns The mapped User
  */
-export const mapToUser = (user: UserResponseDto): IUser => {
+export const mapToUser = (user: UserResponseDto): User => {
     return {
         id: user.id,
         username: user.username,
@@ -20,11 +20,11 @@ export const mapToUser = (user: UserResponseDto): IUser => {
 };
 
 /**
- * mapToUserResponseDto - Map an IUser to a UserResponseDto
- * @param user - The IUser to map
+ * mapToUserResponseDto - Map an User to a UserResponseDto
+ * @param user - The User to map
  * @returns The mapped UserResponseDto
  */
-export const mapToUserResponseDto = (user: IUser): UserResponseDto => {
+export const mapToUserResponseDto = (user: User): UserResponseDto => {
     return {
         id: user.id,
         username: user.username,

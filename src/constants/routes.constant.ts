@@ -67,6 +67,34 @@ export const ROUTES_CONSTANTS = {
             COURSES() {
                 return {
                     HOME: (): string => `${DASHBOARD_ROOT}/courses`,
+                    LIST: () => {
+                        return {
+                            HOME: (): string =>
+                                `${DASHBOARD_ROOT}/courses/list`,
+                            NEW: (): string =>
+                                `${DASHBOARD_ROOT}/courses/list/new`,
+                            EDIT: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/courses/list/${
+                                    id ?? ":id"
+                                }/edit`,
+                            DETAIL: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/courses/list/${id ?? ":id"}`,
+                        };
+                    },
+                    USER_COURSES() {
+                        return {
+                            DETAIL: (id?: string): string =>
+                                `${DASHBOARD_ROOT}/courses/user-courses/${
+                                    id ?? ":id"
+                                }`,
+                        };
+                    },
+                    RECORDINGS() {
+                        return {
+                            NEW: (): string =>
+                                `${DASHBOARD_ROOT}/courses/recordings/new`,
+                        };
+                    },
                 };
             },
             PROJECTS() {

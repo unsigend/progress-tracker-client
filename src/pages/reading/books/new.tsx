@@ -1,9 +1,9 @@
-import { BookNewContainer } from "@/features/reading/container/books/BookNewContainer";
+import { BookForm } from "@/features/reading/components/books/BookForm";
 
 /**
  * BookNewPage - The page for creating a new book
  * @returns BookNewPage component
  */
 export const BookNewPage = () => {
-    return <BookNewContainer />;
+    return <BookForm mode="create" />;
 };

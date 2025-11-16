@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiClient } from "@/lib/api/api-client";
 import { API_KEY_FACTORY } from "@/lib/api/api-key-factory";
-import type { IUser } from "../models/model";
+import type { User } from "../models/model";
 import { mapToUser } from "../models/mapper";
 import type { UserResponseDto } from "@/lib/api/api";
 
@@ -13,7 +13,7 @@ import type { UserResponseDto } from "@/lib/api/api";
 export const useUser = (id: string) => {
     return useQuery({
         queryKey: API_KEY_FACTORY().USERS.DETAIL(id),
-        queryFn: async (): Promise<IUser> => {
+        queryFn: async (): Promise<User> => {
             const response = await ApiClient.api.userControllerFindById(id);
             const user: UserResponseDto = response.data;
             return mapToUser(user);

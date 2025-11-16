@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { IResetToken } from "../models/model";
+import type { ResetToken } from "../models/model";
 import type { SendCodeRequestDto } from "@/lib/api/api";
 import { ApiClient } from "@/lib/api/api-client";
 
@@ -9,7 +9,7 @@ import { ApiClient } from "@/lib/api/api-client";
  */
 export const useSendCode = () => {
     return useMutation({
-        mutationFn: async (email: string): Promise<IResetToken> => {
+        mutationFn: async (email: string): Promise<ResetToken> => {
             // Create the reset token request data
             const resetToken: SendCodeRequestDto = {
                 email: email,

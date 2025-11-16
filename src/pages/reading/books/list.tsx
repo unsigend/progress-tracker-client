@@ -1,9 +1,9 @@
-import { BookListContainer } from "@/features/reading/container/books/BookListContainer";
+import { BooksList } from "@/features/reading/components/books/BooksList";
 
 /**
  * BookListPage - The page for the book library (list)
  * @returns BookListPage component
  */
 export const BookListPage = () => {
-    return <BookListContainer />;
+    return <BooksList />;
 };

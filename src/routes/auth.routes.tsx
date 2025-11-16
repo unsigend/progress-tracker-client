@@ -5,13 +5,21 @@ import { AuthLoginPage } from "@/pages/auth/login";
 import { AuthRegisterPage } from "@/pages/auth/register";
 import { GithubCallbackPage } from "@/pages/auth/github-callback";
 import { GoogleCallbackPage } from "@/pages/auth/google-callback";
+import { AuthRedirect } from "@/pages/redirect";
 
 /**
  * AuthRoutes - The routes for the auth page
  * @returns Auth Routes
  */
 export const AuthRoutes = (
-    <Route path={ROUTES_CONSTANTS.AUTH().ROOT()} element={<AuthLayout />}>
+    <Route
+        path={ROUTES_CONSTANTS.AUTH().ROOT()}
+        element={
+            <AuthRedirect>
+                <AuthLayout />
+            </AuthRedirect>
+        }
+    >
         {/* Login Page */}
         <Route
             path={ROUTES_CONSTANTS.AUTH().LOGIN()}

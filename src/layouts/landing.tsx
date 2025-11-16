@@ -2,8 +2,8 @@
 import { Outlet } from "react-router";
 
 // import components
-import { NavBar } from "@/features/landing/components/NavBar";
-import { Footer } from "@/features/landing/components/Footer";
+import { LandingNavBar } from "@/features/landing/components/LandingNavBar";
+import { LandingFooter } from "@/features/landing/components/LandingFooter";
 
 /**
  * LandingMainLayout - The main layout for the landing page
@@ -12,10 +12,10 @@ export const LandingMainLayout = () => {
     return (
         <section>
             <section className="container mx-auto min-h-screen">
-                <NavBar />
+                <LandingNavBar />
                 <Outlet />
             </section>
-            <Footer />
+            <LandingFooter />
         </section>
     );
 };

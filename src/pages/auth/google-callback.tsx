@@ -1,9 +1,8 @@
-// import dependencies
-import { GoogleCallbackContainer } from "@/features/auth/container/GoogleCallbackContainer";
+import { GoogleCallback } from "@/features/auth/GoogleCallback";
 
 /**
  * Google Callback Page
  */
 export const GoogleCallbackPage = () => {
-    return <GoogleCallbackContainer />;
+    return <GoogleCallback />;
 };

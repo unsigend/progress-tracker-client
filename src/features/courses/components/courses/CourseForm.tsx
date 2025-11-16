@@ -1,0 +1,364 @@
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+    GraduationCap,
+    FileText,
+    Link as LinkIcon,
+    Loader2,
+    BookOpen,
+    Globe,
+    Lock,
+} from "lucide-react";
+import { BackButton } from "@/components/common/BackButton";
+import { CategorySelector } from "./CategorySelector";
+import { useCreateCourse } from "@/features/courses/api/courses/hooks/useCreateCourse";
+import { useUpdateCourse } from "@/features/courses/api/courses/hooks/useUpdateCourse";
+import { useCourse } from "@/features/courses/api/courses/hooks/useCourse";
+import { toast } from "sonner";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
+import type {
+    CourseCreate,
+    CourseUpdate,
+} from "@/features/courses/api/courses/models/model";
+
+/**
+ * CourseFormProps - Interface for CourseForm component props
+ */
+interface CourseFormProps {
+    mode: "create" | "edit";
+    courseId?: string;
+}
+
+/**
+ * CourseForm - Smart component for creating or editing a course
+ * Handles form state, data fetching, submission logic, and UI rendering
+ * @param props - The props for the CourseForm component
+ * @param props.mode - Whether this is for creating or editing a course
+ * @param props.courseId - The course ID for edit mode
+ * @returns CourseForm component
+ */
+export const CourseForm = ({ mode, courseId }: CourseFormProps) => {
+    const navigate = useNavigate();
+
+    const { data: existingCourse, isLoading: isLoadingCourse } = useCourse(
+        mode === "edit" && courseId ? courseId : ""
+    );
+    const { mutate: createCourse, isPending: isCreating } = useCreateCourse();
+    const { mutate: updateCourse, isPending: isUpdating } = useUpdateCourse(
+        courseId || ""
+    );
+
+    const [formData, setFormData] = useState<CourseCreate | CourseUpdate>(
+        mode === "create"
+            ? {
+                  name: "",
+                  description: "",
+                  source: "",
+                  officialWebsiteUrl: undefined,
+                  isPublic: false,
+              }
+            : {
+                  name: "",
+                  description: "",
+                  source: "",
+                  officialWebsiteUrl: undefined,
+              }
+    );
+
+    // Load existing course data for edit mode
+    useEffect(() => {
+        if (mode === "edit" && existingCourse) {
+            setFormData({
+                name: existingCourse.name,
+                description: existingCourse.description || "",
+                source: existingCourse.source || "",
+                officialWebsiteUrl: existingCourse.officialWebsiteUrl ?? undefined,
+                isPublic: existingCourse.isPublic,
+                categories: existingCourse.categories || [],
+            });
+        }
+    }, [existingCourse, mode]);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (mode === "create") {
+            if (!formData.name || formData.name.trim() === "") {
+                toast.error("Course name is required");
+                return;
+            }
+
+            createCourse(formData as CourseCreate, {
+                onSuccess: () => {
+                    toast.success("Course created successfully");
+                    navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().HOME());
+                },
+            });
+        } else {
+            updateCourse(formData as CourseUpdate, {
+                onSuccess: () => {
+                    toast.success("Course updated successfully");
+                    navigate(
+                        ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().HOME()
+                    );
+                },
+            });
+        }
+    };
+
+    const handleInputChange = <K extends keyof (CourseCreate & CourseUpdate)>(
+        field: K,
+        value: string | undefined | File | boolean | string[]
+    ) => {
+        setFormData({
+            ...formData,
+            [field]: value,
+        } as CourseCreate | CourseUpdate);
+    };
+
+    const isPending = mode === "create" ? isCreating : isUpdating;
+    const isLoading = mode === "edit" ? isLoadingCourse : false;
+
+    return (
+        <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+            <div className="w-full max-w-2xl">
+                <Card className="min-h-[600px]">
+                    <CardHeader>
+                        {/* Back Button - Top Left */}
+                        <div className="flex items-center justify-start mb-4">
+                            <BackButton onClick={() => navigate(-1)} />
+                        </div>
+
+                        {/* Header Section */}
+                        <div className="flex items-start gap-4">
+                            <div className="p-3 bg-muted rounded-lg">
+                                <GraduationCap className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                            <div className="flex-1">
+                                <CardTitle className="text-2xl font-semibold text-foreground mb-2">
+                                    {mode === "create"
+                                        ? "Create New Course"
+                                        : "Edit Course"}
+                                </CardTitle>
+                                <p className="text-sm text-muted-foreground">
+                                    {mode === "create"
+                                        ? "Fill in the details to add a new course to your collection"
+                                        : "Update the course details below"}
+                                </p>
+                            </div>
+                        </div>
+                    </CardHeader>
+
+                    <CardContent>
+                        {isLoading ? (
+                            <div className="flex justify-center items-center py-12">
+                                <Loader2 className="size-6 animate-spin" />
+                            </div>
+                        ) : (
+                            <form className="space-y-6" onSubmit={handleSubmit}>
+                                {/* Course Name Field */}
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="name"
+                                        className="flex items-center gap-2 text-sm font-medium text-foreground"
+                                    >
+                                        <BookOpen className="w-4 h-4" />
+                                        Course Name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        type="text"
+                                        placeholder="Enter course name"
+                                        value={formData.name || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "name",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-full transition-all duration-200"
+                                    />
+                                </div>
+
+                                {/* Course Description Field */}
+                                <div className="space-y-2">
+                                    <Label
+                                        htmlFor="description"
+                                        className="flex items-center gap-2 text-sm font-medium text-foreground"
+                                    >
+                                        <FileText className="w-4 h-4" />
+                                        Description
+                                    </Label>
+                                    <textarea
+                                        id="description"
+                                        placeholder="Enter course description"
+                                        value={formData.description || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "description",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-full min-h-[150px] px-3 py-2 border border-input rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent resize-none bg-background text-foreground transition-all duration-200"
+                                    />
+                                </div>
+
+                                {/* Publicity Toggle */}
+                                <div className="space-y-2">
+                                    <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                        {formData.isPublic ? (
+                                            <Globe className="w-4 h-4" />
+                                        ) : (
+                                            <Lock className="w-4 h-4" />
+                                        )}
+                                        Visibility
+                                    </Label>
+                                    <div className="flex items-center gap-3 p-4 border border-border rounded-md bg-background">
+                                        <Switch
+                                            id="isPublic"
+                                            checked={formData.isPublic ?? false}
+                                            onCheckedChange={(checked) =>
+                                                handleInputChange(
+                                                    "isPublic",
+                                                    checked
+                                                )
+                                            }
+                                        />
+                                        <div className="flex-1">
+                                            <Label
+                                                htmlFor="isPublic"
+                                                className="text-sm font-medium text-foreground cursor-pointer"
+                                            >
+                                                {formData.isPublic
+                                                    ? "Public"
+                                                    : "Private"}
+                                            </Label>
+                                            <p className="text-xs text-muted-foreground mt-0.5">
+                                                {formData.isPublic
+                                                    ? "Anyone can view this course"
+                                                    : "Only you can view this course"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Categories Section */}
+                                <div className="space-y-2">
+                                    <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                        <BookOpen className="w-4 h-4" />
+                                        Categories
+                                    </Label>
+                                    <CategorySelector
+                                        selectedCategories={
+                                            formData.categories || []
+                                        }
+                                        onCategoriesChange={(categories) =>
+                                            handleInputChange(
+                                                "categories",
+                                                categories
+                                            )
+                                        }
+                                    />
+                                </div>
+
+                                {/* Course Source and Site URL Row */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* Course Source Field */}
+                                    <div className="space-y-2">
+                                        <Label
+                                            htmlFor="source"
+                                            className="flex items-center gap-2 text-sm font-medium text-foreground"
+                                        >
+                                            <FileText className="w-4 h-4" />
+                                            Course Source
+                                        </Label>
+                                        <Input
+                                            id="source"
+                                            type="text"
+                                            placeholder="e.g., MIT, Stanford, Harvard, Berkeley..."
+                                            value={formData.source || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "source",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="w-full transition-all duration-200"
+                                        />
+                                    </div>
+
+                                    {/* Site URL Field */}
+                                    <div className="space-y-2">
+                                        <Label
+                                            htmlFor="officialWebsiteUrl"
+                                            className="flex items-center gap-2 text-sm font-medium text-foreground"
+                                        >
+                                            <LinkIcon className="w-4 h-4" />
+                                            Course Website
+                                        </Label>
+                                        <Input
+                                            id="officialWebsiteUrl"
+                                            type="url"
+                                            placeholder="https://example.com"
+                                            value={
+                                                formData.officialWebsiteUrl ||
+                                                ""
+                                            }
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    "officialWebsiteUrl",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="w-full transition-all duration-200"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Submit Button */}
+                                <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                                    <Link
+                                        to={ROUTES_CONSTANTS.DASHBOARD()
+                                            .COURSES()
+                                            .HOME()}
+                                    >
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            className="px-6 transition-all duration-200"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Link>
+                                    <Button
+                                        type="submit"
+                                        className="px-6 transition-all duration-200"
+                                        disabled={isPending}
+                                    >
+                                        {isPending ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                {mode === "create"
+                                                    ? "Creating Course..."
+                                                    : "Updating Course..."}
+                                            </>
+                                        ) : mode === "create" ? (
+                                            "Create Course"
+                                        ) : (
+                                            "Update Course"
+                                        )}
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    );
+};

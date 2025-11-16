@@ -1,8 +1,8 @@
-import { GithubCallbackContainer } from "@/features/auth/container/GithubCallbackContainer";
+import { GithubCallback } from "@/features/auth/GithubCallback";
 
 /**
  * Github Callback Page
  */
 export const GithubCallbackPage = () => {
-    return <GithubCallbackContainer />;
+    return <GithubCallback />;
 };

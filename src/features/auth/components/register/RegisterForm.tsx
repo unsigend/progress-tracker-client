@@ -1,4 +1,4 @@
-import { StepIndicator } from "@/features/auth/components/register/StepIndicator";
+import { StepIndicator } from "@/features/auth/components/StepIndicator";
 import { EmailStep } from "@/features/auth/components/register/steps/EmailStep";
 import { PasswordStep } from "@/features/auth/components/register/steps/PasswordStep";
 import { UsernameStep } from "@/features/auth/components/register/steps/UsernameStep";
@@ -7,7 +7,7 @@ import {
     RegisterStep,
     type RegisterStepType,
 } from "@/features/auth/constants/register-step.enum";
-import type { IRegisterForm } from "@/entities/auth/models/model";
+import type { RegisterFormData } from "@/entities/auth/models/model";
 
 const TOTAL_STEPS = 4;
 
@@ -16,7 +16,7 @@ const TOTAL_STEPS = 4;
  */
 interface RegisterFormProps {
     currentStep: RegisterStepType;
-    formData: IRegisterForm;
+    formData: RegisterFormData;
     onEmailChange: (email: string) => void;
     onPasswordChange: (password: string) => void;
     onUsernameChange: (username: string) => void;

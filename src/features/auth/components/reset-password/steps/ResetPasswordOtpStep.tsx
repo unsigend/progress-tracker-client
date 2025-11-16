@@ -8,6 +8,7 @@ import {
     FieldGroup,
 } from "@/components/ui/field";
 import { ArrowLeft, AlertCircle } from "lucide-react";
+import { StepIndicator } from "@/features/auth/components/StepIndicator";
 
 /**
  * ResetPasswordOtpStepProps - Interface for ResetPasswordOtpStep component props
@@ -44,12 +45,14 @@ export const ResetPasswordOtpStep = ({
     isLoading = false,
 }: ResetPasswordOtpStepProps) => {
     return (
-        <div className="w-full max-w-md mx-auto space-y-8">
-            <div className="text-center space-y-3">
-                <h1 className="text-3xl font-bold text-foreground">
+        <div className="w-full max-w-md mx-auto space-y-8 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+            <StepIndicator currentStep={2} totalSteps={3} />
+
+            <div className="space-y-3 text-center">
+                <h1 className="text-3xl font-bold text-foreground transition-all duration-300">
                     Verify Code
                 </h1>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-sm text-muted-foreground transition-all duration-300">
                     Enter the 6-digit verification code sent to your email
                     address.
                 </p>
@@ -66,16 +69,18 @@ export const ResetPasswordOtpStep = ({
                     <Field>
                         <FieldLabel>Verification Code</FieldLabel>
                         <FieldContent className="flex flex-col gap-4">
-                            <div className="flex justify-center gap-2">
+                            <div className="flex justify-center gap-2.5">
                                 {Array.from({ length: 6 }, (_, index) => (
                                     <Input
                                         key={index}
                                         type="text"
                                         inputMode="numeric"
                                         maxLength={1}
-                                        className={`w-12 h-12 text-center text-lg font-semibold transition-colors ${
+                                        className={`w-14 h-14 text-center text-xl font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                                             error
                                                 ? "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
+                                                : code[index]
+                                                ? "border-primary/50 bg-primary/5"
                                                 : ""
                                         }`}
                                         value={code[index] || ""}
@@ -141,7 +146,7 @@ export const ResetPasswordOtpStep = ({
 
                 <Button
                     type="submit"
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer transition-all duration-200"
                     disabled={isLoading || code.length !== 6}
                 >
                     {isLoading ? "Verifying..." : "Verify Code"}
@@ -150,7 +155,7 @@ export const ResetPasswordOtpStep = ({
                 <Button
                     type="button"
                     variant="outline"
-                    className="w-full cursor-pointer"
+                    className="w-full cursor-pointer transition-all duration-200"
                     onClick={onBack}
                     disabled={isLoading}
                 >

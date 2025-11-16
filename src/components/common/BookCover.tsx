@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { cn } from "@/lib/utils";
+import { TextUtils } from "@/lib/utils/text";
 
 /**
  * BookCoverProps - Interface for BookCover component props
@@ -66,10 +67,10 @@ export const BookCover = ({
                         {/* Book spine */}
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-muted rounded-l-sm" />
 
-                        {/* Book title initial */}
-                        <span className="text-4xl font-semibold text-muted-foreground uppercase">
-                            {alt && alt !== "Book cover" ? alt.charAt(0) : "B"}
-                        </span>
+                                        {/* Book title initial */}
+                                        <span className="text-4xl font-semibold text-muted-foreground uppercase">
+                                            {TextUtils.getInitial(alt)}
+                                        </span>
                     </div>
 
                     {/* Book shadow */}

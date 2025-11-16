@@ -1,60 +1,62 @@
-// Auth Model
+/**
+ * Auth Model
+ */
 
 /**
- * ILoginForm - Interface for login form
+ * LoginFormData - Interface for login form data
  * @email - The email of the user
  * @password - The password of the user
  */
-export interface ILoginForm {
+export interface LoginFormData {
     email: string;
     password: string;
 }
 
 /**
- * IRegisterForm - Interface for register form
+ * RegisterFormData - Interface for register form data
  * @username - The username of the user
  * @email - The email of the user
  * @password - The password of the user
  */
-export interface IRegisterForm {
+export interface RegisterFormData {
     username: string;
     email: string;
     password: string;
 }
 
 /**
- * IAccessToken - Interface for access token
+ * AccessToken - Interface for access token
  * @accessToken - The access token
  */
-export interface IAccessToken {
+export interface AccessToken {
     accessToken: string;
 }
 
 /**
- * IResetToken - Interface for reset token
+ * ResetToken - Interface for reset token
  * @resetToken - The reset token
  */
-export interface IResetToken {
+export interface ResetToken {
     resetToken: string;
 }
 
 /**
- * IVerifyCode - Interface for verify code
+ * VerifyCode - Interface for verify code
  * @code - The code
  * @resetToken - The reset token
  */
-export interface IVerifyCode {
+export interface VerifyCode {
     code: string;
     resetToken: string;
 }
 
 /**
- * IResetPassword - Interface for reset password
+ * ResetPassword - Interface for reset password
  * @newPassword - The new password
  * @code - The code
  * @resetToken - The reset token
  */
-export interface IResetPassword {
+export interface ResetPassword {
     newPassword: string;
     code: string;
     resetToken: string;

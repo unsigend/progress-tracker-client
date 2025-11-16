@@ -1,14 +1,19 @@
 // Api Key Factory
-import type { IBookQuery } from "@/entities/reading/books/models/model";
-import type { IUserBookQuery } from "@/entities/reading/user-books/model/model";
+import type { CoursesQuery } from "@/features/courses/api/courses/models/model";
+import type { UserCourseQuery } from "@/features/courses/api/user-courses/model/model";
+import type { BookQuery } from "@/features/reading/api/books/models/model";
+import type { UserBookQuery } from "@/features/reading/api/user-books/model/model";
 import { DatesUtils } from "@/lib/utils/dates";
 
 const RESOURCES_KEYS = {
     USERS: "users",
     BOOKS: "books",
     USER_BOOKS: "user-books",
-    RECORDINGS: "recordings",
+    READING_RECORDINGS: "reading-recordings",
     STATISTICS: "statistics",
+    COURSES: "courses",
+    USER_COURSES: "user-courses",
+    COURSE_RECORDINGS: "course-recordings",
 };
 
 /**
@@ -21,7 +26,7 @@ export const API_KEY_FACTORY = () => {
                 return [RESOURCES_KEYS.USERS, "all"];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.USERS, id];
+                return [RESOURCES_KEYS.USERS, "detail", id];
             },
             ME: () => {
                 return [RESOURCES_KEYS.USERS, "me"];
@@ -36,24 +41,48 @@ export const API_KEY_FACTORY = () => {
                     DatesUtils.getTodayDateString(),
                 ];
             },
-            LIST: (query: IBookQuery) => {
+            LIST: (query: BookQuery) => {
                 return [RESOURCES_KEYS.BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.BOOKS, id];
+                return [RESOURCES_KEYS.BOOKS, "detail", id];
             },
         },
         USER_BOOKS: {
-            LIST: (query: IUserBookQuery) => {
+            LIST: (query: UserBookQuery) => {
                 return [RESOURCES_KEYS.USER_BOOKS, "all", query];
             },
             DETAIL: (id: string) => {
-                return [RESOURCES_KEYS.USER_BOOKS, id];
+                return [RESOURCES_KEYS.USER_BOOKS, "detail", id];
             },
         },
-        RECORDINGS: {
+        READING_RECORDINGS: {
             LIST: (userBookId: string) => {
-                return [RESOURCES_KEYS.RECORDINGS, userBookId];
+                return [RESOURCES_KEYS.READING_RECORDINGS, userBookId];
+            },
+        },
+        COURSE_RECORDINGS: {
+            LIST: (userCourseId: string) => {
+                return [RESOURCES_KEYS.COURSE_RECORDINGS, userCourseId];
+            },
+        },
+        COURSES: {
+            MY_COURSES: (isPrivate: boolean) => {
+                return [RESOURCES_KEYS.COURSES, "my-courses", isPrivate];
+            },
+            LIST: (query: CoursesQuery) => {
+                return [RESOURCES_KEYS.COURSES, "all", query];
+            },
+            DETAIL: (id: string) => {
+                return [RESOURCES_KEYS.COURSES, "detail", id];
+            },
+        },
+        USER_COURSES: {
+            LIST: (query: UserCourseQuery) => {
+                return [RESOURCES_KEYS.USER_COURSES, "all", query];
+            },
+            DETAIL: (id: string) => {
+                return [RESOURCES_KEYS.USER_COURSES, "detail", id];
             },
         },
         STATISTICS: {
