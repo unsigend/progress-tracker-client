@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
     Table,
@@ -12,40 +13,38 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { Calendar, BookOpen, GitMerge } from "lucide-react";
-import type { ReadingRecording } from "@/entities/reading/recordings/model/model";
+import { useReadingRecordings } from "@/features/reading/api/recordings/hooks/useRecordings";
+import { useDeleteReadingRecordings } from "@/features/reading/api/recordings/hooks/useDeleteRecordings";
 import { TextUtils } from "@/lib/utils/text";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
-    recordings: ReadingRecording[];
-    isLoading: boolean;
-    onDelete: () => void;
+    userBookId: string;
 }
 
 /**
- * RecordingList - Pure UI component for displaying reading recordings
+ * RecordingList - Smart component for displaying reading recordings
+ * Handles its own data fetching and auto merge action
  * @param props - The props for the RecordingList component
- * @param props.recordings - Array of recordings to display
- * @param props.isLoading - Whether the recordings are loading
- * @param props.onDelete - Handler for auto merge action
+ * @param props.userBookId - The user book ID to fetch recordings for
  * @returns RecordingList component
  */
-export const RecordingList = ({
-    recordings,
-    isLoading,
-    onDelete,
-}: RecordingListProps) => {
+export const RecordingList = ({ userBookId }: RecordingListProps) => {
     const [showAutoMergeDialog, setShowAutoMergeDialog] = useState(false);
 
-    /**
-     * handleAutoMerge - Handler for auto merge confirmation
-     */
+    const { data: recordingsData, isLoading } = useReadingRecordings(userBookId);
+    const { mutate: deleteRecordings } = useDeleteReadingRecordings(userBookId);
+
+    const recordings = recordingsData?.recordings ?? [];
+
     const handleAutoMerge = () => {
-        if (onDelete) {
-            onDelete();
-        }
+        deleteRecordings(undefined, {
+            onSuccess: () => {
+                toast.success("Auto-merged recordings");
+            },
+        });
         setShowAutoMergeDialog(false);
     };
 

@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Loader2, Calendar, GraduationCap } from "lucide-react";
-import type { CourseRecording } from "@/entities/course/recordings/models/model";
+import { useCourseRecordings } from "@/features/courses/api/recordings/hooks/useRecordings";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { TextUtils } from "@/lib/utils/text";
 
@@ -17,23 +17,23 @@ import { TextUtils } from "@/lib/utils/text";
  * RecordingListProps - Interface for RecordingList component props
  */
 interface RecordingListProps {
-    recordings: CourseRecording[];
-    isLoading?: boolean;
+    userCourseId: string;
 }
 
 /**
- * RecordingList - Pure UI component for displaying course recordings in a table format
+ * RecordingList - Smart component for displaying course recordings in a table format
+ * Handles its own data fetching
  * @param props - The props for the RecordingList component
- * @param props.recordings - Array of course recordings to display
- * @param props.isLoading - Whether the recordings are loading
+ * @param props.userCourseId - The user course ID to fetch recordings for
  * @returns RecordingList component
  */
-export const RecordingList = ({
-    recordings,
-    isLoading = false,
-}: RecordingListProps) => {
+export const RecordingList = ({ userCourseId }: RecordingListProps) => {
+    const { data: recordingsData, isLoading } =
+        useCourseRecordings(userCourseId);
+
     // Group recordings by date and organize by record type
     const { groupedRecordings, availableRecordTypes } = useMemo(() => {
+        const recordings = recordingsData?.recordings ?? [];
         const grouped = new Map<
             string,
             Map<string, { minutes: number; id: string }>
@@ -79,7 +79,7 @@ export const RecordingList = ({
             groupedRecordings: sortedRecordings,
             availableRecordTypes: availableTypes,
         };
-    }, [recordings]);
+    }, [recordingsData?.recordings]);
 
     /**
      * formatRecordType - Format record type for display

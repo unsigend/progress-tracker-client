@@ -1,8 +1,8 @@
 // Api Key Factory
-import type { CoursesQuery } from "@/entities/course/courses/models/model";
-import type { UserCourseQuery } from "@/entities/course/user-courses/model/model";
-import type { BookQuery } from "@/entities/reading/books/models/model";
-import type { UserBookQuery } from "@/entities/reading/user-books/model/model";
+import type { CoursesQuery } from "@/features/courses/api/courses/models/model";
+import type { UserCourseQuery } from "@/features/courses/api/user-courses/model/model";
+import type { BookQuery } from "@/features/reading/api/books/models/model";
+import type { UserBookQuery } from "@/features/reading/api/user-books/model/model";
 import { DatesUtils } from "@/lib/utils/dates";
 
 const RESOURCES_KEYS = {

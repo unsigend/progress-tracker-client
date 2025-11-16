@@ -134,7 +134,7 @@ export const PieChart = ({
                 {showLegend && (
                     <ChartLegend
                         content={<ChartLegendContent nameKey="key" />}
-                        className="-translate-y-1 flex-wrap gap-3 justify-center text-xs"
+                        className="-translate-y-1 flex-wrap gap-3 justify-center text-sm"
                     />
                 )}
             </RechartsPieChart>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -12,36 +13,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Bell, ChevronDown, Settings, LogOut } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { User } from "@/entities/users/models/model";
+import { useMe } from "@/entities/users/hooks/useMe";
+import { useLogout } from "@/entities/auth/hooks/useLogout";
+import { useSidebar } from "./SideBar";
 
 /**
- * HeaderProps - Interface for Header component props
- */
-interface HeaderProps {
-    isSidebarOpen: boolean;
-    onToggleSidebar: () => void;
-    user: User | null;
-    isLoading: boolean;
-    onLogout: () => void;
-}
-
-/**
- * Header - Component for displaying the dashboard header
- * @param props - The props for the Header component
- * @param props.isSidebarOpen - Boolean to check if the sidebar is open
- * @param props.onToggleSidebar - Handler for toggling sidebar
- * @param props.user - The current user data
- * @param props.isLoading - Loading state for user data
- * @param props.onLogout - Handler for logout action
+ * Header - Smart component for displaying the dashboard header
+ * Handles its own data fetching and logout logic
  * @returns Header component
  */
-export const Header = ({
-    isSidebarOpen,
-    onToggleSidebar,
-    user,
-    isLoading,
-    onLogout,
-}: HeaderProps) => {
+export const Header = () => {
+    const navigate = useNavigate();
+    const { isOpen, toggle } = useSidebar();
+    const { data: user, isLoading } = useMe();
+    const { mutate: logout } = useLogout();
+
     /**
      * Get user avatar fallback (first letter of username)
      */
@@ -50,15 +36,20 @@ export const Header = ({
         return user.username.charAt(0).toUpperCase();
     };
 
+    const handleLogout = () => {
+        logout(undefined, {
+            onSuccess: () => {
+                navigate(ROUTES_CONSTANTS.AUTH().LOGIN());
+            },
+        });
+    };
+
     return (
         <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border bg-background px-4 shadow-sm sm:px-6 lg:px-8">
             {/* Left side - Hamburger button on mobile */}
             <div className="flex items-center">
                 <div className="lg:hidden">
-                    <HamburgerButton
-                        isOpen={isSidebarOpen}
-                        onClick={onToggleSidebar}
-                    />
+                    <HamburgerButton isOpen={isOpen} onClick={toggle} />
                 </div>
             </div>
 
@@ -145,7 +136,7 @@ export const Header = ({
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                onClick={onLogout}
+                                onClick={handleLogout}
                                 className="text-destructive focus:text-destructive focus:bg-destructive/10"
                             >
                                 <LogOut className="h-4 w-4 mr-2" />

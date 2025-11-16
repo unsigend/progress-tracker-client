@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,18 +13,8 @@ import {
 import { Loader2, Lock, Globe, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
-import type { Course } from "@/entities/course/courses/models/model";
-
-/**
- * PrivateCoursesCardProps - Interface for PrivateCoursesCard component props
- */
-interface PrivateCoursesCardProps {
-    courses: Course[];
-    isLoading: boolean;
-    onMarkAsPublic: (id: string) => void;
-    onNavigate: (id: string) => void;
-    className?: string;
-}
+import { useMyCourses, useMarkAsPublic } from "@/features/courses/api";
+import type { Course } from "@/features/courses/api/courses/models/model";
 
 /**
  * PrivateCourseCardItem - Component for displaying a single private course card
@@ -108,34 +99,40 @@ const PrivateCourseCardItem = ({
 };
 
 /**
- * PrivateCoursesCard - Pure UI component for displaying private courses section
- * @param props - The props for the PrivateCoursesCard component
- * @param props.courses - Array of private courses to display
- * @param props.isLoading - Whether the courses are loading
- * @param props.onMarkAsPublic - Function to handle marking a course as public
- * @param props.onNavigate - Function to handle navigation when a course card is clicked
- * @param props.className - Optional additional className
+ * PrivateCoursesCard - Smart component for displaying private courses section
+ * Handles its own data fetching
  * @returns PrivateCoursesCard component
  */
-export const PrivateCoursesCard = ({
-    courses,
-    isLoading,
-    onMarkAsPublic,
-    onNavigate,
-    className,
-}: PrivateCoursesCardProps) => {
+export const PrivateCoursesCard = () => {
+    const navigate = useNavigate();
+    const { data: courses, isLoading } = useMyCourses(true);
+    const { markAsPublic } = useMarkAsPublic();
+
+    const handleMarkAsPublic = async (id: string) => {
+        await markAsPublic(id);
+        toast.success("Course marked as public");
+    };
+
+    const handleNavigate = (id: string) => {
+        navigate(
+            ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().DETAIL(id)
+        );
+    };
     return (
-        <Card className={cn("min-h-[200px]", className)}>
+        <Card className="min-h-[200px]">
             <CardHeader>
                 <CardTitle className="text-xl font-semibold text-foreground flex items-center justify-between">
                     My Private Courses
-                    <Link
-                        to={ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().NEW()}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() =>
+                            navigate(ROUTES_CONSTANTS.DASHBOARD().COURSES().LIST().NEW())
+                        }
                     >
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Plus className="h-4 w-4" />
-                        </Button>
-                    </Link>
+                        <Plus className="h-4 w-4" />
+                    </Button>
                 </CardTitle>
             </CardHeader>
             <CardContent className="min-h-[150px]">
@@ -143,7 +140,7 @@ export const PrivateCoursesCard = ({
                     <div className="flex justify-center items-center py-16">
                         <Loader2 className="size-8 animate-spin text-muted-foreground" />
                     </div>
-                ) : !courses || courses.length === 0 ? (
+                ) : !courses?.courses || courses.courses.length === 0 ? (
                     <Empty>
                         <EmptyHeader>
                             <EmptyMedia variant="icon">
@@ -166,12 +163,12 @@ export const PrivateCoursesCard = ({
                             "3xl:grid-cols-5"
                         )}
                     >
-                        {courses.map((course) => (
+                        {courses.courses.map((course) => (
                             <PrivateCourseCardItem
                                 key={course.id}
                                 course={course}
-                                onMarkAsPublic={onMarkAsPublic}
-                                onNavigate={onNavigate}
+                                onMarkAsPublic={handleMarkAsPublic}
+                                onNavigate={handleNavigate}
                             />
                         ))}
                     </div>

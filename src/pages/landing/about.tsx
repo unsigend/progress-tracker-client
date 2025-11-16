@@ -1,4 +1,4 @@
-import { DevelopmentProgressSection } from "@/features/landing/components/about/DevelopmentProgressSection";
+import { LandingDevelopmentProgress } from "@/features/landing/components/about/LandingDevelopmentProgress";
 
 /**
  * LandingAboutPage - The page for the about page
@@ -7,7 +7,7 @@ import { DevelopmentProgressSection } from "@/features/landing/components/about/
 export const LandingAboutPage = () => {
     return (
         <div className="min-h-screen bg-background">
-            <DevelopmentProgressSection />
+            <LandingDevelopmentProgress />
         </div>
     );
 };

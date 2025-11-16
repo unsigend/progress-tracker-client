@@ -1,3 +1,4 @@
+import { useState, createContext, useContext } from "react";
 import { Link, useLocation } from "react-router";
 import { Logo } from "@/components/common/Logo";
 import { Button } from "@/components/ui/button";
@@ -6,34 +7,61 @@ import { Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { NAVIGATION_ITEMS } from "@/features/dashboard/constants/navigation";
-import type { User } from "@/entities/users/models/model";
+import { useMe } from "@/entities/users/hooks/useMe";
 
 /**
- * SideBarProps - Interface for SideBar component props
+ * SidebarContext - Context for sharing sidebar state
  */
-interface SideBarProps {
+interface SidebarContextType {
     isOpen: boolean;
-    onLinkClick: () => void;
-    user: User | null;
-    isLoading: boolean;
+    setIsOpen: (open: boolean) => void;
+    toggle: () => void;
 }
 
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+
 /**
- * SideBar - Component for displaying the dashboard sidebar
- * @param props - The props for the SideBar component
- * @param props.isOpen - Boolean to check if the sidebar is open
- * @param props.onLinkClick - Handler for link click (closes sidebar)
- * @param props.user - The current user data
- * @param props.isLoading - Loading state for user data
+ * useSidebar - Hook to access sidebar context
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export const useSidebar = () => {
+    const context = useContext(SidebarContext);
+    if (!context) {
+        throw new Error("useSidebar must be used within SidebarProvider");
+    }
+    return context;
+};
+
+/**
+ * SidebarProvider - Provider for sidebar state
+ */
+export const SidebarProvider = ({
+    children,
+}: {
+    children: React.ReactNode;
+}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggle = () => {
+        setIsOpen((prev) => !prev);
+    };
+
+    return (
+        <SidebarContext.Provider value={{ isOpen, setIsOpen, toggle }}>
+            {children}
+        </SidebarContext.Provider>
+    );
+};
+
+/**
+ * SideBar - Smart component for displaying the dashboard sidebar
+ * Handles its own data fetching and state management
  * @returns SideBar component
  */
-export const SideBar = ({
-    isOpen,
-    onLinkClick,
-    user,
-    isLoading,
-}: SideBarProps) => {
+export const SideBar = () => {
     const location = useLocation();
+    const { isOpen, setIsOpen } = useSidebar();
+    const { data: user, isLoading } = useMe();
 
     /**
      * Check if a route is active
@@ -53,13 +81,17 @@ export const SideBar = ({
         return user.username.charAt(0).toUpperCase();
     };
 
+    const handleLinkClick = () => {
+        setIsOpen(false);
+    };
+
     return (
         <>
             {/* Mobile sidebar overlay */}
             {isOpen && (
                 <div
                     className="fixed inset-0 z-40 lg:hidden"
-                    onClick={onLinkClick}
+                    onClick={handleLinkClick}
                 >
                     <div className="fixed inset-0 bg-black/20" />
                 </div>
@@ -88,7 +120,7 @@ export const SideBar = ({
                                 <Link
                                     key={item.name}
                                     to={item.href}
-                                    onClick={onLinkClick}
+                                    onClick={handleLinkClick}
                                     className={cn(
                                         "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium",
                                         isActive
@@ -134,7 +166,7 @@ export const SideBar = ({
                                 </div>
                                 <Link
                                     to={ROUTES_CONSTANTS.DASHBOARD().SETTINGS()}
-                                    onClick={onLinkClick}
+                                    onClick={handleLinkClick}
                                 >
                                     <Button
                                         variant="ghost"
