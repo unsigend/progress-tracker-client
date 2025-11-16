@@ -29,7 +29,7 @@ export const useMarkAsComplete = () => {
                 sort: COURSE_CONSTANTS.USER_COURSE.DEFAULT_SORT,
                 order: COURSE_CONSTANTS.USER_COURSE.DEFAULT_ORDER,
                 page: COURSE_CONSTANTS.USER_COURSE.DEFAULT_PAGE,
-                limit: COURSE_CONSTANTS.USER_COURSE.DEFAULT_LIMIT,
+                limit: COURSE_CONSTANTS.USER_COURSE.MAXIMUM_TRACKED_COURSES,
             }),
         });
         // invalidate completed courses list

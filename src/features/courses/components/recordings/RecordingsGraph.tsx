@@ -82,7 +82,7 @@ export const RecordingsGraph = ({ userCourseId }: RecordingsGraphProps) => {
     const totalTimeFormatted = TextUtils.formatDurationShort(totalMinutes);
 
     return (
-        <div className="flex items-center justify-center p-2.5 bg-muted/10 w-[250px] h-full">
+        <div className="flex items-center justify-center p-2.5 bg-muted/10 w-[250px] h-full min-h-[250px]">
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-4">
                     <Loader2 className="size-5 animate-spin text-muted-foreground" />
@@ -153,4 +153,3 @@ export const RecordingsGraph = ({ userCourseId }: RecordingsGraphProps) => {
         </div>
     );
 };
-
