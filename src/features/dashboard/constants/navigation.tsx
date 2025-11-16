@@ -2,8 +2,8 @@ import {
     BookOpen,
     GraduationCap,
     Home,
-    FolderOpen,
     type LucideIcon,
+    Settings,
 } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 
@@ -36,8 +36,8 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
         icon: GraduationCap,
     },
     {
-        name: "Projects",
-        href: ROUTES_CONSTANTS.DASHBOARD().PROJECTS().HOME(),
-        icon: FolderOpen,
+        name: "Settings",
+        href: ROUTES_CONSTANTS.DASHBOARD().SETTINGS(),
+        icon: Settings,
     },
 ];

@@ -12,6 +12,8 @@ import { Loader2, Calendar, GraduationCap } from "lucide-react";
 import { useCourseRecordings } from "@/features/courses/api/recordings/hooks/useRecordings";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { TextUtils } from "@/lib/utils/text";
+import { DatesUtils } from "@/lib/utils/dates";
+import { cn } from "@/lib/utils";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
@@ -116,24 +118,28 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
 
     return (
         <Card className="min-h-[300px] mb-8">
-            <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
+            <CardHeader className="flex flex-row items-center justify-between pb-4">
+                <CardTitle className="flex items-center gap-2.5 text-xl font-semibold">
+                    <div className="p-1.5 bg-muted rounded-lg">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                    </div>
                     Course Recordings
                 </CardTitle>
             </CardHeader>
 
             {isLoading ? (
                 <CardContent>
-                    <div className="flex justify-center py-8">
-                        <Loader2 className="size-8 animate-spin" />
+                    <div className="flex justify-center items-center py-16">
+                        <Loader2 className="size-8 animate-spin text-muted-foreground" />
                     </div>
                 </CardContent>
             ) : groupedRecordings.length === 0 ? (
                 <CardContent>
-                    <div className="text-center py-8 text-muted-foreground">
-                        <GraduationCap className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p className="text-lg font-medium">
+                    <div className="text-center py-16 text-muted-foreground">
+                        <div className="p-4 bg-muted/50 rounded-full w-fit mx-auto mb-4">
+                            <GraduationCap className="h-8 w-8 opacity-60" />
+                        </div>
+                        <p className="text-lg font-semibold mb-1.5">
                             No recordings found
                         </p>
                         <p className="text-sm">
@@ -144,19 +150,19 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                 </CardContent>
             ) : (
                 <CardContent className="p-0 sm:p-6">
-                    <div className="overflow-x-auto">
-                        <div className="overflow-hidden rounded-md border min-w-full">
+                    <div className="overflow-x-auto -mx-6 sm:mx-0">
+                        <div className="min-w-full">
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="sticky left-0 bg-background z-10 min-w-[120px] font-semibold">
+                                    <TableRow className="border-b-2 hover:bg-transparent">
+                                        <TableHead className="sticky left-0 bg-background z-10 min-w-[140px] font-semibold text-foreground h-12 px-4">
                                             Date
                                         </TableHead>
                                         {availableRecordTypes.map(
                                             (recordType) => (
                                                 <TableHead
                                                     key={recordType}
-                                                    className="text-center min-w-[100px]"
+                                                    className="text-center min-w-[110px] font-semibold text-foreground h-12 px-4"
                                                 >
                                                     {formatRecordType(
                                                         recordType
@@ -164,26 +170,39 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                 </TableHead>
                                             )
                                         )}
-                                        <TableHead className="text-center font-semibold min-w-[100px] bg-muted/50">
+                                        <TableHead className="text-center font-semibold min-w-[110px] bg-muted/40 text-foreground h-12 px-4">
                                             Total
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {groupedRecordings.map(
-                                        ({
-                                            date,
-                                            recordTypes: dateRecordings,
-                                        }) => {
+                                        (
+                                            {
+                                                date,
+                                                recordTypes: dateRecordings,
+                                            },
+                                            index
+                                        ) => {
                                             const total =
                                                 calculateTotal(dateRecordings);
                                             return (
                                                 <TableRow
                                                     key={date}
-                                                    className="hover:bg-muted/50"
+                                                    className={cn(
+                                                        "hover:bg-muted/30 transition-colors",
+                                                        index ===
+                                                            groupedRecordings.length -
+                                                                1 &&
+                                                            "border-b-0"
+                                                    )}
                                                 >
-                                                    <TableCell className="font-medium sticky left-0 bg-background z-10">
-                                                        {date}
+                                                    <TableCell className="font-medium sticky left-0 bg-background z-10 px-4 py-3.5 whitespace-nowrap">
+                                                        <span className="text-sm text-foreground">
+                                                            {DatesUtils.formatDate(
+                                                                date
+                                                            )}
+                                                        </span>
                                                     </TableCell>
                                                     {availableRecordTypes.map(
                                                         (recordType) => {
@@ -196,14 +215,16 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                                     key={
                                                                         recordType
                                                                     }
-                                                                    className="text-center"
+                                                                    className="text-center px-4 py-3.5"
                                                                 >
                                                                     {recording ? (
-                                                                        formatMinutes(
-                                                                            recording.minutes
-                                                                        )
+                                                                        <span className="text-sm font-medium text-foreground">
+                                                                            {formatMinutes(
+                                                                                recording.minutes
+                                                                            )}
+                                                                        </span>
                                                                     ) : (
-                                                                        <span className="text-muted-foreground italic">
+                                                                        <span className="text-xs text-muted-foreground/60 italic">
                                                                             N/A
                                                                         </span>
                                                                     )}
@@ -211,8 +232,12 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                             );
                                                         }
                                                     )}
-                                                    <TableCell className="text-center font-semibold bg-muted/30">
-                                                        {formatMinutes(total)}
+                                                    <TableCell className="text-center font-semibold bg-muted/20 px-4 py-3.5">
+                                                        <span className="text-sm text-foreground">
+                                                            {formatMinutes(
+                                                                total
+                                                            )}
+                                                        </span>
                                                     </TableCell>
                                                 </TableRow>
                                             );
