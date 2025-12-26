@@ -57,8 +57,16 @@ export const API_KEY_FACTORY = () => {
             },
         },
         READING_RECORDINGS: {
-            LIST: (userBookId: string) => {
-                return [RESOURCES_KEYS.READING_RECORDINGS, userBookId];
+            LIST: (
+                userBookId: string,
+                query?: {
+                    page: number;
+                    limit: number;
+                    sort?: string;
+                    order?: "asc" | "desc";
+                }
+            ) => {
+                return [RESOURCES_KEYS.READING_RECORDINGS, userBookId, query];
             },
         },
         COURSE_RECORDINGS: {

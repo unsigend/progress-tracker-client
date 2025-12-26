@@ -12,4 +12,10 @@ export const READING_CONSTANTS = {
         DEFAULT_PAGE: 1 as const,
         DEFAULT_LIMIT: 10 as const,
     },
+    RECORDINGS: {
+        DEFAULT_PAGE: 1 as const,
+        DEFAULT_LIMIT: 8 as const,
+        DEFAULT_SORT: "date" as const,
+        DEFAULT_ORDER: "desc" as const,
+    },
 };

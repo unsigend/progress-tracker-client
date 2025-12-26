@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
@@ -13,10 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { Calendar, BookOpen, GitMerge } from "lucide-react";
+import { SmartPagination } from "@/components/common/SmartPagination";
 import { useReadingRecordings } from "@/features/reading/api/recordings/hooks/useRecordings";
 import { useDeleteReadingRecordings } from "@/features/reading/api/recordings/hooks/useDeleteRecordings";
 import { TextUtils } from "@/lib/utils/text";
 import { DatesUtils } from "@/lib/utils/dates";
+import { READING_CONSTANTS } from "@/constants/reading.constant";
 import { cn } from "@/lib/utils";
 
 /**
@@ -35,16 +37,42 @@ interface RecordingListProps {
  */
 export const RecordingList = ({ userBookId }: RecordingListProps) => {
     const [showAutoMergeDialog, setShowAutoMergeDialog] = useState(false);
+    const [currentPage, setCurrentPage] = useState(
+        READING_CONSTANTS.RECORDINGS.DEFAULT_PAGE
+    );
 
-    const { data: recordingsData, isLoading } = useReadingRecordings(userBookId);
+    const query = {
+        page: currentPage,
+        limit: READING_CONSTANTS.RECORDINGS.DEFAULT_LIMIT,
+        sort: READING_CONSTANTS.RECORDINGS.DEFAULT_SORT,
+        order: READING_CONSTANTS.RECORDINGS.DEFAULT_ORDER,
+    };
+
+    const { data: recordingsData, isLoading } = useReadingRecordings(
+        userBookId,
+        query
+    );
     const { mutate: deleteRecordings } = useDeleteReadingRecordings(userBookId);
 
     const recordings = recordingsData?.recordings ?? [];
+
+    const [totalPages, setTotalPages] = useState(0);
+    useEffect(() => {
+        const totalCount = recordingsData?.totalCount;
+        if (totalCount !== undefined) {
+            setTotalPages(
+                Math.ceil(
+                    totalCount / READING_CONSTANTS.RECORDINGS.DEFAULT_LIMIT
+                )
+            );
+        }
+    }, [recordingsData?.totalCount]);
 
     const handleAutoMerge = () => {
         deleteRecordings(undefined, {
             onSuccess: () => {
                 toast.success("Auto-merged recordings");
+                setCurrentPage(READING_CONSTANTS.RECORDINGS.DEFAULT_PAGE);
             },
         });
         setShowAutoMergeDialog(false);
@@ -117,12 +145,16 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                                             key={recording.id}
                                             className={cn(
                                                 "hover:bg-muted/30 transition-colors",
-                                                index === recordings.length - 1 && "border-b-0"
+                                                index ===
+                                                    recordings.length - 1 &&
+                                                    "border-b-0"
                                             )}
                                         >
                                             <TableCell className="font-medium px-4 py-3.5 whitespace-nowrap">
                                                 <span className="text-sm text-foreground">
-                                                    {DatesUtils.formatDate(recording.date)}
+                                                    {DatesUtils.formatDate(
+                                                        recording.date
+                                                    )}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="text-center px-4 py-3.5">
@@ -133,7 +165,9 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                                             <TableCell className="text-center px-4 py-3.5">
                                                 {recording.minutes ? (
                                                     <span className="text-sm font-medium text-foreground">
-                                                        {TextUtils.formatDurationShort(recording.minutes)}
+                                                        {TextUtils.formatDurationShort(
+                                                            recording.minutes
+                                                        )}
                                                     </span>
                                                 ) : (
                                                     <span className="text-xs text-muted-foreground/60 italic">
@@ -160,6 +194,18 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                         </div>
                     </div>
                 </CardContent>
+            )}
+
+            {recordings.length > 0 && totalPages > 0 && (
+                <div className="mt-5 pb-4">
+                    <SmartPagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={
+                            setCurrentPage as (page: number) => void
+                        }
+                    />
+                </div>
             )}
 
             <DeleteDialog
