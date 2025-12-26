@@ -14,6 +14,14 @@ export interface DevProgressData {
  */
 export const devProgressData: DevProgressData[] = [
     {
+        id: "patch-v1.0.1",
+        title: "Patch V 1.0.1",
+        description:
+            "Patch V 1.0.1: Add pagination support for reading recordings and fix issues with random IDs.",
+        status: "completed",
+        date: "December 26, 2025",
+    },
+    {
         id: "role-based-access-control",
         title: "Role-based Access Control",
         description:
