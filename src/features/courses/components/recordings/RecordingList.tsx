@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
     Table,
@@ -8,7 +8,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Loader2, Calendar, GraduationCap } from "lucide-react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
+    Loader2,
+    Calendar,
+    GraduationCap,
+    Clock,
+    FileText,
+} from "lucide-react";
 import { useCourseRecordings } from "@/features/courses/api/recordings/hooks/useRecordings";
 import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { TextUtils } from "@/lib/utils/text";
@@ -32,13 +45,14 @@ interface RecordingListProps {
 export const RecordingList = ({ userCourseId }: RecordingListProps) => {
     const { data: recordingsData, isLoading } =
         useCourseRecordings(userCourseId);
+    const [viewMode, setViewMode] = useState<"time" | "notes">("time");
 
     // Group recordings by date and organize by record type
     const { groupedRecordings, availableRecordTypes } = useMemo(() => {
         const recordings = recordingsData?.recordings ?? [];
         const grouped = new Map<
             string,
-            Map<string, { minutes: number; id: string }>
+            Map<string, { minutes: number; notes: string | null; id: string }>
         >();
         const recordTypeSet = new Set<string>();
 
@@ -51,6 +65,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
             const dateRecordings = grouped.get(dateKey)!;
             dateRecordings.set(recording.recordType, {
                 minutes: recording.minutes,
+                notes: recording.notes,
                 id: recording.id,
             });
             recordTypeSet.add(recording.recordType);
@@ -66,7 +81,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
             recordTypeSet.has(type)
         );
 
-        // Convert to array and sort by date (newest first)
+        // Convert to array and sort by date (oldest first)
         const sortedRecordings = Array.from(grouped.entries())
             .map(([date, recordTypes]) => ({
                 date,
@@ -74,7 +89,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
             }))
             .sort(
                 (a, b) =>
-                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                    new Date(a.date).getTime() - new Date(b.date).getTime()
             );
 
         return {
@@ -107,13 +122,28 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
      * @returns Total minutes
      */
     const calculateTotal = (
-        recordTypes: Map<string, { minutes: number; id: string }>
+        recordTypes: Map<
+            string,
+            { minutes: number; notes: string | null; id: string }
+        >
     ): number => {
         let total = 0;
         recordTypes.forEach(({ minutes }) => {
             total += minutes;
         });
         return total;
+    };
+
+    /**
+     * formatNotes - Format notes for display
+     * @param notes - The notes to format
+     * @returns Formatted notes string or placeholder
+     */
+    const formatNotes = (notes: string | null): string => {
+        if (!notes || notes.trim().length === 0) {
+            return "No notes";
+        }
+        return notes;
     };
 
     return (
@@ -125,6 +155,27 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                     </div>
                     Course Recordings
                 </CardTitle>
+                <Select
+                    value={viewMode}
+                    onValueChange={(value: "time" | "notes") =>
+                        setViewMode(value)
+                    }
+                >
+                    <SelectTrigger className="w-[140px]">
+                        <div className="flex items-center gap-2">
+                            {viewMode === "time" ? (
+                                <Clock className="h-4 w-4" />
+                            ) : (
+                                <FileText className="h-4 w-4" />
+                            )}
+                            <SelectValue />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="time">Time</SelectItem>
+                        <SelectItem value="notes">Notes</SelectItem>
+                    </SelectContent>
+                </Select>
             </CardHeader>
 
             {isLoading ? (
@@ -170,9 +221,11 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                 </TableHead>
                                             )
                                         )}
-                                        <TableHead className="text-center font-semibold min-w-[110px] bg-muted/40 text-foreground h-12 px-4">
-                                            Total
-                                        </TableHead>
+                                        {viewMode === "time" && (
+                                            <TableHead className="text-center font-semibold min-w-[110px] bg-muted/40 text-foreground h-12 px-4">
+                                                Total
+                                            </TableHead>
+                                        )}
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -215,14 +268,28 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                                     key={
                                                                         recordType
                                                                     }
-                                                                    className="text-center px-4 py-3.5"
+                                                                    className={cn(
+                                                                        "px-4 py-3.5 text-center",
+                                                                        viewMode ===
+                                                                            "notes" &&
+                                                                            "max-w-[200px]"
+                                                                    )}
                                                                 >
                                                                     {recording ? (
-                                                                        <span className="text-sm font-medium text-foreground">
-                                                                            {formatMinutes(
-                                                                                recording.minutes
-                                                                            )}
-                                                                        </span>
+                                                                        viewMode ===
+                                                                        "time" ? (
+                                                                            <span className="text-sm font-medium text-foreground">
+                                                                                {formatMinutes(
+                                                                                    recording.minutes
+                                                                                )}
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className="text-sm text-foreground line-clamp-2">
+                                                                                {formatNotes(
+                                                                                    recording.notes
+                                                                                )}
+                                                                            </span>
+                                                                        )
                                                                     ) : (
                                                                         <span className="text-xs text-muted-foreground/60 italic">
                                                                             N/A
@@ -232,13 +299,15 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                             );
                                                         }
                                                     )}
-                                                    <TableCell className="text-center font-semibold bg-muted/20 px-4 py-3.5">
-                                                        <span className="text-sm text-foreground">
-                                                            {formatMinutes(
-                                                                total
-                                                            )}
-                                                        </span>
-                                                    </TableCell>
+                                                    {viewMode === "time" && (
+                                                        <TableCell className="font-semibold bg-muted/20 px-4 py-3.5 text-center">
+                                                            <span className="text-sm text-foreground">
+                                                                {formatMinutes(
+                                                                    total
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                    )}
                                                 </TableRow>
                                             );
                                         }
