@@ -3,7 +3,9 @@ import { WeeklyCard } from "@/features/reading/components/statistics/WeeklyCard"
 import { UserBooksCompleted } from "@/features/reading/components/user-books/UserBooksCompleted";
 import { UserBooksInProgress } from "@/features/reading/components/user-books/UserBooksInProgress";
 import { FeaturedBooks } from "@/features/reading/components/FeaturedBooks";
-import { QuickActionsCard } from "@/features/reading/components/QuickActionsCard";
+import { QuickActionsCard } from "@/components/common/QuickActionsCard";
+import { Plus, BookOpen } from "lucide-react";
+import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 
 /**
  * ReadingHomePage - The page for the reading home
@@ -26,7 +28,20 @@ export const ReadingHomePage = () => {
                 items-start justify-center lg:justify-start"
                 >
                     <div className="w-full h-[350px]">
-                        <QuickActionsCard />
+                        <QuickActionsCard
+                            primaryActionUrl={ROUTES_CONSTANTS.DASHBOARD()
+                                .READING()
+                                .RECORDINGS()
+                                .NEW()}
+                            primaryActionLabel="Add Recording"
+                            primaryActionIcon={Plus}
+                            secondaryActionUrl={ROUTES_CONSTANTS.DASHBOARD()
+                                .READING()
+                                .BOOKS()
+                                .LIST()}
+                            secondaryActionLabel="Track More Books"
+                            secondaryActionIcon={BookOpen}
+                        />
                     </div>
                 </div>
 
