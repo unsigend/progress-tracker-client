@@ -102,7 +102,7 @@ export const UserCoursesInProgress = () => {
                                     key={userCourse.id}
                                     className={cn(
                                         "group relative transition-all duration-300 rounded-xl border border-border/50 hover:border-border hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 bg-card overflow-hidden",
-                                        "flex flex-row items-stretch"
+                                        "flex flex-col lg:flex-row items-stretch"
                                     )}
                                 >
                                     {/* LEFT: User Course Info */}
@@ -190,10 +190,10 @@ export const UserCoursesInProgress = () => {
                                     </div>
 
                                     {/* DIVIDER */}
-                                    <div className="w-px bg-border/60 flex-shrink-0" />
+                                    <div className="h-px w-full lg:h-full lg:w-px bg-border/60 flex-shrink-0" />
 
                                     {/* RIGHT: Course Recordings Graph */}
-                                    <div className="flex-shrink-0">
+                                    <div className="flex-shrink-0 w-full lg:w-auto">
                                         <RecordingsGraph
                                             userCourseId={userCourse.id}
                                         />

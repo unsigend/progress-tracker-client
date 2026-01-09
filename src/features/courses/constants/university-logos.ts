@@ -6,7 +6,7 @@ const BASE_IMAGE_URL = "/image/university-logo";
 export interface UniversityLogo {
     name: string;
     url: string;
-    value: string; // The value to use in query params (e.g., "CMU", "MIT")
+    value: string;
 }
 
 /**

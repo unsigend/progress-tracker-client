@@ -36,7 +36,7 @@ export const CoursesHomePage = () => {
 
                 {/* University Courses */}
                 <div className="col-span-12 lg:col-span-8 flex items-start justify-center lg:justify-start">
-                    <div className="w-full h-[350px]">
+                    <div className="w-full h-auto lg:h-[350px]">
                         <UniversityList />
                     </div>
                 </div>

@@ -148,8 +148,8 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
 
     return (
         <Card className="min-h-[300px] mb-8">
-            <CardHeader className="flex flex-row items-center justify-between pb-4">
-                <CardTitle className="flex items-center gap-2.5 text-xl font-semibold">
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pb-4">
+                <CardTitle className="flex items-center gap-2.5 text-lg sm:text-xl font-semibold">
                     <div className="p-1.5 bg-muted rounded-lg">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </div>
@@ -161,7 +161,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                         setViewMode(value)
                     }
                 >
-                    <SelectTrigger className="w-[140px]">
+                    <SelectTrigger className="w-full sm:w-[140px]">
                         <div className="flex items-center gap-2">
                             {viewMode === "time" ? (
                                 <Clock className="h-4 w-4" />
@@ -200,20 +200,20 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                     </div>
                 </CardContent>
             ) : (
-                <CardContent className="p-0 sm:p-6">
-                    <div className="overflow-x-auto -mx-6 sm:mx-0">
-                        <div className="min-w-full">
+                <CardContent className="p-0 sm:p-6 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full inline-block px-4 sm:px-0">
                             <Table>
                                 <TableHeader>
                                     <TableRow className="border-b-2 hover:bg-transparent">
-                                        <TableHead className="sticky left-0 bg-background z-10 min-w-[140px] font-semibold text-foreground h-12 px-4">
+                                        <TableHead className="sticky left-0 bg-background z-10 min-w-[120px] sm:min-w-[140px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                             Date
                                         </TableHead>
                                         {availableRecordTypes.map(
                                             (recordType) => (
                                                 <TableHead
                                                     key={recordType}
-                                                    className="text-center min-w-[110px] font-semibold text-foreground h-12 px-4"
+                                                    className="text-center min-w-[90px] sm:min-w-[110px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm"
                                                 >
                                                     {formatRecordType(
                                                         recordType
@@ -222,7 +222,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                             )
                                         )}
                                         {viewMode === "time" && (
-                                            <TableHead className="text-center font-semibold min-w-[110px] bg-muted/40 text-foreground h-12 px-4">
+                                            <TableHead className="text-center font-semibold min-w-[90px] sm:min-w-[110px] bg-muted/40 text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                                 Total
                                             </TableHead>
                                         )}
@@ -250,8 +250,8 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                             "border-b-0"
                                                     )}
                                                 >
-                                                    <TableCell className="font-medium sticky left-0 bg-background z-10 px-4 py-3.5 whitespace-nowrap">
-                                                        <span className="text-sm text-foreground">
+                                                    <TableCell className="font-medium sticky left-0 bg-background z-10 px-2 sm:px-4 py-2.5 sm:py-3.5 whitespace-nowrap">
+                                                        <span className="text-xs sm:text-sm text-foreground">
                                                             {DatesUtils.formatDate(
                                                                 date
                                                             )}
@@ -269,29 +269,29 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                                         recordType
                                                                     }
                                                                     className={cn(
-                                                                        "px-4 py-3.5 text-center",
+                                                                        "px-2 sm:px-4 py-2.5 sm:py-3.5 text-center",
                                                                         viewMode ===
                                                                             "notes" &&
-                                                                            "max-w-[200px]"
+                                                                            "max-w-[150px] sm:max-w-[200px]"
                                                                     )}
                                                                 >
                                                                     {recording ? (
                                                                         viewMode ===
                                                                         "time" ? (
-                                                                            <span className="text-sm font-medium text-foreground">
+                                                                            <span className="text-xs sm:text-sm font-medium text-foreground">
                                                                                 {formatMinutes(
                                                                                     recording.minutes
                                                                                 )}
                                                                             </span>
                                                                         ) : (
-                                                                            <span className="text-sm text-foreground line-clamp-2">
+                                                                            <span className="text-xs sm:text-sm text-foreground line-clamp-2">
                                                                                 {formatNotes(
                                                                                     recording.notes
                                                                                 )}
                                                                             </span>
                                                                         )
                                                                     ) : (
-                                                                        <span className="text-xs text-muted-foreground/60 italic">
+                                                                        <span className="text-[10px] sm:text-xs text-muted-foreground/60 italic">
                                                                             N/A
                                                                         </span>
                                                                     )}
@@ -300,8 +300,8 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                                         }
                                                     )}
                                                     {viewMode === "time" && (
-                                                        <TableCell className="font-semibold bg-muted/20 px-4 py-3.5 text-center">
-                                                            <span className="text-sm text-foreground">
+                                                        <TableCell className="font-semibold bg-muted/20 px-2 sm:px-4 py-2.5 sm:py-3.5 text-center">
+                                                            <span className="text-xs sm:text-sm text-foreground">
                                                                 {formatMinutes(
                                                                     total
                                                                 )}

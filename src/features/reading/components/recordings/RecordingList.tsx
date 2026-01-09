@@ -80,8 +80,8 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
 
     return (
         <Card className="min-h-[300px] mb-8">
-            <CardHeader className="flex flex-row items-center justify-between pb-4">
-                <CardTitle className="flex items-center gap-2.5 text-xl font-semibold">
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pb-4">
+                <CardTitle className="flex items-center gap-2.5 text-lg sm:text-xl font-semibold">
                     <div className="p-1.5 bg-muted rounded-lg">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </div>
@@ -90,7 +90,7 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="gap-2"
+                    className="gap-2 w-full sm:w-auto"
                     onClick={() => setShowAutoMergeDialog(true)}
                 >
                     <GitMerge className="h-4 w-4" />
@@ -119,22 +119,22 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                     </div>
                 </CardContent>
             ) : (
-                <CardContent className="p-0 sm:p-6">
-                    <div className="overflow-x-auto -mx-6 sm:mx-0">
-                        <div className="min-w-full">
+                <CardContent className="p-0 sm:p-6 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full inline-block px-4 sm:px-0">
                             <Table>
                                 <TableHeader>
                                     <TableRow className="border-b-2 hover:bg-transparent">
-                                        <TableHead className="min-w-[140px] font-semibold text-foreground h-12 px-4">
+                                        <TableHead className="min-w-[120px] sm:min-w-[140px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                             Date
                                         </TableHead>
-                                        <TableHead className="text-center min-w-[100px] font-semibold text-foreground h-12 px-4">
+                                        <TableHead className="text-center min-w-[80px] sm:min-w-[100px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                             Pages
                                         </TableHead>
-                                        <TableHead className="text-center min-w-[100px] font-semibold text-foreground h-12 px-4">
+                                        <TableHead className="text-center min-w-[80px] sm:min-w-[100px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                             Time
                                         </TableHead>
-                                        <TableHead className="min-w-[200px] font-semibold text-foreground h-12 px-4">
+                                        <TableHead className="min-w-[150px] sm:min-w-[200px] font-semibold text-foreground h-10 sm:h-12 px-2 sm:px-4 text-xs sm:text-sm">
                                             Notes
                                         </TableHead>
                                     </TableRow>
@@ -150,39 +150,39 @@ export const RecordingList = ({ userBookId }: RecordingListProps) => {
                                                     "border-b-0"
                                             )}
                                         >
-                                            <TableCell className="font-medium px-4 py-3.5 whitespace-nowrap">
-                                                <span className="text-sm text-foreground">
+                                            <TableCell className="font-medium px-2 sm:px-4 py-2.5 sm:py-3.5 whitespace-nowrap">
+                                                <span className="text-xs sm:text-sm text-foreground">
                                                     {DatesUtils.formatDate(
                                                         recording.date
                                                     )}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="text-center px-4 py-3.5">
-                                                <span className="text-sm font-medium text-foreground">
+                                            <TableCell className="text-center px-2 sm:px-4 py-2.5 sm:py-3.5">
+                                                <span className="text-xs sm:text-sm font-medium text-foreground">
                                                     {recording.pages}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="text-center px-4 py-3.5">
+                                            <TableCell className="text-center px-2 sm:px-4 py-2.5 sm:py-3.5">
                                                 {recording.minutes ? (
-                                                    <span className="text-sm font-medium text-foreground">
+                                                    <span className="text-xs sm:text-sm font-medium text-foreground">
                                                         {TextUtils.formatDurationShort(
                                                             recording.minutes
                                                         )}
                                                     </span>
                                                 ) : (
-                                                    <span className="text-xs text-muted-foreground/60 italic">
+                                                    <span className="text-[10px] sm:text-xs text-muted-foreground/60 italic">
                                                         N/A
                                                     </span>
                                                 )}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3.5">
+                                            <TableCell className="px-2 sm:px-4 py-2.5 sm:py-3.5">
                                                 {recording.notes &&
                                                 recording.notes.length > 0 ? (
-                                                    <span className="text-sm text-foreground">
+                                                    <span className="text-xs sm:text-sm text-foreground line-clamp-2">
                                                         {recording.notes}
                                                     </span>
                                                 ) : (
-                                                    <span className="text-xs text-muted-foreground/60 italic">
+                                                    <span className="text-[10px] sm:text-xs text-muted-foreground/60 italic">
                                                         No notes
                                                     </span>
                                                 )}

@@ -21,15 +21,21 @@ export const UniversityList = () => {
     };
 
     return (
-        <Card className="h-full flex flex-col">
+        <Card className="h-full flex flex-col min-h-0">
             <CardHeader className="flex-shrink-0">
                 <CardTitle className="text-xl font-semibold text-foreground">
                     Browse By University
                 </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden flex items-center justify-center p-4 sm:p-6">
+            <CardContent className="flex-1 min-h-0 flex items-center justify-center p-4 sm:p-6">
                 <div
-                    className={cn("grid gap-3 sm:gap-4 w-full", "grid-cols-6")}
+                    className={cn(
+                        "grid gap-3 sm:gap-4 w-full h-full",
+                        "grid-cols-2",
+                        "sm:grid-cols-3",
+                        "lg:grid-cols-6",
+                        "auto-rows-fr"
+                    )}
                 >
                     {universityLogos.map((university) => (
                         <button

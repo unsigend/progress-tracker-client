@@ -14,6 +14,14 @@ export interface DevProgressData {
  */
 export const devProgressData: DevProgressData[] = [
     {
+        id: "courses-dashboard-new-feature",
+        title: "Browse By University List",
+        description:
+            "Add browse by university list to the courses dashboard to browse courses by top-rated university and fix responsive design issues.",
+        status: "completed",
+        date: "January 8, 2026",
+    },
+    {
         id: "patch-v1.0.1",
         title: "Patch V 1.0.1",
         description:
