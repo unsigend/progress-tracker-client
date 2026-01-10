@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
     Table,
@@ -27,6 +27,8 @@ import { COURSE_CONSTANTS } from "@/constants/course.constant";
 import { TextUtils } from "@/lib/utils/text";
 import { DatesUtils } from "@/lib/utils/dates";
 import { cn } from "@/lib/utils";
+import { SmartPagination } from "@/components/common/SmartPagination";
+import type { DailyRecord } from "@/features/courses/api/recordings/models/model";
 
 /**
  * RecordingListProps - Interface for RecordingList component props
@@ -43,60 +45,60 @@ interface RecordingListProps {
  * @returns RecordingList component
  */
 export const RecordingList = ({ userCourseId }: RecordingListProps) => {
-    const { data: recordingsData, isLoading } =
-        useCourseRecordings(userCourseId);
+    const [currentPage, setCurrentPage] = useState(
+        COURSE_CONSTANTS.COURSE.DEFAULT_PAGE
+    );
     const [viewMode, setViewMode] = useState<"time" | "notes">("time");
 
-    // Group recordings by date and organize by record type
-    const { groupedRecordings, availableRecordTypes } = useMemo(() => {
-        const recordings = recordingsData?.recordings ?? [];
-        const grouped = new Map<
-            string,
-            Map<string, { minutes: number; notes: string | null; id: string }>
-        >();
-        const recordTypeSet = new Set<string>();
+    const { data: recordingsData, isLoading } = useCourseRecordings(
+        userCourseId,
+        currentPage
+    );
 
-        // Group recordings by date and collect all existing record types
-        recordings.forEach((recording) => {
-            const dateKey = recording.date.split("T")[0];
-            if (!grouped.has(dateKey)) {
-                grouped.set(dateKey, new Map());
-            }
-            const dateRecordings = grouped.get(dateKey)!;
-            dateRecordings.set(recording.recordType, {
-                minutes: recording.minutes,
-                notes: recording.notes,
-                id: recording.id,
+    const [totalPages, setTotalPages] = useState(0);
+    useEffect(() => {
+        const totalDays = recordingsData?.totalDays;
+        const pageSize = recordingsData?.pageSize;
+        if (totalDays !== undefined && pageSize !== undefined) {
+            setTotalPages(Math.ceil(totalDays / pageSize));
+        }
+    }, [recordingsData?.totalDays, recordingsData?.pageSize]);
+
+    // Extract record types from current page's data and maintain predefined order
+    const availableRecordTypes = useMemo(() => {
+        const recordTypeSet = new Set<string>();
+        const dailyRecords = recordingsData?.dailyRecords ?? [];
+
+        // Collect all record types that appear in the current page's data
+        dailyRecords.forEach((record) => {
+            Object.keys(record).forEach((key) => {
+                if (
+                    key !== "date" &&
+                    key !== "total" &&
+                    typeof record[key] === "object" &&
+                    record[key] !== null
+                ) {
+                    recordTypeSet.add(key);
+                }
             });
-            recordTypeSet.add(recording.recordType);
         });
 
         // Get all predefined record types in order
         const predefinedTypes =
             COURSE_CONSTANTS.RECORDING.PREDEFINED_RECORD_TYPES;
 
-        // Filter to only include record types that exist in the data
+        // Filter to only include record types that exist in the current page
         // and maintain the predefined order
-        const availableTypes = predefinedTypes.filter((type) =>
-            recordTypeSet.has(type)
+        return predefinedTypes.filter((type) => recordTypeSet.has(type));
+    }, [recordingsData?.dailyRecords]);
+
+    // Sort daily records by date (oldest first)
+    const sortedDailyRecords = useMemo(() => {
+        const dailyRecords = recordingsData?.dailyRecords ?? [];
+        return [...dailyRecords].sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
-
-        // Convert to array and sort by date (oldest first)
-        const sortedRecordings = Array.from(grouped.entries())
-            .map(([date, recordTypes]) => ({
-                date,
-                recordTypes,
-            }))
-            .sort(
-                (a, b) =>
-                    new Date(a.date).getTime() - new Date(b.date).getTime()
-            );
-
-        return {
-            groupedRecordings: sortedRecordings,
-            availableRecordTypes: availableTypes,
-        };
-    }, [recordingsData?.recordings]);
+    }, [recordingsData?.dailyRecords]);
 
     /**
      * formatRecordType - Format record type for display
@@ -117,24 +119,6 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
     };
 
     /**
-     * calculateTotal - Calculate total minutes for a date
-     * @param recordTypes - Map of record types to minutes
-     * @returns Total minutes
-     */
-    const calculateTotal = (
-        recordTypes: Map<
-            string,
-            { minutes: number; notes: string | null; id: string }
-        >
-    ): number => {
-        let total = 0;
-        recordTypes.forEach(({ minutes }) => {
-            total += minutes;
-        });
-        return total;
-    };
-
-    /**
      * formatNotes - Format notes for display
      * @param notes - The notes to format
      * @returns Formatted notes string or placeholder
@@ -144,6 +128,29 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
             return "No notes";
         }
         return notes;
+    };
+
+    /**
+     * getRecordTypeData - Get record type data from daily record
+     * @param record - The daily record
+     * @param recordType - The record type to get
+     * @returns Record type data or null
+     */
+    const getRecordTypeData = (
+        record: DailyRecord,
+        recordType: string
+    ): { minutes: number; notes: string | null } | null => {
+        const data = record[recordType];
+        if (
+            data &&
+            typeof data === "object" &&
+            data !== null &&
+            "minutes" in data &&
+            "notes" in data
+        ) {
+            return data as { minutes: number; notes: string | null };
+        }
+        return null;
     };
 
     return (
@@ -184,7 +191,7 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                         <Loader2 className="size-8 animate-spin text-muted-foreground" />
                     </div>
                 </CardContent>
-            ) : groupedRecordings.length === 0 ? (
+            ) : sortedDailyRecords.length === 0 ? (
                 <CardContent>
                     <div className="text-center py-16 text-muted-foreground">
                         <div className="p-4 bg-muted/50 rounded-full w-fit mx-auto mb-4">
@@ -229,94 +236,94 @@ export const RecordingList = ({ userCourseId }: RecordingListProps) => {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {groupedRecordings.map(
-                                        (
-                                            {
-                                                date,
-                                                recordTypes: dateRecordings,
-                                            },
-                                            index
-                                        ) => {
-                                            const total =
-                                                calculateTotal(dateRecordings);
-                                            return (
-                                                <TableRow
-                                                    key={date}
-                                                    className={cn(
-                                                        "hover:bg-muted/30 transition-colors",
-                                                        index ===
-                                                            groupedRecordings.length -
-                                                                1 &&
-                                                            "border-b-0"
-                                                    )}
-                                                >
-                                                    <TableCell className="font-medium sticky left-0 bg-background z-10 px-2 sm:px-4 py-2.5 sm:py-3.5 whitespace-nowrap">
+                                    {sortedDailyRecords.map((record, index) => {
+                                        return (
+                                            <TableRow
+                                                key={record.date}
+                                                className={cn(
+                                                    "hover:bg-muted/30 transition-colors",
+                                                    index ===
+                                                        sortedDailyRecords.length -
+                                                            1 && "border-b-0"
+                                                )}
+                                            >
+                                                <TableCell className="font-medium sticky left-0 bg-background z-10 px-2 sm:px-4 py-2.5 sm:py-3.5 whitespace-nowrap">
+                                                    <span className="text-xs sm:text-sm text-foreground">
+                                                        {DatesUtils.formatDate(
+                                                            record.date
+                                                        )}
+                                                    </span>
+                                                </TableCell>
+                                                {availableRecordTypes.map(
+                                                    (recordType) => {
+                                                        const recordTypeData =
+                                                            getRecordTypeData(
+                                                                record,
+                                                                recordType
+                                                            );
+                                                        return (
+                                                            <TableCell
+                                                                key={recordType}
+                                                                className={cn(
+                                                                    "px-2 sm:px-4 py-2.5 sm:py-3.5 text-center",
+                                                                    viewMode ===
+                                                                        "notes" &&
+                                                                        "max-w-[150px] sm:max-w-[200px]"
+                                                                )}
+                                                            >
+                                                                {recordTypeData ? (
+                                                                    viewMode ===
+                                                                    "time" ? (
+                                                                        <span className="text-xs sm:text-sm font-medium text-foreground">
+                                                                            {formatMinutes(
+                                                                                recordTypeData.minutes
+                                                                            )}
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span className="text-xs sm:text-sm text-foreground line-clamp-2">
+                                                                            {formatNotes(
+                                                                                recordTypeData.notes
+                                                                            )}
+                                                                        </span>
+                                                                    )
+                                                                ) : (
+                                                                    <span className="text-[10px] sm:text-xs text-muted-foreground/60 italic">
+                                                                        N/A
+                                                                    </span>
+                                                                )}
+                                                            </TableCell>
+                                                        );
+                                                    }
+                                                )}
+                                                {viewMode === "time" && (
+                                                    <TableCell className="font-semibold bg-muted/20 px-2 sm:px-4 py-2.5 sm:py-3.5 text-center">
                                                         <span className="text-xs sm:text-sm text-foreground">
-                                                            {DatesUtils.formatDate(
-                                                                date
+                                                            {formatMinutes(
+                                                                record.total
                                                             )}
                                                         </span>
                                                     </TableCell>
-                                                    {availableRecordTypes.map(
-                                                        (recordType) => {
-                                                            const recording =
-                                                                dateRecordings.get(
-                                                                    recordType
-                                                                );
-                                                            return (
-                                                                <TableCell
-                                                                    key={
-                                                                        recordType
-                                                                    }
-                                                                    className={cn(
-                                                                        "px-2 sm:px-4 py-2.5 sm:py-3.5 text-center",
-                                                                        viewMode ===
-                                                                            "notes" &&
-                                                                            "max-w-[150px] sm:max-w-[200px]"
-                                                                    )}
-                                                                >
-                                                                    {recording ? (
-                                                                        viewMode ===
-                                                                        "time" ? (
-                                                                            <span className="text-xs sm:text-sm font-medium text-foreground">
-                                                                                {formatMinutes(
-                                                                                    recording.minutes
-                                                                                )}
-                                                                            </span>
-                                                                        ) : (
-                                                                            <span className="text-xs sm:text-sm text-foreground line-clamp-2">
-                                                                                {formatNotes(
-                                                                                    recording.notes
-                                                                                )}
-                                                                            </span>
-                                                                        )
-                                                                    ) : (
-                                                                        <span className="text-[10px] sm:text-xs text-muted-foreground/60 italic">
-                                                                            N/A
-                                                                        </span>
-                                                                    )}
-                                                                </TableCell>
-                                                            );
-                                                        }
-                                                    )}
-                                                    {viewMode === "time" && (
-                                                        <TableCell className="font-semibold bg-muted/20 px-2 sm:px-4 py-2.5 sm:py-3.5 text-center">
-                                                            <span className="text-xs sm:text-sm text-foreground">
-                                                                {formatMinutes(
-                                                                    total
-                                                                )}
-                                                            </span>
-                                                        </TableCell>
-                                                    )}
-                                                </TableRow>
-                                            );
-                                        }
-                                    )}
+                                                )}
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </div>
                     </div>
                 </CardContent>
+            )}
+
+            {sortedDailyRecords.length > 0 && totalPages > 0 && (
+                <div className="mt-5 pb-4">
+                    <SmartPagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={
+                            setCurrentPage as (page: number) => void
+                        }
+                    />
+                </div>
             )}
         </Card>
     );

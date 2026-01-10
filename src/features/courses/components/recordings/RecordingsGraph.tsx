@@ -1,8 +1,8 @@
+import { useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { PieChart } from "@/components/charts/PieChart";
-import { useCourseRecordings } from "@/features/courses/api/recordings/hooks/useRecordings";
+import { useCourseRecordingDetail } from "@/features/courses/api/statistics/hooks/useCourseRecordingDetail";
 import { TextUtils } from "@/lib/utils/text";
-import type { CourseRecording } from "@/features/courses/api/recordings/models/model";
 
 /**
  * RecordingCategoryData - Interface for categorized recording data
@@ -13,22 +13,23 @@ interface RecordingCategoryData {
 }
 
 /**
- * categorizeRecordingsByType - Categorize recordings by type and calculate total minutes
+ * formatRecordType - Format record type for display
+ * @param recordType - The record type to format
+ * @returns Formatted record type string
+ */
+const formatRecordType = (recordType: string): string => {
+    return recordType.charAt(0) + recordType.slice(1).toLowerCase();
+};
+
+/**
+ * categorizeRecordingsByType - Categorize recordings by type from minutesByType
  */
 const categorizeRecordingsByType = (
-    recordings: CourseRecording[]
+    minutesByType: Record<string, number>
 ): RecordingCategoryData[] => {
-    const categoryMap = new Map<string, number>();
-
-    recordings.forEach((recording) => {
-        const type = recording.recordType.toUpperCase();
-        const currentMinutes = categoryMap.get(type) || 0;
-        categoryMap.set(type, currentMinutes + recording.minutes);
-    });
-
-    return Array.from(categoryMap.entries())
+    return Object.entries(minutesByType)
         .map(([key, value]) => ({
-            key: key.charAt(0) + key.slice(1).toLowerCase(),
+            key: formatRecordType(key),
             value,
         }))
         .sort((a, b) => b.value - a.value);
@@ -68,17 +69,19 @@ interface RecordingsGraphProps {
  * @returns RecordingsGraph component
  */
 export const RecordingsGraph = ({ userCourseId }: RecordingsGraphProps) => {
-    const { data: recordingsData, isLoading } =
-        useCourseRecordings(userCourseId);
+    const { data: statisticsData, isLoading } =
+        useCourseRecordingDetail(userCourseId);
 
-    const recordings = recordingsData?.recordings || [];
-    const categorizedData = categorizeRecordingsByType(recordings);
+    const categorizedData = useMemo(() => {
+        if (!statisticsData?.minutesByType) {
+            return [];
+        }
+        return categorizeRecordingsByType(statisticsData.minutesByType);
+    }, [statisticsData?.minutesByType]);
+
     const hasRecordings = categorizedData.length > 0;
 
-    const totalMinutes = categorizedData.reduce(
-        (sum, item) => sum + item.value,
-        0
-    );
+    const totalMinutes = statisticsData?.totalMinutes ?? 0;
     const totalTimeFormatted = TextUtils.formatDurationShort(totalMinutes);
 
     return (

@@ -11,11 +11,30 @@ export interface CourseRecording {
 }
 
 /**
- * CourseRecordings - Interface for a list of course recordings
+ * DailyRecordTypeData - Interface for record type data within a daily record
+ */
+export interface DailyRecordTypeData {
+    minutes: number;
+    notes: string | null;
+}
+
+/**
+ * DailyRecord - Interface for a daily record with grouped recordings by type
+ */
+export interface DailyRecord {
+    date: string;
+    total: number;
+    [recordType: string]: string | number | DailyRecordTypeData | undefined;
+}
+
+/**
+ * CourseRecordings - Interface for paginated daily records
  */
 export interface CourseRecordings {
-    recordings: CourseRecording[];
-    totalCount: number;
+    dailyRecords: DailyRecord[];
+    totalDays: number;
+    page: number;
+    pageSize: number;
 }
 
 /**

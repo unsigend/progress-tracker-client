@@ -1,8 +1,8 @@
 import type {
     CourseRecordingResponseDto,
-    CourseRecordingsResponseDto,
+    DailyRecordsResponseDto,
 } from "@/lib/api/api";
-import type { CourseRecording, CourseRecordings } from "./model";
+import type { CourseRecording, CourseRecordings, DailyRecord } from "./model";
 
 /**
  * mapToCourseRecording - Map a course recording response to a course recording model
@@ -21,13 +21,15 @@ export const mapToCourseRecording = (
 };
 
 /**
- * mapToCourseRecordings - Map a course recordings response to a course recordings model
+ * mapToCourseRecordings - Map a daily records response to a course recordings model
  */
 export const mapToCourseRecordings = (
-    response: CourseRecordingsResponseDto
+    response: DailyRecordsResponseDto
 ): CourseRecordings => {
     return {
-        recordings: response.recordings.map(mapToCourseRecording),
-        totalCount: response.totalCount,
+        dailyRecords: response.dailyRecords as DailyRecord[],
+        totalDays: response.totalDays,
+        page: response.page,
+        pageSize: response.pageSize,
     };
 };

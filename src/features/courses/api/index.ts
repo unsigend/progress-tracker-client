@@ -22,3 +22,6 @@ export * from './recordings/hooks/useRecordings';
 export * from './recordings/hooks/useCreateRecording';
 export * from './recordings/models/model';
 
+// Statistics
+export * from './statistics/hooks/useCourseRecordingDetail';
+export * from './statistics/models/model';

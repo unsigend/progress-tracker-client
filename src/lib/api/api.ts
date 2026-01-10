@@ -436,6 +436,31 @@ export interface UserCourseCreateRequestDto {
   courseId: string;
 }
 
+export interface DailyRecordsResponseDto {
+  /** The daily records */
+  dailyRecords: object[];
+  /** The total count of distinct days */
+  totalDays: number;
+  /** The current page number */
+  page: number;
+  /** The page size (number of days per page) */
+  pageSize: number;
+}
+
+export interface CourseRecordingCreateRequestDto {
+  /**
+   * The date of the course recording
+   * @format date-time
+   */
+  date: string;
+  /** The minutes of the course recording */
+  minutes: number;
+  /** The record type of the course recording */
+  recordType: string;
+  /** The notes of the course recording */
+  notes?: string;
+}
+
 export interface CourseRecordingResponseDto {
   /** The id of the course recording */
   id: string;
@@ -452,27 +477,6 @@ export interface CourseRecordingResponseDto {
   recordType: string;
   /** The notes of the course recording */
   notes: string | null;
-}
-
-export interface CourseRecordingsResponseDto {
-  /** The course recordings of the course recordings */
-  recordings: CourseRecordingResponseDto[];
-  /** The total count of the recordings */
-  totalCount: number;
-}
-
-export interface CourseRecordingCreateRequestDto {
-  /**
-   * The date of the course recording
-   * @format date-time
-   */
-  date: string;
-  /** The minutes of the course recording */
-  minutes: number;
-  /** The record type of the course recording */
-  recordType: string;
-  /** The notes of the course recording */
-  notes?: string;
 }
 
 export interface ReadingRecordingRequestDto {
@@ -523,6 +527,13 @@ export interface ReadingRecordingDetailResponseDto {
   recordings: BookRecordingResponseDto[];
   /** The total count of the recordings */
   totalCount: number;
+}
+
+export interface CourseRecordingDetailResponseDto {
+  /** The total minutes of all course recordings */
+  totalMinutes: number;
+  /** The minutes grouped by record type (e.g., { LECTURE: 874, LAB: 1100 }) */
+  minutesByType: object;
 }
 
 import type {
@@ -1757,7 +1768,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<CourseRecordingsResponseDto, void>({
+      this.request<DailyRecordsResponseDto, void>({
         path: `/api/v1/user-course/${id}/recordings`,
         method: "GET",
         query: query,
@@ -1894,6 +1905,25 @@ export class Api<
     ) =>
       this.request<ReadingRecordingDetailResponseDto, any>({
         path: `/api/v1/statistics/reading-recording/detail/week`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Statistics
+     * @name StatisticsControllerGetCourseRecordingDetail
+     * @summary Get the detailed course recording statistics by user course id
+     * @request GET:/api/v1/statistics/course-recording/{id}/detail
+     */
+    statisticsControllerGetCourseRecordingDetail: (
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<CourseRecordingDetailResponseDto, any>({
+        path: `/api/v1/statistics/course-recording/${id}/detail`,
         method: "GET",
         format: "json",
         ...params,

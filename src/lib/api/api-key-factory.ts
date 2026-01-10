@@ -70,8 +70,12 @@ export const API_KEY_FACTORY = () => {
             },
         },
         COURSE_RECORDINGS: {
-            LIST: (userCourseId: string) => {
-                return [RESOURCES_KEYS.COURSE_RECORDINGS, userCourseId];
+            LIST: (userCourseId: string, page?: number) => {
+                return [
+                    RESOURCES_KEYS.COURSE_RECORDINGS,
+                    userCourseId,
+                    page ?? 1,
+                ];
             },
         },
         COURSES: {
@@ -105,6 +109,16 @@ export const API_KEY_FACTORY = () => {
                         "range",
                         startDate,
                         endDate,
+                    ];
+                },
+            },
+            COURSE_RECORDING: {
+                DETAIL: (userCourseId: string) => {
+                    return [
+                        RESOURCES_KEYS.STATISTICS,
+                        "course-recording",
+                        "detail",
+                        userCourseId,
                     ];
                 },
             },
