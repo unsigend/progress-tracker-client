@@ -13,30 +13,26 @@
   </p>
 </div>
 
----
-
 ## Overview
 
 **Progress Tracker** is a full-stack application designed to help you monitor and analyze your learning journey. Whether you're tracking books you've read or courses you're taking, the platform provides comprehensive tools for recording progress, visualizing statistics, and maintaining your learning momentum.
 
 Built with a focus on **minimalism** and **modern design principles**, the application offers a clean, intuitive interface that makes progress tracking effortless and enjoyable.
 
----
-
 ## Product Showcase
+
+
 
 ### Landing Page
 
 <div align="center">
-  <img src="./public/image/read-me/landing.png" alt="Landing Page" width="800"/>
+  <img src="./public/image/read-me/landing.png" alt="Landing Page" width="1000"/>
 </div>
-
-A welcoming landing page that introduces the platform's core features and value proposition. Clean design with clear call-to-actions and feature highlights.
 
 ### Reading Progress Tracking
 
 <div align="center">
-  <img src="./public/image/read-me/reading-panel.png" alt="Reading Panel" width="800"/>
+  <img src="./public/image/read-me/reading-panel.png" alt="Reading Panel" width="1000"/>
 </div>
 
 Comprehensive reading tracking with detailed progress visualization. Record pages read, time spent, and personal notes. View statistics through interactive charts and analytics.
@@ -44,33 +40,31 @@ Comprehensive reading tracking with detailed progress visualization. Record page
 ### Course Progress Management
 
 <div align="center">
-  <img src="./public/image/read-me/course-panel.png" alt="Course Panel" width="800"/>
+  <img src="./public/image/read-me/course-panel.png" alt="Course Panel" width="1000"/>
 </div>
 
-Track your course progress with multiple record types (lectures, labs, assignments, etc.). Monitor time spent across different activities and visualize your learning patterns.
+Track your course progress with customized record types. Monitor time spent across different activities and visualize your learning patterns.
 
 ### Book Library
 
 <div align="center">
-  <img src="./public/image/read-me/book-library.png" alt="Book Library" width="800"/>
+  <img src="./public/image/read-me/book-library.png" alt="Book Library" width="1000"/>
 </div>
 
-Browse and manage your personal book collection. Search through your library, add new books, and track reading progress with detailed metadata and cover images.
+Track your personal book collection. Search through your library, add new books, and track reading progress with detailed metadata and cover images.
 
 ### Recommendation System
 
 <div align="center">
-  <img src="./public/image/read-me/recommend-system.png" alt="Recommendation System" width="800"/>
+  <img src="./public/image/read-me/recommend-system.png" alt="Recommendation System" width="1000"/>
 </div>
 
-Discover new books and courses through intelligent recommendations. Personalized suggestions based on your reading history and preferences.
-
----
+Discover new books and courses through daily recommendations.
 
 ## Key Features
 
 -   **Reading Tracking**: Record pages, time, and notes for each reading session
--   **Course Tracking**: Track multiple course types (lectures, labs, assignments, etc.)
+-   **Course Tracking**: Track highly customized course type
 -   **Analytics & Insights**: Visualize your progress with interactive charts and statistics
 -   **Search & Filter**: Powerful search capabilities across books and courses
 -   **Customizable**: Highly customizable tracking fields and record types
@@ -78,19 +72,11 @@ Discover new books and courses through intelligent recommendations. Personalized
 -   **Responsive**: Optimized for desktop, tablet, and mobile devices
 -   **Fast & Performant**: Optimized with caching and code splitting
 
----
-
 ## Getting Started
 
 ### Quick Start
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-
-# Navigate to project directory
-cd progress-tracker-client
-
 # Install dependencies
 npm install
 
@@ -114,8 +100,6 @@ The codebase follows **Feature-Sliced Design** principles for optimal organizati
 -   **`entities/`**: Reusable business entities shared across features (hooks, models, validation)
 -   **`lib/`**: Shared utilities, API clients, and configurations
 -   **`components/`**: Shared UI components used across features
-
----
 
 ## Design Architecture
 
@@ -174,8 +158,6 @@ Built with modern web technologies and best practices:
 -   Consistent design language across all features
 -   Responsive layouts for all screen sizes
 -   Accessible components built on Radix UI primitives
-
----
 
 ## Copyright
 
