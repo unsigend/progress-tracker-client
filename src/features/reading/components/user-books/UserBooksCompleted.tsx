@@ -46,7 +46,7 @@ export const UserBooksCompleted = () => {
         }));
     const completedBooksTotalCount = completedBooks.length;
     const completedBooksTotalPages = completedBooks.reduce(
-        (sum, userBook) => sum + (userBook.book?.pages || 0),
+        (sum, userBook) => sum + (userBook.currentPage || 0),
         0
     );
 

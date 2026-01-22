@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Loader2 } from "lucide-react";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import { BackButton } from "@/components/common/BackButton";
@@ -13,6 +19,8 @@ import { Calendar, Clock, BookOpen, CalendarDays } from "lucide-react";
 import { ROUTES_CONSTANTS } from "@/constants/routes.constant";
 import { useUserBook } from "@/features/reading/api/user-books/hooks/useUserBook";
 import { useDeleteUserBook } from "@/features/reading/api/user-books/hooks/useDeleteUserBook";
+import { useSetAsCompleteUserBook } from "@/features/reading/api/user-books/hooks/useSetAsCompleteUserBook";
+import { useUnsetAsCompleteUserBook } from "@/features/reading/api/user-books/hooks/useUnsetAsCompleteUserBook";
 import { DatesUtils } from "@/lib/utils/dates";
 
 /**
@@ -35,6 +43,8 @@ export const UserBookDetail = ({ userBookId }: UserBookDetailProps) => {
 
     const { data: userBook, isLoading } = useUserBook(userBookId);
     const { mutate: deleteUserBook } = useDeleteUserBook(userBookId);
+    const { mutate: setAsComplete } = useSetAsCompleteUserBook(userBookId);
+    const { mutate: unsetAsComplete } = useUnsetAsCompleteUserBook(userBookId);
 
     const handleDelete = () => {
         deleteUserBook(undefined, {
@@ -46,22 +56,38 @@ export const UserBookDetail = ({ userBookId }: UserBookDetailProps) => {
         setShowDeleteDialog(false);
     };
 
+    const handleSetAsComplete = () => {
+        setAsComplete(undefined, {
+            onSuccess: () => {
+                toast.success("Book marked as complete");
+            },
+        });
+    };
+
+    const handleUnsetAsComplete = () => {
+        unsetAsComplete(undefined, {
+            onSuccess: () => {
+                toast.success("Book marked as in progress");
+            },
+        });
+    };
+
     if (isLoading || !userBook || !userBook.book) {
         return (
             <Card>
-                <CardHeader>
-                    <BackButton
-                        onClick={() =>
-                            navigate(
-                                ROUTES_CONSTANTS.DASHBOARD()
-                                    .READING()
-                                    .BOOKS()
-                                    .LIST()
-                            )
-                        }
-                    />
-                </CardHeader>
-                <CardContent className="p-8">
+                <CardContent className="p-8 md:p-12">
+                    <div className="mb-6">
+                        <BackButton
+                            onClick={() =>
+                                navigate(
+                                    ROUTES_CONSTANTS.DASHBOARD()
+                                        .READING()
+                                        .BOOKS()
+                                        .LIST()
+                                )
+                            }
+                        />
+                    </div>
                     <div className="flex justify-center py-12">
                         <Loader2 className="size-8 animate-spin" />
                     </div>
@@ -71,21 +97,43 @@ export const UserBookDetail = ({ userBookId }: UserBookDetailProps) => {
     }
 
     const book = userBook.book;
+    const isCompleted = userBook.status === "COMPLETED";
+    const isNotFullyRead = userBook.currentPage !== book.pages;
+    const showUncomplete = isCompleted && isNotFullyRead;
+    const showComplete = !isCompleted;
 
     return (
         <Card>
-            <CardHeader className="flex flex-row justify-between">
-                <BackButton onClick={() => navigate(-1)} />
-                <Button
-                    size="sm"
-                    variant="destructive"
-                    className="rounded-lg"
-                    onClick={() => setShowDeleteDialog(true)}
-                >
-                    Delete
-                </Button>
-            </CardHeader>
-            <CardContent className="p-8">
+            <CardContent className="p-8 md:p-12">
+                {/* Navigation Buttons */}
+                <div className="mb-6 flex justify-between items-center">
+                    <BackButton onClick={() => navigate(-1)} />
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm">
+                                Actions
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {showComplete && (
+                                <DropdownMenuItem onClick={handleSetAsComplete}>
+                                    Mark as Complete
+                                </DropdownMenuItem>
+                            )}
+                            {showUncomplete && (
+                                <DropdownMenuItem onClick={handleUnsetAsComplete}>
+                                    Mark as In Progress
+                                </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem
+                                onClick={() => setShowDeleteDialog(true)}
+                            >
+                                Delete
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
                     {/* Left Column - Book Cover and Basic Info */}
                     <div className="lg:col-span-1 space-y-6">

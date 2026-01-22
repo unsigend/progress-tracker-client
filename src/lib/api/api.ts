@@ -1403,6 +1403,41 @@ export class Api<
      * No description
      *
      * @tags UserBook
+     * @name UserBookControllerSetAsComplete
+     * @summary Set a user book as complete
+     * @request PATCH:/api/v1/user-book/{id}/complete
+     */
+    userBookControllerSetAsComplete: (id: string, params: RequestParams = {}) =>
+      this.request<UserBookResponseDto, any>({
+        path: `/api/v1/user-book/${id}/complete`,
+        method: "PATCH",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserBook
+     * @name UserBookControllerUnsetAsComplete
+     * @summary Unset a user book as complete
+     * @request PATCH:/api/v1/user-book/{id}/uncomplete
+     */
+    userBookControllerUnsetAsComplete: (
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<UserBookResponseDto, any>({
+        path: `/api/v1/user-book/${id}/uncomplete`,
+        method: "PATCH",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserBook
      * @name UserBookControllerFindRecordings
      * @summary Find all recordings
      * @request GET:/api/v1/user-book/{id}/recordings

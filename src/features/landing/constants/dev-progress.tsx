@@ -14,6 +14,14 @@ export interface DevProgressData {
  */
 export const devProgressData: DevProgressData[] = [
     {
+        id: "user-book-status-control",
+        title: "User Book Status Control",
+        description:
+            "Small feature update: add marking a in-progress book as complete and marking a complete book as in-progress",
+        status: "completed",
+        date: "January 22, 2026",
+    },
+    {
         id: "courses-dashboard-new-feature",
         title: "Browse By University List",
         description:
